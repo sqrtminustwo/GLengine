@@ -1,8 +1,12 @@
+#include <exception>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <cmath>
+#include <map>
 #include <shaders/shader.h>
+#include <stdexcept>
+#include <system_error>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
@@ -12,6 +16,11 @@ void processInput(GLFWwindow *window);
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
+std::map<int, GLenum> color_formats {
+    {1, GL_RED},
+    {3, GL_RGB},
+    {4, GL_RGBA}
+};
 
 unsigned int createTexture(char* file_path) {
     unsigned int texture;
@@ -20,17 +29,23 @@ unsigned int createTexture(char* file_path) {
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     int width, height, nrChannels;
     unsigned char *data = stbi_load(file_path, &width, &height, &nrChannels, 0);
     if (data) {
-        std::cout << "Loaded image!" << std::endl;
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+        GLenum format;
+        if (color_formats.count(nrChannels)) format = color_formats[nrChannels];
+        else {
+            std::cerr << "Unsupported number of channels: " << nrChannels << " for " << file_path << std::endl;
+            stbi_image_free(data);
+            throw std::runtime_error("Image color type is unsupported.");
+        }
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     } else {
-        std::cout << "Failed to load image!" << std::endl;
+        throw std::runtime_error("Failed to load image.");
     }
     stbi_image_free(data);
 
@@ -52,8 +67,7 @@ int main() {
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-    {
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
@@ -96,9 +110,13 @@ int main() {
     unsigned int texture1, texture2;
     char path1[] = "../../resources/textures/wall.jpg";
     char path2[] = "../../resources/textures/awesome_face.png";
-    texture1 = createTexture(path1);
-    texture2 = createTexture(path2);
-   
+    try {
+        texture1 = createTexture(path1);
+        texture2 = createTexture(path2);
+    } catch (std::exception ex) {
+        std::cerr << "Error loading texture: " << std::endl;
+        std::cerr << ex.what() << std::endl;
+    }
     ourShader.use();
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture2"), 1);
