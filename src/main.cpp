@@ -1,5 +1,8 @@
 #include <glad.h>
+#include <glm/ext/matrix_clip_space.hpp>
+#include <glm/ext/matrix_float4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
+#include <glm/ext/vector_float3.hpp>
 #include <glm/fwd.hpp>
 #include <glm/trigonometric.hpp>
 #include <shader.h>
@@ -85,39 +88,66 @@ int main() {
     );
 
     float vertices[] = {
-         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+        0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+        0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
     };
-    unsigned int indices[] = {
-        0, 1, 3,
-        1, 2, 3
-    };
-    unsigned int VBO, VAO, EBO;
+    unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
 
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
-    glEnableVertexAttribArray(2);
 
     unsigned int texture1, texture2;
     std::cout << "Current path is " << fs::current_path() << '\n'; // (1)
     char path1[] = "../../resources/textures/wall.jpg";
-    char path2[] = "../../resources/textures/awesome_face.png";
+    char path2[] = "../../resources/textures/cross.png";
     try {
         texture1 = createTexture(path1);
         texture2 = createTexture(path2);
@@ -129,23 +159,40 @@ int main() {
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture2"), 1);
 
+    const glm::vec3 X = glm::vec3(1.0f, 0.0f, 0.0f);
+    const glm::vec3 Y = glm::vec3(0.0f, 1.0f, 0.0f);
     const glm::vec3 Z = glm::vec3(0.0f, 0.0f, 0.1f);
+   
+    glm::mat4 modelMatrix = glm::mat4(1.0f);
+    glm::mat4 viewMatrix = glm::mat4(1.0f);
+    viewMatrix = glm::translate(viewMatrix, glm::vec3(0.0f, 0.0f, -1.0f));
+    glm::mat4 projectionMatrix = glm::mat4(1.0f);
+    projectionMatrix = glm::perspective(glm::radians(30.0f), (float)5/4, 0.1f, 100.0f);
 
-    glm::mat4 trans1 = glm::mat4(1.0f);
-    trans1 = glm::scale(trans1, glm::vec3(0.5, 0.5, 0.5));
-    trans1 = glm::rotate(trans1, glm::radians(180.0f), Z);
-    unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+    unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "modelMatrix");
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+    unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "viewMatrix");
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(viewMatrix));
+    unsigned int projectionLoc = glGetUniformLocation(ourShader.ID, "projectionMatrix");
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
-    glm::mat4 trans2 = glm::mat4(1.0f);
-    trans2 = glm::scale(trans2, glm::vec3(0.5, 0.5, 0.5));
-    trans2 = glm::translate(trans2, glm::vec3(-1.5, 1.5, 0));
+    glm::mat4 scaleDown = glm::mat4(1.0f);
+    float scale_factor = -0.1;
+    scaleDown = glm::scale(scaleDown, glm::vec3(scale_factor, scale_factor, scale_factor));
+    unsigned int scaleDownLoc = glGetUniformLocation(ourShader.ID, "scaleDown");
+    glUniformMatrix4fv(scaleDownLoc, 1, GL_FALSE, glm::value_ptr(scaleDown));
 
-    int i = 100;
+    glm::mat4 translate = glm::mat4(1.0f);
+    translate = glm::translate(translate, glm::vec3(-2.0f, -2.0f, 1.0f));
+    unsigned int translateLoc = glGetUniformLocation(ourShader.ID, "translate");
+
+    glEnable(GL_DEPTH_TEST);
+
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture1);
@@ -155,18 +202,16 @@ int main() {
         ourShader.use();
         glBindVertexArray(VAO);
         
-        trans1 = glm::rotate(trans1, (float) glfwGetTime(), Z);
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans1));
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glUniformMatrix4fv(translateLoc, 1, GL_FALSE, glm::value_ptr(glm::mat4(1.0f)));
+        modelMatrix = glm::rotate(modelMatrix, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f));
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        float s = sin(glfwGetTime());
-        // std::cout << "s = " << glfwGetTime() << ", sin(s) = " << s << std::endl;
-        trans2 = glm::scale(trans2, glm::vec3(s, s, s));
-        i = 100;
-        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans2));
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-        trans2 = glm::scale(trans2, glm::vec3(1/s, 1/s, 1/s));
 
+        glUniformMatrix4fv(translateLoc, 1, GL_FALSE, glm::value_ptr(translate));
+        modelMatrix = glm::mat4(1.0f);
+        glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -174,7 +219,6 @@ int main() {
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
 
     glfwTerminate();
     return 0;
