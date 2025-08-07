@@ -221,6 +221,9 @@ GLFWtest_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 GLFWtest_SOURCE_DIR:STATIC=/home/main-ubuntu/coding/C++Projects/GLguide
 
+//The directory containing a CMake configuration file for glm.
+glm_DIR:PATH=/usr/local/share/glm
+
 
 ########################
 # INTERNAL cache entries

@@ -1,14 +1,14 @@
 [
 {
   "directory": "/home/main-ubuntu/coding/C++Projects/GLguide/build/release",
-  "command": "/usr/bin/cc -I/home/main-ubuntu/coding/C++Projects/GLguide/include -O3 -DNDEBUG -o CMakeFiles/glad.dir/include/src/glad.c.o -c /home/main-ubuntu/coding/C++Projects/GLguide/include/src/glad.c",
-  "file": "/home/main-ubuntu/coding/C++Projects/GLguide/include/src/glad.c",
-  "output": "CMakeFiles/glad.dir/include/src/glad.c.o"
+  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLguide/include -isystem /home/main-ubuntu/coding/C++Projects/GLguide/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/main.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLguide/src/main.cpp",
+  "file": "/home/main-ubuntu/coding/C++Projects/GLguide/src/main.cpp",
+  "output": "CMakeFiles/GLFWtest.dir/src/main.cpp.o"
 },
 {
   "directory": "/home/main-ubuntu/coding/C++Projects/GLguide/build/release",
-  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLguide/include -isystem /home/main-ubuntu/coding/C++Projects/GLguide/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -Wall -Wextra -Wpedantic -Wconversion -o CMakeFiles/GLFWtest.dir/src/main.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLguide/src/main.cpp",
-  "file": "/home/main-ubuntu/coding/C++Projects/GLguide/src/main.cpp",
-  "output": "CMakeFiles/GLFWtest.dir/src/main.cpp.o"
+  "command": "/usr/bin/cc -O3 -DNDEBUG -o CMakeFiles/glad.dir/external/src/glad.c.o -c /home/main-ubuntu/coding/C++Projects/GLguide/external/src/glad.c",
+  "file": "/home/main-ubuntu/coding/C++Projects/GLguide/external/src/glad.c",
+  "output": "CMakeFiles/glad.dir/external/src/glad.c.o"
 }
 ]

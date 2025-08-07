@@ -11,23 +11,24 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 file(GLOB_RECURSE CPP_SOURCES CONFIGURE_DEPENDS src/*.cpp)
 file(GLOB_RECURSE C_SOURCES   CONFIGURE_DEPENDS src/*.c)
 file(GLOB_RECURSE HEADERS     CONFIGURE_DEPENDS include/*.h)
-file(GLOB_RECURSE HEADERS     CONFIGURE_DEPENDS include/shaders/*.h)
-file(GLOB_RECURSE HEADERS     CONFIGURE_DEPENDS include/stb/*.h)
 set(SOURCES ${CPP_SOURCES} ${C_SOURCES})
-
-# Build glad as a static library
-add_library(glad STATIC ${CMAKE_CURRENT_SOURCE_DIR}/include/src/glad.c)
-target_include_directories(glad PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 # Create executable
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Include directories
 target_include_directories(${PROJECT_NAME}
-    PRIVATE
+    PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/include
 )
+
+# Add glm
+find_package(glm CONFIG REQUIRED)
+target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
+
+# Add glad
+add_library(glad STATIC ${CMAKE_CURRENT_SOURCE_DIR}/external/src/glad.c)
 
 # Link GLFW
 if (WIN32)
@@ -72,11 +73,11 @@ else()
 endif()
 
 # Compiler warnings
-if (MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE /W4 /permissive-)
-else()
-    target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wconversion)
-endif()
+# if (MSVC)
+#     target_compile_options(${PROJECT_NAME} PRIVATE /W4 /permissive-)
+# else()
+#     target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -Wpedantic -Wconversion)
+# endif()
 
 # Link Time Optimization
 include(CheckIPOSupported)

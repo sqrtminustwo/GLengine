@@ -1,15 +1,22 @@
-#include <exception>
-#include <glad/glad.h>
+#include <glad.h>
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/fwd.hpp>
+#include <glm/trigonometric.hpp>
+#include <shader.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <cmath>
 #include <map>
-#include <shaders/shader.h>
 #include <stdexcept>
-#include <system_error>
+#include <exception>
+#include <filesystem>
+namespace fs = std::filesystem;
 
 #define STB_IMAGE_IMPLEMENTATION
-#include <stb/stb_image.h>
+#include <stb_image.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -78,14 +85,14 @@ int main() {
     );
 
     float vertices[] = {
-         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, 
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, 
-        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, 
-        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  
+         0.5f,  0.5f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f,
+         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f,
+        -0.5f, -0.5f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f,
+        -0.5f,  0.5f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f
     };
     unsigned int indices[] = {
-        0, 1, 3, 
-        1, 2, 3  
+        0, 1, 3,
+        1, 2, 3
     };
     unsigned int VBO, VAO, EBO;
     glGenVertexArrays(1, &VAO);
@@ -108,6 +115,7 @@ int main() {
     glEnableVertexAttribArray(2);
 
     unsigned int texture1, texture2;
+    std::cout << "Current path is " << fs::current_path() << '\n'; // (1)
     char path1[] = "../../resources/textures/wall.jpg";
     char path2[] = "../../resources/textures/awesome_face.png";
     try {
@@ -121,6 +129,18 @@ int main() {
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture2"), 1);
 
+    const glm::vec3 Z = glm::vec3(0.0f, 0.0f, 0.1f);
+
+    glm::mat4 trans1 = glm::mat4(1.0f);
+    trans1 = glm::scale(trans1, glm::vec3(0.5, 0.5, 0.5));
+    trans1 = glm::rotate(trans1, glm::radians(180.0f), Z);
+    unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+
+    glm::mat4 trans2 = glm::mat4(1.0f);
+    trans2 = glm::scale(trans2, glm::vec3(0.5, 0.5, 0.5));
+    trans2 = glm::translate(trans2, glm::vec3(-1.5, 1.5, 0));
+
+    int i = 100;
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
 
@@ -134,7 +154,19 @@ int main() {
 
         ourShader.use();
         glBindVertexArray(VAO);
+        
+        trans1 = glm::rotate(trans1, (float) glfwGetTime(), Z);
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans1));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        float s = sin(glfwGetTime());
+        // std::cout << "s = " << glfwGetTime() << ", sin(s) = " << s << std::endl;
+        trans2 = glm::scale(trans2, glm::vec3(s, s, s));
+        i = 100;
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans2));
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        trans2 = glm::scale(trans2, glm::vec3(1/s, 1/s, 1/s));
+
 
         glfwSwapBuffers(window);
         glfwPollEvents();

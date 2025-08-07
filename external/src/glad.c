@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <glad/glad.h>
+#include "../include/glad.h"
 
 static void* get_proc(const char *namez);
 
@@ -96,7 +96,6 @@ int open_gl(void) {
 #else
     static const char *NAMES[] = {"libGL.so.1", "libGL.so"};
 #endif
-
     unsigned int index = 0;
     for(index = 0; index < (sizeof(NAMES) / sizeof(NAMES[0])); index++) {
         libGL = dlopen(NAMES[index], RTLD_NOW | RTLD_GLOBAL);
