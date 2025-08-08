@@ -7,9 +7,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Add glad
+add_library(glad STATIC ${CMAKE_CURRENT_SOURCE_DIR}/external/glad.c)
+
 # Collect source files
 file(GLOB_RECURSE CPP_SOURCES CONFIGURE_DEPENDS src/*.cpp)
-file(GLOB_RECURSE C_SOURCES   CONFIGURE_DEPENDS src/*.c)
 file(GLOB_RECURSE HEADERS     CONFIGURE_DEPENDS include/*.h)
 set(SOURCES ${CPP_SOURCES} ${C_SOURCES})
 
@@ -27,8 +29,6 @@ target_include_directories(${PROJECT_NAME}
 find_package(glm CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
 
-# Add glad
-add_library(glad STATIC ${CMAKE_CURRENT_SOURCE_DIR}/external/src/glad.c)
 
 # Link GLFW
 if (WIN32)

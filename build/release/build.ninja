@@ -41,6 +41,40 @@ include CMakeFiles/rules.ninja
 
 cmake_ninja_workdir = /home/main-ubuntu/coding/C++Projects/GLguide/build/release/
 # =============================================================================
+# Object build statements for STATIC_LIBRARY target glad
+
+
+#############################################
+# Order-only phony target for glad
+
+build cmake_object_order_depends_target_glad: phony || CMakeFiles/glad.dir
+
+build CMakeFiles/glad.dir/external/glad.c.o: C_COMPILER__glad_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLguide/external/glad.c || cmake_object_order_depends_target_glad
+  DEP_FILE = CMakeFiles/glad.dir/external/glad.c.o.d
+  FLAGS = -O3 -DNDEBUG
+  OBJECT_DIR = CMakeFiles/glad.dir
+  OBJECT_FILE_DIR = CMakeFiles/glad.dir/external
+  TARGET_COMPILE_PDB = CMakeFiles/glad.dir/glad.pdb
+  TARGET_PDB = libglad.pdb
+
+
+# =============================================================================
+# Link build statements for STATIC_LIBRARY target glad
+
+
+#############################################
+# Link the static library libglad.a
+
+build libglad.a: C_STATIC_LIBRARY_LINKER__glad_Release CMakeFiles/glad.dir/external/glad.c.o
+  LANGUAGE_COMPILE_FLAGS = -O3 -DNDEBUG
+  OBJECT_DIR = CMakeFiles/glad.dir
+  POST_BUILD = :
+  PRE_LINK = :
+  TARGET_COMPILE_PDB = CMakeFiles/glad.dir/glad.pdb
+  TARGET_FILE = libglad.a
+  TARGET_PDB = libglad.pdb
+
+# =============================================================================
 # Object build statements for EXECUTABLE target GLFWtest
 
 
@@ -76,40 +110,6 @@ build GLFWtest: CXX_EXECUTABLE_LINKER__GLFWtest_Release CMakeFiles/GLFWtest.dir/
   TARGET_COMPILE_PDB = CMakeFiles/GLFWtest.dir/
   TARGET_FILE = GLFWtest
   TARGET_PDB = GLFWtest.pdb
-
-# =============================================================================
-# Object build statements for STATIC_LIBRARY target glad
-
-
-#############################################
-# Order-only phony target for glad
-
-build cmake_object_order_depends_target_glad: phony || CMakeFiles/glad.dir
-
-build CMakeFiles/glad.dir/external/src/glad.c.o: C_COMPILER__glad_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLguide/external/src/glad.c || cmake_object_order_depends_target_glad
-  DEP_FILE = CMakeFiles/glad.dir/external/src/glad.c.o.d
-  FLAGS = -O3 -DNDEBUG
-  OBJECT_DIR = CMakeFiles/glad.dir
-  OBJECT_FILE_DIR = CMakeFiles/glad.dir/external/src
-  TARGET_COMPILE_PDB = CMakeFiles/glad.dir/glad.pdb
-  TARGET_PDB = libglad.pdb
-
-
-# =============================================================================
-# Link build statements for STATIC_LIBRARY target glad
-
-
-#############################################
-# Link the static library libglad.a
-
-build libglad.a: C_STATIC_LIBRARY_LINKER__glad_Release CMakeFiles/glad.dir/external/src/glad.c.o
-  LANGUAGE_COMPILE_FLAGS = -O3 -DNDEBUG
-  OBJECT_DIR = CMakeFiles/glad.dir
-  POST_BUILD = :
-  PRE_LINK = :
-  TARGET_COMPILE_PDB = CMakeFiles/glad.dir/glad.pdb
-  TARGET_FILE = libglad.a
-  TARGET_PDB = libglad.pdb
 
 
 #############################################
@@ -147,7 +147,7 @@ build glad: phony libglad.a
 #############################################
 # Folder: /home/main-ubuntu/coding/C++Projects/GLguide/build/release
 
-build all: phony GLFWtest libglad.a
+build all: phony libglad.a GLFWtest
 
 # =============================================================================
 # Built-in targets
