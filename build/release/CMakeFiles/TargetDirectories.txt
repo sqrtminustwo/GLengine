@@ -1,4 +1,4 @@
-/home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/glad.dir
 /home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/GLFWtest.dir
+/home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/glad.dir
 /home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/edit_cache.dir
 /home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/rebuild_cache.dir

@@ -11,6 +11,7 @@
 
 #include <iostream>
 #include <map>
+#include <functional>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
@@ -19,8 +20,8 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
 void mouse_callback(GLFWwindow *window, double xpos, double ypos);
 
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1280;
+const unsigned int SCR_HEIGHT = 1000;
 std::map<int, GLenum> color_formats{{1, GL_RED}, {3, GL_RGB}, {4, GL_RGBA}};
 
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -29,6 +30,45 @@ float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
+
+int last_key = -1;
+std::map<int, std::function<bool()>> KEYS{
+    {GLFW_KEY_TAB,
+     []() -> bool {
+         if (last_key == GLFW_KEY_TAB) return false;
+         camera.change_fps();
+         return true;
+     }},
+    {GLFW_KEY_W,
+     []() -> bool {
+         camera.ProcessKeyboard(FORWARD, deltaTime);
+         return true;
+     }},
+    {GLFW_KEY_S,
+     []() -> bool {
+         camera.ProcessKeyboard(BACKWARD, deltaTime);
+         return true;
+     }},
+    {GLFW_KEY_A,
+     []() -> bool {
+         camera.ProcessKeyboard(LEFT, deltaTime);
+         return true;
+     }},
+    {GLFW_KEY_D,
+     []() -> bool {
+         camera.ProcessKeyboard(RIGHT, deltaTime);
+         return true;
+     }},
+    {GLFW_KEY_SPACE,
+     []() -> bool {
+         camera.ProcessKeyboard(UP, deltaTime);
+         return true;
+     }},
+    {GLFW_KEY_LEFT_CONTROL, []() -> bool {
+         camera.ProcessKeyboard(DOWN, deltaTime);
+         return true;
+     }},
+};
 
 unsigned int createTexture(char *file_path) {
     unsigned int texture;
@@ -136,7 +176,7 @@ int main() {
     glm::mat4 modelMatrix = glm::mat4(1.0f);
     glm::mat4 viewMatrix = glm::mat4(1.0f);
     glm::mat4 projectionMatrix = glm::mat4(1.0f);
-    projectionMatrix = glm::perspective(glm::radians(30.0f), (float)5 / 4, 0.1f, 100.0f);
+    projectionMatrix = glm::perspective(glm::radians(30.0f), (float)SCR_HEIGHT / SCR_WIDTH, 0.1f, 100.0f);
 
     unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "modelMatrix");
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
@@ -159,6 +199,7 @@ int main() {
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, mouse_callback);
+
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
         float currentFrame = static_cast<float>(glfwGetTime());
@@ -201,13 +242,9 @@ int main() {
 }
 
 void processInput(GLFWwindow *window) {
-    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) camera.ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) camera.ProcessKeyboard(RIGHT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) camera.ProcessKeyboard(UP, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS) camera.ProcessKeyboard(DOWN, deltaTime);
+    for (const auto &[key, action] : KEYS) {
+        if (glfwGetKey(window, key) == GLFW_PRESS && action()) last_key = key;
+    }
 }
 
 void mouse_callback(GLFWwindow *window, double xposIn, double yposIn) {
