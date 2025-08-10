@@ -6,6 +6,7 @@ cmake_policy(SET CMP0009 NEW)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/main-ubuntu/coding/C++Projects/GLguide/include/*.h")
 set(OLD_GLOB
   "/home/main-ubuntu/coding/C++Projects/GLguide/include/my_camera.h"
+  "/home/main-ubuntu/coding/C++Projects/GLguide/include/my_cube.h"
   "/home/main-ubuntu/coding/C++Projects/GLguide/include/my_shader.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")

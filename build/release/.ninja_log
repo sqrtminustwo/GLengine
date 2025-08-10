@@ -1,16 +1,9 @@
 # ninja log v5
-1	9	1754773323917758250	/home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/cmake.verify_globs	2783a45b8f07a018
+1	8	0	/home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/cmake.verify_globs	2783a45b8f07a018
 6	86	1754751637098885095	CMakeFiles/glad.dir/external/glad.c.o	7a6655d54160d2e8
 86	113	1754751637125886257	libglad.a	db2260e561785483
-9	484	1754771681042328307	CMakeFiles/GLFWtest.dir/src/main.cpp.o	81a5551348e70b67
-484	1519	1754771682078300274	GLFWtest	8674b2bb8e496094
-9	200	1754773324107767145	build.ninja	abe2b075fd990dca
-0	8	0	/home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/cmake.verify_globs	2783a45b8f07a018
-10	594	1754773324703795038	CMakeFiles/GLFWtest.dir/src/main.cpp.o	81a5551348e70b67
-594	1691	1754773325799846302	GLFWtest	8674b2bb8e496094
-0	8	0	/home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/cmake.verify_globs	2783a45b8f07a018
-8	572	1754773637501961552	CMakeFiles/GLFWtest.dir/src/main.cpp.o	81a5551348e70b67
-572	1653	1754773638584348430	GLFWtest	8674b2bb8e496094
+11	606	1754842168799570895	CMakeFiles/GLFWtest.dir/src/main.cpp.o	81a5551348e70b67
+606	1728	1754842169921083012	GLFWtest	8674b2bb8e496094
+13	292	1754842181772008052	build.ninja	abe2b075fd990dca
+9	152	1754842181772008052	build.ninja	abe2b075fd990dca
 1	8	0	/home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/cmake.verify_globs	2783a45b8f07a018
-9	577	1754773699448295092	CMakeFiles/GLFWtest.dir/src/main.cpp.o	81a5551348e70b67
-577	1659	1754773700531513110	GLFWtest	8674b2bb8e496094

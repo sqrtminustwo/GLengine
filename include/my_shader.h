@@ -1,11 +1,19 @@
 #ifndef SHADER_H
 #define SHADER_H
 
+#include <cstdio>
 #include <glad.h>
 #include <fstream>
+#include <glm/ext/matrix_float4x4.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <map>
+#include <vector>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 
 class Shader {
   public:
@@ -64,7 +72,63 @@ class Shader {
 
     void use() { glUseProgram(ID); }
 
+    unsigned int getUniformLocation(char *name) { return glGetUniformLocation(ID, name); }
+
+    void loadTexture(char *path) {
+        try {
+            unsigned int texture = createTexture(path);
+            unsigned int texture_num = textures.size();
+            char texture_name[8];
+            sprintf(texture_name, "%s%d", "texture", texture_num);
+            glUniform1i(getUniformLocation(texture_name), texture_num);
+            textures.push_back(texture);
+        } catch (std::exception ex) {
+            std::cerr << "Error loading texture: " << std::endl;
+            std::cerr << ex.what() << std::endl;
+            throw;
+        }
+    }
+
+    void addMatrix(glm::mat4 matrix, char *locationName) {
+        glUniformMatrix4fv(getUniformLocation(locationName), 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+
   private:
+    std::map<int, GLenum> color_formats{{1, GL_RED}, {3, GL_RGB}, {4, GL_RGBA}};
+    std::vector<unsigned int> textures;
+    unsigned int viewLoc, modelLoc, projectionLoc, translateLoc, scaleLoc;
+
+    unsigned int createTexture(char *file_path) {
+        unsigned int texture;
+        glGenTextures(1, &texture);
+        glBindTexture(GL_TEXTURE_2D, texture);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        int width, height, nrChannels;
+        unsigned char *data = stbi_load(file_path, &width, &height, &nrChannels, 0);
+        if (data) {
+            GLenum format;
+            if (color_formats.count(nrChannels))
+                format = color_formats[nrChannels];
+            else {
+                std::cerr << "Unsupported number of channels: " << nrChannels << " for " << file_path << std::endl;
+                stbi_image_free(data);
+                throw std::runtime_error("Image color type is unsupported.");
+            }
+            glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        } else {
+            throw std::runtime_error("Failed to load image.");
+        }
+        stbi_image_free(data);
+
+        return texture;
+    }
+
     void checkCompileErrors(unsigned int shader, std::string type) {
         int success;
         char infoLog[1024];

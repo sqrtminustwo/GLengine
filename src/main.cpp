@@ -8,13 +8,11 @@
 
 #include <my_camera.h>
 #include <my_shader.h>
+// #include <my_cube.h>
 
 #include <iostream>
 #include <map>
 #include <functional>
-
-#define STB_IMAGE_IMPLEMENTATION
-#include <stb_image.h>
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -39,35 +37,12 @@ std::map<int, std::function<bool()>> KEYS{
          camera.change_fps();
          return true;
      }},
-    {GLFW_KEY_W,
-     []() -> bool {
-         camera.ProcessKeyboard(FORWARD, deltaTime);
-         return true;
-     }},
-    {GLFW_KEY_S,
-     []() -> bool {
-         camera.ProcessKeyboard(BACKWARD, deltaTime);
-         return true;
-     }},
-    {GLFW_KEY_A,
-     []() -> bool {
-         camera.ProcessKeyboard(LEFT, deltaTime);
-         return true;
-     }},
-    {GLFW_KEY_D,
-     []() -> bool {
-         camera.ProcessKeyboard(RIGHT, deltaTime);
-         return true;
-     }},
-    {GLFW_KEY_SPACE,
-     []() -> bool {
-         camera.ProcessKeyboard(UP, deltaTime);
-         return true;
-     }},
-    {GLFW_KEY_LEFT_CONTROL, []() -> bool {
-         camera.ProcessKeyboard(DOWN, deltaTime);
-         return true;
-     }},
+    {GLFW_KEY_W, []() -> bool { return camera.ProcessKeyboard(FORWARD, deltaTime); }},
+    {GLFW_KEY_S, []() -> bool { return camera.ProcessKeyboard(BACKWARD, deltaTime); }},
+    {GLFW_KEY_A, []() -> bool { return camera.ProcessKeyboard(LEFT, deltaTime); }},
+    {GLFW_KEY_D, []() -> bool { return camera.ProcessKeyboard(RIGHT, deltaTime); }},
+    {GLFW_KEY_SPACE, []() -> bool { return camera.ProcessKeyboard(UP, deltaTime); }},
+    {GLFW_KEY_LEFT_CONTROL, []() -> bool { return camera.ProcessKeyboard(DOWN, deltaTime); }},
 };
 
 unsigned int createTexture(char *file_path) {
@@ -166,8 +141,8 @@ int main() {
         std::cerr << ex.what() << std::endl;
     }
     ourShader.use();
-    glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
-    glUniform1i(glGetUniformLocation(ourShader.ID, "texture2"), 1);
+    glUniform1i(ourShader.getUniformLocation("texture1"), 0);
+    glUniform1i(ourShader.getUniformLocation("texture2"), 1);
 
     const glm::vec3 X = glm::vec3(1.0f, 0.0f, 0.0f);
     const glm::vec3 Y = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -176,24 +151,24 @@ int main() {
     glm::mat4 modelMatrix = glm::mat4(1.0f);
     glm::mat4 viewMatrix = glm::mat4(1.0f);
     glm::mat4 projectionMatrix = glm::mat4(1.0f);
-    projectionMatrix = glm::perspective(glm::radians(30.0f), (float)SCR_HEIGHT / SCR_WIDTH, 0.1f, 100.0f);
+    projectionMatrix = glm::perspective(glm::radians(30.0f), (float)5 / 4, 0.1f, 100.0f);
 
-    unsigned int modelLoc = glGetUniformLocation(ourShader.ID, "modelMatrix");
+    unsigned int modelLoc = ourShader.getUniformLocation("modelMatrix");
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-    unsigned int viewLoc = glGetUniformLocation(ourShader.ID, "viewMatrix");
+    unsigned int viewLoc = ourShader.getUniformLocation("viewMatrix");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(viewMatrix));
-    unsigned int projectionLoc = glGetUniformLocation(ourShader.ID, "projectionMatrix");
+    unsigned int projectionLoc = ourShader.getUniformLocation("projectionMatrix");
     glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(projectionMatrix));
 
     glm::mat4 scaleDown = glm::mat4(1.0f);
     float scale_factor = -0.1;
     scaleDown = glm::scale(scaleDown, glm::vec3(scale_factor, scale_factor, scale_factor));
-    unsigned int scaleDownLoc = glGetUniformLocation(ourShader.ID, "scaleDown");
+    unsigned int scaleDownLoc = ourShader.getUniformLocation("scaleDown");
     glUniformMatrix4fv(scaleDownLoc, 1, GL_FALSE, glm::value_ptr(scaleDown));
 
     glm::mat4 translate = glm::mat4(1.0f);
     translate = glm::translate(translate, glm::vec3(-2.0f, -2.0f, 1.0f));
-    unsigned int translateLoc = glGetUniformLocation(ourShader.ID, "translate");
+    unsigned int translateLoc = ourShader.getUniformLocation("translate");
 
     glEnable(GL_DEPTH_TEST);
 
