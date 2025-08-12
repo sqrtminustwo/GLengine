@@ -49,11 +49,11 @@ class Camera {
         updateCameraVectors();
     }
 
-    glm::mat4 GetViewMatrix() { return glm::lookAt(Position, Position + Front, Up); }
+    glm::mat4 getViewMatrix() { return glm::lookAt(Position, Position + Front, Up); }
 
     void change_fps() { fps = !fps; }
 
-    bool ProcessKeyboard(Camera_Movement direction, float deltaTime) {
+    bool processKeyboard(Camera_Movement direction, float deltaTime) {
         float velocity = MovementSpeed * deltaTime;
         // TODO: Replace with map with lambdas
         if (direction == FORWARD) Position += Front * velocity;
@@ -69,7 +69,7 @@ class Camera {
         return true;
     }
 
-    void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true) {
+    void processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true) {
         xoffset *= MouseSensitivity;
         yoffset *= MouseSensitivity;
 

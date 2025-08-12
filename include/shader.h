@@ -1,14 +1,12 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include <cstdio>
 #include <glad.h>
 #include <fstream>
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
 #include <sstream>
-#include <string>
 #include <map>
 #include <vector>
 
@@ -66,20 +64,35 @@ class Shader {
 
         glDeleteShader(vertex);
         glDeleteShader(fragment);
+
+        viewLoc = getUniformLocation("viewMatrix");
+        modelLoc = getUniformLocation("modelMatrix");
+        projectionLoc = getUniformLocation("projectionMatrix");
+        translateLoc = getUniformLocation("translate");
+        scaleLoc = getUniformLocation("scaleDown");
+
+        glEnable(GL_DEPTH_TEST);
     }
 
     void destruct() { glDeleteProgram(ID); }
 
-    void use() { glUseProgram(ID); }
+    void use() {
+        glUseProgram(ID);
+        // Use textures
+        for (int i = 0; i < textures.size(); i++) {
+            glActiveTexture(GL_TEXTURE0 + i);
+            glBindTexture(GL_TEXTURE_2D, textures.at(i));
+        }
+    }
 
     unsigned int getUniformLocation(char *name) { return glGetUniformLocation(ID, name); }
-
     void loadTexture(char *path) {
         try {
             unsigned int texture = createTexture(path);
             unsigned int texture_num = textures.size();
-            char texture_name[8];
-            sprintf(texture_name, "%s%d", "texture", texture_num);
+            char texture_name[9] = "texture ";
+            texture_name[7] = texture_num + '0';
+            use();
             glUniform1i(getUniformLocation(texture_name), texture_num);
             textures.push_back(texture);
         } catch (std::exception ex) {
@@ -89,8 +102,14 @@ class Shader {
         }
     }
 
-    void addMatrix(glm::mat4 matrix, char *locationName) {
-        glUniformMatrix4fv(getUniformLocation(locationName), 1, GL_FALSE, glm::value_ptr(matrix));
+    void setModelMatrix(glm::mat4 matrix) { glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(matrix)); }
+    void setProjectionMatrix(glm::mat4 matrix) {
+        glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(matrix));
+    }
+    void setViewMatrix(glm::mat4 matrix) { glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(matrix)); }
+    void setScaleMatrix(glm::mat4 matrix) { glUniformMatrix4fv(scaleLoc, 1, GL_FALSE, glm::value_ptr(matrix)); }
+    void setTranslationMatrix(glm::mat4 matrix) {
+        glUniformMatrix4fv(translateLoc, 1, GL_FALSE, glm::value_ptr(matrix));
     }
 
   private:

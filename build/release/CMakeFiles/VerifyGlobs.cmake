@@ -3,23 +3,26 @@
 cmake_policy(SET CMP0009 NEW)
 
 # HEADERS at CMakeLists.txt:12 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/main-ubuntu/coding/C++Projects/GLguide/include/*.h")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/main-ubuntu/coding/C++Projects/GLengine/include/*.h")
 set(OLD_GLOB
-  "/home/main-ubuntu/coding/C++Projects/GLguide/include/my_camera.h"
-  "/home/main-ubuntu/coding/C++Projects/GLguide/include/my_cube.h"
-  "/home/main-ubuntu/coding/C++Projects/GLguide/include/my_shader.h"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/include/camera.h"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/include/cube.h"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/include/input.h"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/include/shader.h"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/include/shape.h"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/include/window.h"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "/home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/cmake.verify_globs")
+  file(TOUCH_NOCREATE "/home/main-ubuntu/coding/C++Projects/GLengine/build/release/CMakeFiles/cmake.verify_globs")
 endif()
 
 # CPP_SOURCES at CMakeLists.txt:11 (file)
-file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/main-ubuntu/coding/C++Projects/GLguide/src/*.cpp")
+file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/main-ubuntu/coding/C++Projects/GLengine/src/*.cpp")
 set(OLD_GLOB
-  "/home/main-ubuntu/coding/C++Projects/GLguide/src/main.cpp"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/src/main.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
-  file(TOUCH_NOCREATE "/home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/cmake.verify_globs")
+  file(TOUCH_NOCREATE "/home/main-ubuntu/coding/C++Projects/GLengine/build/release/CMakeFiles/cmake.verify_globs")
 endif()

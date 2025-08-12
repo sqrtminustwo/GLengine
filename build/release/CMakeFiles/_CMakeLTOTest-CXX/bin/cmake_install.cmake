@@ -1,4 +1,4 @@
-# Install script for directory: /home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/_CMakeLTOTest-CXX/src
+# Install script for directory: /home/main-ubuntu/coding/C++Projects/GLengine/build/release/CMakeFiles/_CMakeLTOTest-CXX/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/_CMakeLTOTest-CXX/bin/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/main-ubuntu/coding/C++Projects/GLengine/build/release/CMakeFiles/_CMakeLTOTest-CXX/bin/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

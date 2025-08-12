@@ -39,7 +39,7 @@ include CMakeFiles/rules.ninja
 #############################################
 # Logical path to working directory; prefix for absolute paths.
 
-cmake_ninja_workdir = /home/main-ubuntu/coding/C++Projects/GLguide/build/release/
+cmake_ninja_workdir = /home/main-ubuntu/coding/C++Projects/GLengine/build/release/
 # =============================================================================
 # Object build statements for EXECUTABLE target GLFWtest
 
@@ -49,11 +49,11 @@ cmake_ninja_workdir = /home/main-ubuntu/coding/C++Projects/GLguide/build/release
 
 build cmake_object_order_depends_target_GLFWtest: phony || cmake_object_order_depends_target_glad
 
-build CMakeFiles/GLFWtest.dir/src/main.cpp.o: CXX_COMPILER__GLFWtest_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLguide/src/main.cpp || cmake_object_order_depends_target_GLFWtest
+build CMakeFiles/GLFWtest.dir/src/main.cpp.o: CXX_COMPILER__GLFWtest_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLengine/src/main.cpp || cmake_object_order_depends_target_GLFWtest
   DEFINES = -DGLFW_STATIC
   DEP_FILE = CMakeFiles/GLFWtest.dir/src/main.cpp.o.d
   FLAGS = -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects
-  INCLUDES = -I/home/main-ubuntu/coding/C++Projects/GLguide/include -isystem /home/main-ubuntu/coding/C++Projects/GLguide/external/include
+  INCLUDES = -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include
   OBJECT_DIR = CMakeFiles/GLFWtest.dir
   OBJECT_FILE_DIR = CMakeFiles/GLFWtest.dir/src
 
@@ -65,9 +65,9 @@ build CMakeFiles/GLFWtest.dir/src/main.cpp.o: CXX_COMPILER__GLFWtest_unscanned_R
 #############################################
 # Link the executable GLFWtest
 
-build GLFWtest: CXX_EXECUTABLE_LINKER__GLFWtest_Release CMakeFiles/GLFWtest.dir/src/main.cpp.o | /usr/local/lib/libglm.a libglad.a /home/main-ubuntu/coding/C++Projects/GLguide/external/lib/libglfw3.a || libglad.a
+build GLFWtest: CXX_EXECUTABLE_LINKER__GLFWtest_Release CMakeFiles/GLFWtest.dir/src/main.cpp.o | /usr/local/lib/libglm.a libglad.a /home/main-ubuntu/coding/C++Projects/GLengine/external/lib/libglfw3.a || libglad.a
   FLAGS = -O3 -DNDEBUG -flto=auto -fno-fat-lto-objects
-  LINK_LIBRARIES = /usr/local/lib/libglm.a  libglad.a  /home/main-ubuntu/coding/C++Projects/GLguide/external/lib/libglfw3.a  -lGL  -lX11  -lpthread  -ldl  -lm
+  LINK_LIBRARIES = /usr/local/lib/libglm.a  libglad.a  /home/main-ubuntu/coding/C++Projects/GLengine/external/lib/libglfw3.a  -lGL  -lX11  -lpthread  -ldl  -lm
   OBJECT_DIR = CMakeFiles/GLFWtest.dir
   POST_BUILD = :
   PRE_LINK = :
@@ -83,7 +83,7 @@ build GLFWtest: CXX_EXECUTABLE_LINKER__GLFWtest_Release CMakeFiles/GLFWtest.dir/
 
 build cmake_object_order_depends_target_glad: phony || CMakeFiles/glad.dir
 
-build CMakeFiles/glad.dir/external/glad.c.o: C_COMPILER__glad_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLguide/external/glad.c || cmake_object_order_depends_target_glad
+build CMakeFiles/glad.dir/external/glad.c.o: C_COMPILER__glad_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLengine/external/glad.c || cmake_object_order_depends_target_glad
   DEP_FILE = CMakeFiles/glad.dir/external/glad.c.o.d
   FLAGS = -O3 -DNDEBUG
   OBJECT_DIR = CMakeFiles/glad.dir
@@ -110,7 +110,7 @@ build libglad.a: C_STATIC_LIBRARY_LINKER__glad_Release CMakeFiles/glad.dir/exter
 # Utility command for edit_cache
 
 build CMakeFiles/edit_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/main-ubuntu/coding/C++Projects/GLguide/build/release && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+  COMMAND = cd /home/main-ubuntu/coding/C++Projects/GLengine/build/release && /usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
   DESC = No interactive CMake dialog available...
   restat = 1
 
@@ -121,7 +121,7 @@ build edit_cache: phony CMakeFiles/edit_cache.util
 # Utility command for rebuild_cache
 
 build CMakeFiles/rebuild_cache.util: CUSTOM_COMMAND
-  COMMAND = cd /home/main-ubuntu/coding/C++Projects/GLguide/build/release && /usr/bin/cmake --regenerate-during-build -S/home/main-ubuntu/coding/C++Projects/GLguide -B/home/main-ubuntu/coding/C++Projects/GLguide/build/release
+  COMMAND = cd /home/main-ubuntu/coding/C++Projects/GLengine/build/release && /usr/bin/cmake --regenerate-during-build -S/home/main-ubuntu/coding/C++Projects/GLengine -B/home/main-ubuntu/coding/C++Projects/GLengine/build/release
   DESC = Running CMake to regenerate build system...
   pool = console
   restat = 1
@@ -139,7 +139,7 @@ build glad: phony libglad.a
 # =============================================================================
 
 #############################################
-# Folder: /home/main-ubuntu/coding/C++Projects/GLguide/build/release
+# Folder: /home/main-ubuntu/coding/C++Projects/GLengine/build/release
 
 build all: phony GLFWtest libglad.a
 
@@ -150,13 +150,13 @@ build all: phony GLFWtest libglad.a
 #############################################
 # Phony target to force glob verification run.
 
-build /home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/VerifyGlobs.cmake_force: phony
+build /home/main-ubuntu/coding/C++Projects/GLengine/build/release/CMakeFiles/VerifyGlobs.cmake_force: phony
 
 
 #############################################
 # Re-run CMake to check if globbed directories changed.
 
-build /home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/cmake.verify_globs: VERIFY_GLOBS | /home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/VerifyGlobs.cmake_force
+build /home/main-ubuntu/coding/C++Projects/GLengine/build/release/CMakeFiles/cmake.verify_globs: VERIFY_GLOBS | /home/main-ubuntu/coding/C++Projects/GLengine/build/release/CMakeFiles/VerifyGlobs.cmake_force
   pool = console
   restat = 1
 
@@ -164,14 +164,14 @@ build /home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/cmak
 #############################################
 # Re-run CMake if any of its inputs changed.
 
-build build.ninja: RERUN_CMAKE /home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/cmake.verify_globs | /home/main-ubuntu/coding/C++Projects/GLguide/CMakeLists.txt /home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/VerifyGlobs.cmake /usr/local/share/glm/glmConfig-noconfig.cmake /usr/local/share/glm/glmConfig.cmake /usr/local/share/glm/glmConfigVersion.cmake /usr/share/cmake-3.28/Modules/CMakeCInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.28/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.28/Modules/CheckIPOSupported.cmake /usr/share/cmake-3.28/Modules/CheckIPOSupported/CMakeLists-C.txt.in /usr/share/cmake-3.28/Modules/CheckIPOSupported/CMakeLists-CXX.txt.in /usr/share/cmake-3.28/Modules/CheckIPOSupported/foo.c /usr/share/cmake-3.28/Modules/CheckIPOSupported/foo.cpp /usr/share/cmake-3.28/Modules/CheckIPOSupported/main.c /usr/share/cmake-3.28/Modules/CheckIPOSupported/main.cpp /usr/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-3.28/Modules/Platform/Linux.cmake /usr/share/cmake-3.28/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.28.3/CMakeCCompiler.cmake CMakeFiles/3.28.3/CMakeCXXCompiler.cmake CMakeFiles/3.28.3/CMakeSystem.cmake
+build build.ninja: RERUN_CMAKE /home/main-ubuntu/coding/C++Projects/GLengine/build/release/CMakeFiles/cmake.verify_globs | /home/main-ubuntu/coding/C++Projects/GLengine/CMakeLists.txt /home/main-ubuntu/coding/C++Projects/GLengine/build/release/CMakeFiles/VerifyGlobs.cmake /usr/local/share/glm/glmConfig-noconfig.cmake /usr/local/share/glm/glmConfig.cmake /usr/local/share/glm/glmConfigVersion.cmake /usr/share/cmake-3.28/Modules/CMakeCInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.28/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.28/Modules/CheckIPOSupported.cmake /usr/share/cmake-3.28/Modules/CheckIPOSupported/CMakeLists-C.txt.in /usr/share/cmake-3.28/Modules/CheckIPOSupported/CMakeLists-CXX.txt.in /usr/share/cmake-3.28/Modules/CheckIPOSupported/foo.c /usr/share/cmake-3.28/Modules/CheckIPOSupported/foo.cpp /usr/share/cmake-3.28/Modules/CheckIPOSupported/main.c /usr/share/cmake-3.28/Modules/CheckIPOSupported/main.cpp /usr/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-3.28/Modules/Platform/Linux.cmake /usr/share/cmake-3.28/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.28.3/CMakeCCompiler.cmake CMakeFiles/3.28.3/CMakeCXXCompiler.cmake CMakeFiles/3.28.3/CMakeSystem.cmake
   pool = console
 
 
 #############################################
 # A missing CMake input file is not an error.
 
-build /home/main-ubuntu/coding/C++Projects/GLguide/CMakeLists.txt /home/main-ubuntu/coding/C++Projects/GLguide/build/release/CMakeFiles/VerifyGlobs.cmake /usr/local/share/glm/glmConfig-noconfig.cmake /usr/local/share/glm/glmConfig.cmake /usr/local/share/glm/glmConfigVersion.cmake /usr/share/cmake-3.28/Modules/CMakeCInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.28/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.28/Modules/CheckIPOSupported.cmake /usr/share/cmake-3.28/Modules/CheckIPOSupported/CMakeLists-C.txt.in /usr/share/cmake-3.28/Modules/CheckIPOSupported/CMakeLists-CXX.txt.in /usr/share/cmake-3.28/Modules/CheckIPOSupported/foo.c /usr/share/cmake-3.28/Modules/CheckIPOSupported/foo.cpp /usr/share/cmake-3.28/Modules/CheckIPOSupported/main.c /usr/share/cmake-3.28/Modules/CheckIPOSupported/main.cpp /usr/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-3.28/Modules/Platform/Linux.cmake /usr/share/cmake-3.28/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.28.3/CMakeCCompiler.cmake CMakeFiles/3.28.3/CMakeCXXCompiler.cmake CMakeFiles/3.28.3/CMakeSystem.cmake: phony
+build /home/main-ubuntu/coding/C++Projects/GLengine/CMakeLists.txt /home/main-ubuntu/coding/C++Projects/GLengine/build/release/CMakeFiles/VerifyGlobs.cmake /usr/local/share/glm/glmConfig-noconfig.cmake /usr/local/share/glm/glmConfig.cmake /usr/local/share/glm/glmConfigVersion.cmake /usr/share/cmake-3.28/Modules/CMakeCInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCXXInformation.cmake /usr/share/cmake-3.28/Modules/CMakeCommonLanguageInclude.cmake /usr/share/cmake-3.28/Modules/CMakeGenericSystem.cmake /usr/share/cmake-3.28/Modules/CMakeInitializeConfigs.cmake /usr/share/cmake-3.28/Modules/CMakeLanguageInformation.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInformation.cmake /usr/share/cmake-3.28/Modules/CMakeSystemSpecificInitialize.cmake /usr/share/cmake-3.28/Modules/CheckIPOSupported.cmake /usr/share/cmake-3.28/Modules/CheckIPOSupported/CMakeLists-C.txt.in /usr/share/cmake-3.28/Modules/CheckIPOSupported/CMakeLists-CXX.txt.in /usr/share/cmake-3.28/Modules/CheckIPOSupported/foo.c /usr/share/cmake-3.28/Modules/CheckIPOSupported/foo.cpp /usr/share/cmake-3.28/Modules/CheckIPOSupported/main.c /usr/share/cmake-3.28/Modules/CheckIPOSupported/main.cpp /usr/share/cmake-3.28/Modules/Compiler/CMakeCommonCompilerMacros.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-C.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Compiler/GNU.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-C.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU-CXX.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-GNU.cmake /usr/share/cmake-3.28/Modules/Platform/Linux-Initialize.cmake /usr/share/cmake-3.28/Modules/Platform/Linux.cmake /usr/share/cmake-3.28/Modules/Platform/UnixPaths.cmake CMakeCache.txt CMakeFiles/3.28.3/CMakeCCompiler.cmake CMakeFiles/3.28.3/CMakeCXXCompiler.cmake CMakeFiles/3.28.3/CMakeSystem.cmake: phony
 
 
 #############################################
