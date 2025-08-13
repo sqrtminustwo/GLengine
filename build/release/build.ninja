@@ -49,9 +49,65 @@ cmake_ninja_workdir = /home/main-ubuntu/coding/C++Projects/GLengine/build/releas
 
 build cmake_object_order_depends_target_GLFWtest: phony || cmake_object_order_depends_target_glad
 
+build CMakeFiles/GLFWtest.dir/src/camera.cpp.o: CXX_COMPILER__GLFWtest_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLengine/src/camera.cpp || cmake_object_order_depends_target_GLFWtest
+  DEFINES = -DGLFW_STATIC
+  DEP_FILE = CMakeFiles/GLFWtest.dir/src/camera.cpp.o.d
+  FLAGS = -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects
+  INCLUDES = -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include
+  OBJECT_DIR = CMakeFiles/GLFWtest.dir
+  OBJECT_FILE_DIR = CMakeFiles/GLFWtest.dir/src
+
+build CMakeFiles/GLFWtest.dir/src/cube.cpp.o: CXX_COMPILER__GLFWtest_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLengine/src/cube.cpp || cmake_object_order_depends_target_GLFWtest
+  DEFINES = -DGLFW_STATIC
+  DEP_FILE = CMakeFiles/GLFWtest.dir/src/cube.cpp.o.d
+  FLAGS = -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects
+  INCLUDES = -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include
+  OBJECT_DIR = CMakeFiles/GLFWtest.dir
+  OBJECT_FILE_DIR = CMakeFiles/GLFWtest.dir/src
+
+build CMakeFiles/GLFWtest.dir/src/frame_rate.cpp.o: CXX_COMPILER__GLFWtest_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLengine/src/frame_rate.cpp || cmake_object_order_depends_target_GLFWtest
+  DEFINES = -DGLFW_STATIC
+  DEP_FILE = CMakeFiles/GLFWtest.dir/src/frame_rate.cpp.o.d
+  FLAGS = -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects
+  INCLUDES = -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include
+  OBJECT_DIR = CMakeFiles/GLFWtest.dir
+  OBJECT_FILE_DIR = CMakeFiles/GLFWtest.dir/src
+
+build CMakeFiles/GLFWtest.dir/src/input.cpp.o: CXX_COMPILER__GLFWtest_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLengine/src/input.cpp || cmake_object_order_depends_target_GLFWtest
+  DEFINES = -DGLFW_STATIC
+  DEP_FILE = CMakeFiles/GLFWtest.dir/src/input.cpp.o.d
+  FLAGS = -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects
+  INCLUDES = -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include
+  OBJECT_DIR = CMakeFiles/GLFWtest.dir
+  OBJECT_FILE_DIR = CMakeFiles/GLFWtest.dir/src
+
 build CMakeFiles/GLFWtest.dir/src/main.cpp.o: CXX_COMPILER__GLFWtest_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLengine/src/main.cpp || cmake_object_order_depends_target_GLFWtest
   DEFINES = -DGLFW_STATIC
   DEP_FILE = CMakeFiles/GLFWtest.dir/src/main.cpp.o.d
+  FLAGS = -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects
+  INCLUDES = -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include
+  OBJECT_DIR = CMakeFiles/GLFWtest.dir
+  OBJECT_FILE_DIR = CMakeFiles/GLFWtest.dir/src
+
+build CMakeFiles/GLFWtest.dir/src/shader.cpp.o: CXX_COMPILER__GLFWtest_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLengine/src/shader.cpp || cmake_object_order_depends_target_GLFWtest
+  DEFINES = -DGLFW_STATIC
+  DEP_FILE = CMakeFiles/GLFWtest.dir/src/shader.cpp.o.d
+  FLAGS = -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects
+  INCLUDES = -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include
+  OBJECT_DIR = CMakeFiles/GLFWtest.dir
+  OBJECT_FILE_DIR = CMakeFiles/GLFWtest.dir/src
+
+build CMakeFiles/GLFWtest.dir/src/shape.cpp.o: CXX_COMPILER__GLFWtest_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLengine/src/shape.cpp || cmake_object_order_depends_target_GLFWtest
+  DEFINES = -DGLFW_STATIC
+  DEP_FILE = CMakeFiles/GLFWtest.dir/src/shape.cpp.o.d
+  FLAGS = -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects
+  INCLUDES = -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include
+  OBJECT_DIR = CMakeFiles/GLFWtest.dir
+  OBJECT_FILE_DIR = CMakeFiles/GLFWtest.dir/src
+
+build CMakeFiles/GLFWtest.dir/src/window.cpp.o: CXX_COMPILER__GLFWtest_unscanned_Release /home/main-ubuntu/coding/C++Projects/GLengine/src/window.cpp || cmake_object_order_depends_target_GLFWtest
+  DEFINES = -DGLFW_STATIC
+  DEP_FILE = CMakeFiles/GLFWtest.dir/src/window.cpp.o.d
   FLAGS = -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects
   INCLUDES = -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include
   OBJECT_DIR = CMakeFiles/GLFWtest.dir
@@ -65,7 +121,7 @@ build CMakeFiles/GLFWtest.dir/src/main.cpp.o: CXX_COMPILER__GLFWtest_unscanned_R
 #############################################
 # Link the executable GLFWtest
 
-build GLFWtest: CXX_EXECUTABLE_LINKER__GLFWtest_Release CMakeFiles/GLFWtest.dir/src/main.cpp.o | /usr/local/lib/libglm.a libglad.a /home/main-ubuntu/coding/C++Projects/GLengine/external/lib/libglfw3.a || libglad.a
+build GLFWtest: CXX_EXECUTABLE_LINKER__GLFWtest_Release CMakeFiles/GLFWtest.dir/src/camera.cpp.o CMakeFiles/GLFWtest.dir/src/cube.cpp.o CMakeFiles/GLFWtest.dir/src/frame_rate.cpp.o CMakeFiles/GLFWtest.dir/src/input.cpp.o CMakeFiles/GLFWtest.dir/src/main.cpp.o CMakeFiles/GLFWtest.dir/src/shader.cpp.o CMakeFiles/GLFWtest.dir/src/shape.cpp.o CMakeFiles/GLFWtest.dir/src/window.cpp.o | /usr/local/lib/libglm.a libglad.a /home/main-ubuntu/coding/C++Projects/GLengine/external/lib/libglfw3.a || libglad.a
   FLAGS = -O3 -DNDEBUG -flto=auto -fno-fat-lto-objects
   LINK_LIBRARIES = /usr/local/lib/libglm.a  libglad.a  /home/main-ubuntu/coding/C++Projects/GLengine/external/lib/libglfw3.a  -lGL  -lX11  -lpthread  -ldl  -lm
   OBJECT_DIR = CMakeFiles/GLFWtest.dir

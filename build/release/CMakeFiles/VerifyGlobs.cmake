@@ -7,6 +7,7 @@ file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/main-ubuntu/coding/C++P
 set(OLD_GLOB
   "/home/main-ubuntu/coding/C++Projects/GLengine/include/camera.h"
   "/home/main-ubuntu/coding/C++Projects/GLengine/include/cube.h"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/include/frame_rate.h"
   "/home/main-ubuntu/coding/C++Projects/GLengine/include/input.h"
   "/home/main-ubuntu/coding/C++Projects/GLengine/include/shader.h"
   "/home/main-ubuntu/coding/C++Projects/GLengine/include/shape.h"
@@ -20,7 +21,14 @@ endif()
 # CPP_SOURCES at CMakeLists.txt:11 (file)
 file(GLOB_RECURSE NEW_GLOB LIST_DIRECTORIES false "/home/main-ubuntu/coding/C++Projects/GLengine/src/*.cpp")
 set(OLD_GLOB
+  "/home/main-ubuntu/coding/C++Projects/GLengine/src/camera.cpp"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/src/cube.cpp"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/src/frame_rate.cpp"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/src/input.cpp"
   "/home/main-ubuntu/coding/C++Projects/GLengine/src/main.cpp"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/src/shader.cpp"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/src/shape.cpp"
+  "/home/main-ubuntu/coding/C++Projects/GLengine/src/window.cpp"
   )
 if(NOT "${NEW_GLOB}" STREQUAL "${OLD_GLOB}")
   message("-- GLOB mismatch!")
