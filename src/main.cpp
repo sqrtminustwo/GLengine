@@ -6,7 +6,7 @@
 #include <frame_rate.h>
 
 int main() {
-    Window window(1280, 1000, std::tuple(0, 0, 0, 0.8));
+    Window window(1280, 1000, std::tuple(0, 0, 0, 0.7));
     Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
     Input input(&camera, &window);
 
