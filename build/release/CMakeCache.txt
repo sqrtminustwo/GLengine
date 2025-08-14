@@ -222,7 +222,7 @@ FREETYPE_INCLUDE_DIR_ft2build:PATH=/usr/local/include/freetype2
 FREETYPE_LIBRARY_DEBUG:FILEPATH=FREETYPE_LIBRARY_DEBUG-NOTFOUND
 
 //Path to a library.
-FREETYPE_LIBRARY_RELEASE:FILEPATH=/usr/local/lib/libfreetype.so
+FREETYPE_LIBRARY_RELEASE:FILEPATH=/usr/lib/x86_64-linux-gnu/libfreetype.so
 
 //Value Computed by CMake
 GLFWtest_BINARY_DIR:STATIC=/home/main-ubuntu/coding/C++Projects/GLengine/build/release
@@ -232,6 +232,9 @@ GLFWtest_IS_TOP_LEVEL:STATIC=ON
 
 //Value Computed by CMake
 GLFWtest_SOURCE_DIR:STATIC=/home/main-ubuntu/coding/C++Projects/GLengine
+
+//The directory containing a CMake configuration file for ftxui.
+ftxui_DIR:PATH=/usr/local/lib/cmake/ftxui
 
 //The directory containing a CMake configuration file for glm.
 glm_DIR:PATH=/usr/local/share/glm
@@ -317,6 +320,8 @@ CMAKE_GENERATOR_INSTANCE:INTERNAL=
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
+//Test CMAKE_HAVE_LIBC_PTHREAD
+CMAKE_HAVE_LIBC_PTHREAD:INTERNAL=1
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=/home/main-ubuntu/coding/C++Projects/GLengine
@@ -385,7 +390,9 @@ CMAKE_UNAME:INTERNAL=/usr/bin/uname
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding Freetype
-FIND_PACKAGE_MESSAGE_DETAILS_Freetype:INTERNAL=[/usr/local/lib/libfreetype.so][/usr/local/include/freetype2][v2.10.0()]
+FIND_PACKAGE_MESSAGE_DETAILS_Freetype:INTERNAL=[/usr/lib/x86_64-linux-gnu/libfreetype.so][/usr/local/include/freetype2][v2.10.0()]
+//Details about finding Threads
+FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
 //ADVANCED property for variable: FREETYPE_INCLUDE_DIR_freetype2
 FREETYPE_INCLUDE_DIR_freetype2-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: FREETYPE_INCLUDE_DIR_ft2build

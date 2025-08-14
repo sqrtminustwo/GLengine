@@ -13,12 +13,6 @@
 },
 {
   "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",
-  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/frame_rate.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/frame_rate.cpp",
-  "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/frame_rate.cpp",
-  "output": "CMakeFiles/GLFWtest.dir/src/frame_rate.cpp.o"
-},
-{
-  "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",
   "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/input.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/input.cpp",
   "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/input.cpp",
   "output": "CMakeFiles/GLFWtest.dir/src/input.cpp.o"
@@ -40,6 +34,12 @@
   "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/shape.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/shape.cpp",
   "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/shape.cpp",
   "output": "CMakeFiles/GLFWtest.dir/src/shape.cpp.o"
+},
+{
+  "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",
+  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/stats.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/stats.cpp",
+  "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/stats.cpp",
+  "output": "CMakeFiles/GLFWtest.dir/src/stats.cpp.o"
 },
 {
   "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",

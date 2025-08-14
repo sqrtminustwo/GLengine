@@ -10,6 +10,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Packages
 find_package(glm CONFIG REQUIRED)
 find_package(Freetype REQUIRED)
+find_package(ftxui REQUIRED)
 
 # Collect source files
 file(GLOB_RECURSE CPP_SOURCES CONFIGURE_DEPENDS src/*.cpp)
@@ -32,6 +33,14 @@ target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
 
 # Add glad
 add_library(glad STATIC ${CMAKE_CURRENT_SOURCE_DIR}/external/glad.c)
+
+# Add ftxui
+find_package(ftxui REQUIRED)
+target_link_libraries(${PROJECT_NAME}
+  PRIVATE ftxui::screen
+  PRIVATE ftxui::dom
+  PRIVATE ftxui::component
+)
 
 if (WIN32)
     # GLFW
