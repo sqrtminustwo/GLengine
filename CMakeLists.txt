@@ -7,6 +7,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
+# Packages
+find_package(glm CONFIG REQUIRED)
+find_package(Freetype REQUIRED)
+
 # Collect source files
 file(GLOB_RECURSE CPP_SOURCES CONFIGURE_DEPENDS src/*.cpp)
 file(GLOB_RECURSE HEADERS     CONFIGURE_DEPENDS include/*.h)
@@ -20,17 +24,17 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/external/include
+        ${FREETYPE_INCLUDE_DIRS} # Include FreeType
 )
 
 # Add glm
-find_package(glm CONFIG REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE glm::glm)
 
 # Add glad
 add_library(glad STATIC ${CMAKE_CURRENT_SOURCE_DIR}/external/glad.c)
 
-# Link GLFW
 if (WIN32)
+    # GLFW
     add_library(glfw STATIC IMPORTED GLOBAL)
     set_target_properties(glfw PROPERTIES
         IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/external/lib/glfw3.lib"
@@ -43,6 +47,7 @@ if (WIN32)
         PRIVATE
             glad
             glfw
+            ${FREETYPE_LIBRARIES} # Link FreeType
             opengl32
             gdi32
             user32
@@ -51,6 +56,7 @@ if (WIN32)
             kernel32
     )
 else()
+    # GLFW
     add_library(glfw STATIC IMPORTED GLOBAL)
     set_target_properties(glfw PROPERTIES
         IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/external/lib/libglfw3.a"
@@ -63,6 +69,7 @@ else()
         PRIVATE
             glad
             glfw
+            ${FREETYPE_LIBRARIES} # Link FreeType
             GL
             X11
             pthread

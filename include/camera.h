@@ -1,7 +1,6 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include <glad.h>
 #include <glm/ext/matrix_transform.hpp>
 
 enum Camera_Movement { FORWARD, BACKWARD, LEFT, RIGHT, UP, DOWN };
@@ -40,7 +39,7 @@ class Camera {
 
     bool processKeyboard(Camera_Movement direction, float deltaTime);
 
-    void processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
+    void processMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
 
     void ProcessMouseScroll(float yoffset);
 

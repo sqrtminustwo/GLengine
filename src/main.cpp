@@ -1,16 +1,25 @@
 #include <window.h>
 #include <camera.h>
-#include <shader.h>
 #include <cube.h>
 #include <input.h>
+#include <shader.h>
 #include <frame_rate.h>
+#include <text.h>
 
 int main() {
     Window window(1280, 1000, std::tuple(0, 0, 0, 0.7));
     Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
     Input input(&camera, &window);
 
-    Shader shader("../../resources/shaders/vertex_shader.glsl", "../../resources/shaders/fragment_shader.glsl");
+    Shader shape_shader(
+        "../../resources/shaders/shape/vertex_shader.glsl",
+        "../../resources/shaders/shape/fragment_shader.glsl"
+    );
+
+    Shader text_shader(
+        "../../resources/shaders/text/vertex_shader.glsl",
+        "../../resources/shaders/text/fragment_shader.glsl"
+    );
 
     std::vector<Cube *> cubes;
 
@@ -25,16 +34,17 @@ int main() {
 
     char background[] = "../../resources/textures/yellow.png";
     char frame[] = "../../resources/textures/frame4.png";
-    shader.loadTexture(background);
-    shader.loadTexture(frame);
-    shader.setProjectionMatrix(cube1.getProjectionMatrix());
+    shape_shader.loadTexture(background);
+    shape_shader.loadTexture(frame);
+    shape_shader.setProjectionMatrix(cube1.getProjectionMatrix());
 
     glm::mat4 scaleDown = glm::mat4(1.0f);
     float scale_factor = -0.1;
     scaleDown = glm::scale(scaleDown, glm::vec3(scale_factor, scale_factor, scale_factor));
-    shader.setScaleMatrix(scaleDown);
+    shape_shader.setScaleMatrix(scaleDown);
 
-    FrameRate frameRate;
+    FrameRate frameRate{};
+    Text text{text_shader};
 
     while (!glfwWindowShouldClose(window.getWindow())) {
         frameRate.stat();
@@ -42,19 +52,21 @@ int main() {
 
         window.clearScreen();
 
-        shader.use();
+        shape_shader.use();
 
         cube1.setModelMatrix(
             glm::rotate(cube1.getModelMatrix(), (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f))
         );
-        shader.setViewMatrix(camera.getViewMatrix());
+        shape_shader.setViewMatrix(camera.getViewMatrix());
 
         for (Cube *cube : cubes) {
-            shader.setModelMatrix(cube->getModelMatrix());
-            shader.setProjectionMatrix(cube->getProjectionMatrix());
-            shader.setTranslationMatrix(cube->getTranslationMatrix());
+            shape_shader.setModelMatrix(cube->getModelMatrix());
+            shape_shader.setProjectionMatrix(cube->getProjectionMatrix());
+            shape_shader.setTranslationMatrix(cube->getTranslationMatrix());
             cube->drawShape();
         }
+
+        text.renderText(text_shader, "Test", 25.0f, 25.0f, 1.0f, glm::vec3(0.3, 0.7f, 0.9f));
 
         glfwSwapBuffers(window.getWindow());
         glfwPollEvents();

@@ -1,49 +1,55 @@
 [
 {
   "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",
-  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/camera.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/camera.cpp",
+  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/camera.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/camera.cpp",
   "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/camera.cpp",
   "output": "CMakeFiles/GLFWtest.dir/src/camera.cpp.o"
 },
 {
   "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",
-  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/cube.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/cube.cpp",
+  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/cube.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/cube.cpp",
   "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/cube.cpp",
   "output": "CMakeFiles/GLFWtest.dir/src/cube.cpp.o"
 },
 {
   "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",
-  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/frame_rate.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/frame_rate.cpp",
+  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/frame_rate.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/frame_rate.cpp",
   "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/frame_rate.cpp",
   "output": "CMakeFiles/GLFWtest.dir/src/frame_rate.cpp.o"
 },
 {
   "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",
-  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/input.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/input.cpp",
+  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/input.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/input.cpp",
   "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/input.cpp",
   "output": "CMakeFiles/GLFWtest.dir/src/input.cpp.o"
 },
 {
   "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",
-  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/main.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/main.cpp",
+  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/main.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/main.cpp",
   "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/main.cpp",
   "output": "CMakeFiles/GLFWtest.dir/src/main.cpp.o"
 },
 {
   "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",
-  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/shader.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/shader.cpp",
+  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/shader.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/shader.cpp",
   "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/shader.cpp",
   "output": "CMakeFiles/GLFWtest.dir/src/shader.cpp.o"
 },
 {
   "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",
-  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/shape.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/shape.cpp",
+  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/shape.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/shape.cpp",
   "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/shape.cpp",
   "output": "CMakeFiles/GLFWtest.dir/src/shape.cpp.o"
 },
 {
   "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",
-  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/window.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/window.cpp",
+  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/text.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/text.cpp",
+  "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/text.cpp",
+  "output": "CMakeFiles/GLFWtest.dir/src/text.cpp.o"
+},
+{
+  "directory": "/home/main-ubuntu/coding/C++Projects/GLengine/build/release",
+  "command": "/usr/bin/c++ -DGLFW_STATIC -I/home/main-ubuntu/coding/C++Projects/GLengine/include -I/usr/local/include/freetype2 -isystem /home/main-ubuntu/coding/C++Projects/GLengine/external/include -O3 -DNDEBUG -std=c++17 -flto=auto -fno-fat-lto-objects -o CMakeFiles/GLFWtest.dir/src/window.cpp.o -c /home/main-ubuntu/coding/C++Projects/GLengine/src/window.cpp",
   "file": "/home/main-ubuntu/coding/C++Projects/GLengine/src/window.cpp",
   "output": "CMakeFiles/GLFWtest.dir/src/window.cpp.o"
 },

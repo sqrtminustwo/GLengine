@@ -2,9 +2,28 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <glad.h>
+#include <GLFW/glfw3.h>
+#include <glm/ext/matrix_float4x4.hpp>
+#include <glm/gtc/type_ptr.hpp>
+#include <map>
+#include <vector>
+#include <string>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
+
+void Shader::setModelMatrix(glm::mat4 matrix) { glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(matrix)); }
+void Shader::setProjectionMatrix(glm::mat4 matrix) {
+    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+void Shader::setViewMatrix(glm::mat4 matrix) { glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(matrix)); }
+void Shader::setScaleMatrix(glm::mat4 matrix) { glUniformMatrix4fv(scaleLoc, 1, GL_FALSE, glm::value_ptr(matrix)); }
+void Shader::setTranslationMatrix(glm::mat4 matrix) {
+    glUniformMatrix4fv(translateLoc, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+unsigned int Shader::getUniformLocation(char *name) { return glGetUniformLocation(ID, name); }
 
 Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     std::string vertexCode;
@@ -91,6 +110,7 @@ void Shader::loadTexture(char *path) {
 }
 
 unsigned int Shader::createTexture(char *file_path) {
+    static std::map<int, GLenum> color_formats{{1, GL_RED}, {3, GL_RGB}, {4, GL_RGBA}};
     unsigned int texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);

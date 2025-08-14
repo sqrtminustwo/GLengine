@@ -1,3 +1,4 @@
+#include <glad.h>
 #include <window.h>
 #include <iostream>
 

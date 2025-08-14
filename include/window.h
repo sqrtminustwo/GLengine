@@ -1,7 +1,6 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include <glad.h>
 #include <GLFW/glfw3.h>
 #include <tuple>
 
