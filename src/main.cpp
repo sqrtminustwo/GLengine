@@ -16,11 +16,6 @@ int main() {
         "../../resources/shaders/shape/fragment_shader.glsl"
     );
 
-    Shader text_shader(
-        "../../resources/shaders/text/vertex_shader.glsl",
-        "../../resources/shaders/text/fragment_shader.glsl"
-    );
-
     std::vector<Cube *> cubes;
 
     Cube cube1{};
