@@ -19,6 +19,9 @@ set(SOURCES ${CPP_SOURCES} ${C_SOURCES})
 
 # Create executable
 add_executable(${PROJECT_NAME} ${SOURCES})
+target_compile_definitions(${PROJECT_NAME} PRIVATE
+    PROJECT_DIR="${CMAKE_SOURCE_DIR}"
+)
 
 # Include directories
 target_include_directories(${PROJECT_NAME}

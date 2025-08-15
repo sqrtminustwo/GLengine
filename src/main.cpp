@@ -12,8 +12,8 @@ int main() {
     Input input(&camera, &window);
 
     Shader shape_shader(
-        "../../resources/shaders/shape/vertex_shader.glsl",
-        "../../resources/shaders/shape/fragment_shader.glsl"
+        PROJECT_DIR "/resources/shaders/shape/vertex_shader.glsl",
+        PROJECT_DIR "/resources/shaders/shape/fragment_shader.glsl"
     );
 
     std::vector<Cube *> cubes;
@@ -27,8 +27,8 @@ int main() {
     cube2.setTranslationMatrix(translate);
     cubes.push_back(&cube2);
 
-    char background[] = "../../resources/textures/yellow.png";
-    char frame[] = "../../resources/textures/frame4.png";
+    char background[] = PROJECT_DIR "/resources/textures/yellow.png";
+    char frame[] = PROJECT_DIR "/resources/textures/frame4.png";
     shape_shader.loadTexture(background);
     shape_shader.loadTexture(frame);
     shape_shader.setProjectionMatrix(cube1.getProjectionMatrix());
