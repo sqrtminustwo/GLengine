@@ -8,62 +8,71 @@
 #include "ftxui/dom/canvas.hpp"
 #include <iostream>
 
-Stats::Stats() {
-    last_time = glfwGetTime();
-    // auto renderer_text = ftxui::Renderer([&] {
-    //     auto c = ftxui::Canvas(30, 10);
-    //     c.DrawText(0, 0, std::to_string(last_frames));
-    //     return canvas(std::move(c));
-    // });
-    //
-    // int selected_tab = 1;
-    // auto tab = ftxui::Container::Tab({renderer_text}, &selected_tab);
-    //
-    // int mouse_x = 0;
-    // int mouse_y = 0;
-    //
-    // auto tab_with_mouse = CatchEvent(tab, [&](ftxui::Event e) {
-    //     if (e.is_mouse()) {
-    //         mouse_x = (e.mouse().x - 1) * 2;
-    //         mouse_y = (e.mouse().y - 1) * 4;
-    //     }
-    //     return false;
-    // });
-    //
-    // std::vector<std::string> tab_titles = {"fps"};
-    // auto tab_toggle = ftxui::Menu(&tab_titles, &selected_tab);
-    //
-    // auto component = ftxui::Container::Horizontal({
-    //     tab_with_mouse,
-    //     tab_toggle,
-    // });
-    //
-    // auto component_renderer = Renderer(component, [&] {
-    //     return ftxui::hbox({
-    //                tab_with_mouse->Render(),
-    //                ftxui::separator(),
-    //                tab_toggle->Render(),
-    //            }) |
-    //            ftxui::border;
-    // });
-    //
-    // ftxui::ScreenInteractive screen = ftxui::ScreenInteractive::FitComponent();
-    // std::thread screen_thread{[&] { screen.Loop(component_renderer); }};
+Stats::Stats() : screen(ftxui::ScreenInteractive::Fullscreen()) {
+    // TODO: function for both lambdas (reduce code duplication)
+    renderer_text_fps = ftxui::Renderer([this] {
+        auto c = ftxui::Canvas(30, 10);
+        c.DrawText(0, 0, std::to_string(last_frames));
+        return canvas(std::move(c));
+    });
+    renderer_text_avg_fps = ftxui::Renderer([this] {
+        auto c = ftxui::Canvas(30, 10);
+        c.DrawText(0, 0, std::to_string(avg_fps));
+        return canvas(std::move(c));
+    });
 
-    // auto screen = ftxui::ScreenInteractive::Fullscreen();
-    //
-    // auto text_renderer = ftxui::Renderer([this] {
-    //     auto c = ftxui::Canvas(30, 10);
-    //     c.DrawText(0, 0, std::to_string(last_frames));
-    //     return canvas(std::move(c));
-    // });
-    //
-    // std::thread screenRedraw([&, this]() {
-    //     while (running) screen.Loop(text_renderer);
-    // });
+    // Selected tab
+    tab = ftxui::Container::Tab({renderer_text_fps, renderer_text_avg_fps}, &selected_tab);
+
+    // Mouse hovered on the container in terminal
+    // Updates both renderer_text and selected_tab
+    mouse_x = 0;
+    mouse_y = 0;
+
+    tab_with_mouse = CatchEvent(tab, [this](ftxui::Event e) {
+        if (e.is_mouse()) {
+            mouse_x = (e.mouse().x - 1) * 2;
+            mouse_y = (e.mouse().y - 1) * 4;
+        }
+        return false;
+    });
+
+    tab_toggle = ftxui::Menu(&tab_titles, &selected_tab);
+
+    component = ftxui::Container::Horizontal({
+        tab_with_mouse,
+        tab_toggle,
+    });
+
+    // Main component/thread with rendering
+    // https://github.com/ArthurSonzogni/FTXUI/blob/main/examples/component/canvas_animated.cpp
+    component_renderer = Renderer(component, [this] {
+        return ftxui::hbox({
+                   tab_with_mouse->Render(),
+                   ftxui::separator(),
+                   tab_toggle->Render(),
+               }) |
+               ftxui::border;
+    });
 }
 
-// void Stats::endStats() { running = false; }
+void Stats::start() {
+    screen_redraw = std::thread{[this]() {
+        while (running) {
+            screen.PostEvent(ftxui::Event::Custom);
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        }
+    }};
+
+    screen_thread = std::thread{[this]() { screen.Loop(component_renderer); }};
+}
+
+Stats::~Stats() {
+    running = false;
+    screen.Exit();
+    screen_redraw.join();
+    screen_thread.join();
+}
 
 void Stats::updateFps() {
     frames++;
