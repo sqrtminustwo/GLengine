@@ -1,26 +1,9 @@
 #include <stats.h>
 #include <GLFW/glfw3.h>
-#include "ftxui/component/component.hpp"
-#include "ftxui/component/component_base.hpp"
-#include "ftxui/component/event.hpp"
-#include "ftxui/component/mouse.hpp"
-#include "ftxui/component/screen_interactive.hpp"
-#include "ftxui/dom/canvas.hpp"
-#include <iostream>
 
 Stats::Stats() : screen(ftxui::ScreenInteractive::Fullscreen()) {
-    // TODO: function for both lambdas (reduce code duplication)
-    renderer_text_fps = ftxui::Renderer([this] {
-        auto c = ftxui::Canvas(30, 10);
-        c.DrawText(0, 0, std::to_string(last_frames));
-        return canvas(std::move(c));
-    });
-    renderer_text_avg_fps = ftxui::Renderer([this] {
-        auto c = ftxui::Canvas(30, 10);
-        c.DrawText(0, 0, std::to_string(avg_fps));
-        return canvas(std::move(c));
-    });
-
+    renderer_text_fps = canvasWithVar(last_frames);
+    renderer_text_avg_fps = canvasWithVar(avg_fps);
     // Selected tab
     tab = ftxui::Container::Tab({renderer_text_fps, renderer_text_avg_fps}, &selected_tab);
 
@@ -37,23 +20,13 @@ Stats::Stats() : screen(ftxui::ScreenInteractive::Fullscreen()) {
         return false;
     });
 
-    tab_toggle = ftxui::Menu(&tab_titles, &selected_tab);
+    menu_tab_toggle = ftxui::Menu(&tab_titles, &selected_tab);
 
-    component = ftxui::Container::Horizontal({
-        tab_with_mouse,
-        tab_toggle,
-    });
+    container = ftxui::ResizableSplitLeft(tab_with_mouse, menu_tab_toggle, &right_size);
 
     // Main component/thread with rendering
     // https://github.com/ArthurSonzogni/FTXUI/blob/main/examples/component/canvas_animated.cpp
-    component_renderer = Renderer(component, [this] {
-        return ftxui::hbox({
-                   tab_with_mouse->Render(),
-                   ftxui::separator(),
-                   tab_toggle->Render(),
-               }) |
-               ftxui::border;
-    });
+    component_renderer = Renderer(container, [this] { return container->Render() | ftxui::border; });
 }
 
 void Stats::start() {
@@ -81,6 +54,7 @@ void Stats::updateFps() {
         count++;
         total += frames;
         last_frames = frames;
+        avg_fps = getAvgFps();
         frames = 0;
         last_time = current_time;
     }
