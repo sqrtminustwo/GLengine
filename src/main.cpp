@@ -4,6 +4,7 @@
 #include <input.h>
 #include <shader.h>
 #include <stats.h>
+#include <plot.h>
 
 int main() {
 
@@ -71,95 +72,107 @@ int main() {
     return 0;
 }
 
-// #include <chrono>                 // for operator""s, chrono_literals
-// #include <cmath>                  // for sin
-// #include <ftxui/dom/elements.hpp> // for graph, operator|, separator, color, Element, vbox, flex, inverted,
-// operator|=, Fit, hbox, size, border, GREATER_THAN, HEIGHT #include <ftxui/screen/screen.hpp> // for Full, Screen
-// #include <functional>              // for ref, reference_wrapper
-// #include <iostream>                // for cout, ostream
-// #include <memory>                  // for shared_ptr
-// #include <string>                  // for operator<<, string
-// #include <thread>                  // for sleep_for
-// #include <vector>                  // for vector
+// #include <cmath> // for sin, cos
+// #include <ctime>
+// #include <ftxui/dom/elements.hpp>  // for canvas, Element, separator, hbox, operator|, border
+// #include <ftxui/screen/screen.hpp> // for Pixel
+// #include <iostream>
+// #include <string>  // for string, basic_string
+// #include <utility> // for move
+// #include <vector>  // for vector, __alloc_traits<>::value_type
 //
-// #include "ftxui/dom/node.hpp"     // for Render
-// #include "ftxui/screen/color.hpp" // for Color, Color::BlueLight, Color::RedLight, Color::YellowLight, ftxui
+// #include "ftxui/component/component.hpp"          // for Renderer, CatchEvent, Horizontal, Menu, Tab
+// #include "ftxui/component/component_base.hpp"     // for ComponentBase
+// #include "ftxui/component/event.hpp"              // for Event
+// #include "ftxui/component/screen_interactive.hpp" // for ScreenInteractive
+// #include "ftxui/dom/canvas.hpp"                   // for Canvas
+// #include <random>
 //
-// class Graph {
-//   public:
-//     std::vector<int> operator()(int width, int height) const {
-//         std::vector<int> output(width);
-//         for (int i = 0; i < width; ++i) {
-//             float v = 0;
-//             v += 0.1f * sin((i + shift) * 0.1f);       // NOLINT
-//             v += 0.2f * sin((i + shift + 10) * 0.15f); // NOLINT
-//             v += 0.1f * sin((i + shift) * 0.03f);      // NOLINT
-//             v *= height;                               // NOLINT
-//             v += 0.5f * height;                        // NOLINT
-//             output[i] = static_cast<int>(v);
-//         }
-//         return output;
-//     }
-//     int shift = 0;
-// };
-//
-// std::vector<int> triangle(int width, int height) {
-//     std::vector<int> output(width);
-//     for (int i = 0; i < width; ++i) { output[i] = i % (height - 4) + 2; }
-//     return output;
+// int genRandom(int lower, int upper) {
+//     static std::random_device rd;  // obtain a random number from hardware
+//     static std::mt19937 gen(rd()); // seed the generator
+//     std::uniform_int_distribution<> distr(lower, upper);
+//     return distr(gen);
 // }
+// int normalizeFps(int fps, int max) { return ((float)fps / (float)max) * 100; }
 //
 // int main() {
 //     using namespace ftxui;
-//     using namespace std::chrono_literals;
 //
-//     Graph my_graph;
+//     int max_fps = 240;
+//     int max_points_in_one_graph = 20;
+//     int step = 100 / max_points_in_one_graph;
+//     std::vector<int> fps_history;
 //
-//     std::string reset_position;
+//     auto renderer_plot_1 = Renderer([&] {
+//         auto c = Canvas(100, 100);
+//
+//         int size = fps_history.size();
+//         int pos = size > max_points_in_one_graph ? size - max_points_in_one_graph : 0;
+//
+//         std::vector<int>::const_iterator first = fps_history.begin() + pos;
+//         std::vector<int>::const_iterator last = fps_history.begin() + size;
+//         std::vector<int> ys(first, last);
+//
+//         int coef = 1;
+//         int x;
+//         for (pos = 1; pos < ys.size(); pos++) {
+//             x = coef * step;
+//             coef++;
+//             c.DrawText(0, 0, " " + std::to_string(x) + " " + std::to_string(pos) + " " + std::to_string(size));
+//             c.DrawPointLine(x - step, normalizeFps(ys.at(pos - 1), max_fps), x, normalizeFps(ys.at(pos), max_fps));
+//         }
+//
+//         auto y_axis_fps = vbox({text("240 "), filler(), text("120 "), filler(), text("60 "), filler(), text("0")});
+//
+//         return hbox(y_axis_fps, canvas(std::move(c)));
+//     });
+//
+//     int selected_tab = 0;
+//
+//     auto tab = Container::Tab({renderer_plot_1}, &selected_tab);
+//
+//     std::vector<std::string> tab_titles = {"plot_1 simple"};
+//     auto tab_toggle = Menu(&tab_titles, &selected_tab);
+//
+//     auto component = Container::Horizontal({
+//         tab,
+//         tab_toggle,
+//     });
+//
+//     // Add some separator to decorate the whole component:
+//     auto component_renderer = Renderer(component, [&] {
+//         return hbox({
+//                    tab->Render(),
+//                    separator(),
+//                    tab_toggle->Render(),
+//                }) |
+//                border;
+//     });
+//
+//     auto screen = ScreenInteractive::FitComponent();
+//     bool running = true;
+//
+//     std::thread screen_redraw{[&]() {
+//         while (running) {
+//             screen.PostEvent(ftxui::Event::Custom);
+//             std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+//         }
+//     }};
+//
+//     std::thread screen_thread([&] { screen.Loop(component_renderer); });
+//
+//     int fps;
 //     while (true) {
-//         auto document = hbox({graph(std::ref(my_graph)) | color(Color::DarkKhaki)});
-//
-//         document |= border;
-//
-//         const int min_width = 40;
-//         document |= size(HEIGHT, GREATER_THAN, min_width);
-//
-//         auto screen = Screen::Create(Dimension::Full(), Dimension::Fit(document));
-//         Render(screen, document);
-//         std::cout << reset_position;
-//         screen.Print();
-//         reset_position = screen.ResetPosition();
-//
-//         const auto sleep_time = 0.03s;
-//         std::this_thread::sleep_for(sleep_time);
-//         my_graph.shift++;
+//         fps = genRandom(0, 180);
+//         fps_history.push_back(fps);
+//         // std::cout << normalizeFps(fps, max_fps) << "\n";
+//         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 //     }
 //
+//     running = false;
+//     screen_redraw.join();
+//     screen_thread.join();
+//
 //     return 0;
-// }
-
-// #include <memory> // for shared_ptr, allocator, __shared_ptr_access
-//
-// #include "ftxui/component/captured_mouse.hpp" // for ftxui
-// #include "ftxui/component/component.hpp" // for Renderer, ResizableSplitBottom, ResizableSplitLeft,
-// ResizableSplitRight, ResizableSplitTop #include "ftxui/component/component_base.hpp"     // for ComponentBase
-// #include "ftxui/component/screen_interactive.hpp" // for ScreenInteractive
-// #include "ftxui/dom/elements.hpp"                 // for Element, operator|, text, center, border
-//
-// using namespace ftxui;
-//
-// int main() {
-//     auto screen = ScreenInteractive::Fullscreen();
-//
-//     auto left = Renderer([] { return text("Left") | center; });
-//     auto right = Renderer([] { return text("right") | center; });
-//
-//     int left_size = 20;
-//     int right_size = 20;
-//
-//     auto container = ResizableSplitRight(right, left, &right_size);
-//
-//     auto renderer = Renderer(container, [&] { return container->Render() | border; });
-//
-//     screen.Loop(renderer);
 // }

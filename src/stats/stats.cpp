@@ -1,7 +1,8 @@
-#include <stats.h>
 #include <GLFW/glfw3.h>
+#include <iostream>
+#include <stats.h>
 
-Stats::Stats() : screen(ftxui::ScreenInteractive::Fullscreen()) {
+Stats::Stats() : screen(ftxui::ScreenInteractive::Fullscreen()), last_time(glfwGetTime()) {
     renderer_text_fps = canvasWithVar(last_frames);
     renderer_text_avg_fps = canvasWithVar(avg_fps);
     // Selected tab
@@ -26,7 +27,7 @@ Stats::Stats() : screen(ftxui::ScreenInteractive::Fullscreen()) {
 
     // Main component/thread with rendering
     // https://github.com/ArthurSonzogni/FTXUI/blob/main/examples/component/canvas_animated.cpp
-    component_renderer = Renderer(container, [this] { return container->Render() | ftxui::border; });
+    main_component = Renderer(container, [this] { return container->Render() | ftxui::border; });
 }
 
 void Stats::start() {
@@ -37,7 +38,7 @@ void Stats::start() {
         }
     }};
 
-    screen_thread = std::thread{[this]() { screen.Loop(component_renderer); }};
+    screen_thread = std::thread{[this]() { screen.Loop(main_component); }};
 }
 
 Stats::~Stats() {
@@ -49,8 +50,9 @@ Stats::~Stats() {
 
 void Stats::updateFps() {
     frames++;
-    double current_time = glfwGetTime();
+    float current_time = glfwGetTime();
     if (current_time - last_time >= 1) {
+        // std::cout << "updated fps\n";
         count++;
         total += frames;
         last_frames = frames;

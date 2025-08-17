@@ -36,7 +36,7 @@ class Stats {
     ftxui::Component tab_with_mouse;
     ftxui::Component menu_tab_toggle;
     ftxui::Component container;
-    ftxui::Component component_renderer;
+    ftxui::Component main_component;
 
     ftxui::ScreenInteractive screen;
 

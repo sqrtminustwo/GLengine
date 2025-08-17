@@ -13,8 +13,16 @@ find_package(Freetype REQUIRED)
 find_package(ftxui REQUIRED)
 
 # Collect source files
-file(GLOB_RECURSE CPP_SOURCES CONFIGURE_DEPENDS src/*.cpp)
-file(GLOB_RECURSE HEADERS     CONFIGURE_DEPENDS include/*.h)
+file(GLOB_RECURSE CPP_SOURCES CONFIGURE_DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/stats/*.cpp
+)
+file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/stats/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h
+)
 set(SOURCES ${CPP_SOURCES} ${C_SOURCES})
 
 # Create executable
@@ -27,6 +35,8 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
 target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/engine
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/stats
         ${CMAKE_CURRENT_SOURCE_DIR}/external/include
         ${FREETYPE_INCLUDE_DIRS} # Include FreeType
 )
