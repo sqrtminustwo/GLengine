@@ -1,7 +1,8 @@
 #include <terminal_screen.h>
 
 TerminalScreen::TerminalScreen(ftxui::Component main_component, int update_time)
-    : screen(ftxui::ScreenInteractive::Fullscreen()), main_component(main_component), update_time(update_time) {}
+    : screen(ftxui::ScreenInteractive::FitComponent()), main_component(std::move(main_component)),
+      update_time(update_time) {}
 
 void TerminalScreen::start() {
     running = true;

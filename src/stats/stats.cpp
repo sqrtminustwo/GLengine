@@ -1,63 +1,39 @@
 #include <GLFW/glfw3.h>
-#include <iostream>
 #include <stats.h>
+#include <plot.h>
 
-Stats::Stats() : screen(ftxui::ScreenInteractive::Fullscreen()), last_time(glfwGetTime()) {
+Stats::Stats() {
+    plot = std::unique_ptr<Plot>(new Plot(fps_history, 240, ftxui::Color::White, 10, 20, 1000));
     renderer_text_fps = canvasWithVar(last_frames);
     renderer_text_avg_fps = canvasWithVar(avg_fps);
-    // Selected tab
-    tab = ftxui::Container::Tab({renderer_text_fps, renderer_text_avg_fps}, &selected_tab);
 
-    // Mouse hovered on the container in terminal
-    // Updates both renderer_text and selected_tab
-    mouse_x = 0;
-    mouse_y = 0;
-
-    tab_with_mouse = CatchEvent(tab, [this](ftxui::Event e) {
-        if (e.is_mouse()) {
-            mouse_x = (e.mouse().x - 1) * 2;
-            mouse_y = (e.mouse().y - 1) * 4;
-        }
-        return false;
-    });
-
+    tab = ftxui::Container::Tab({plot->getPlot(), renderer_text_fps, renderer_text_avg_fps}, &selected_tab);
+    tab_titles = {"fps graph", "fps", "avg fps"};
     menu_tab_toggle = ftxui::Menu(&tab_titles, &selected_tab);
 
-    container = ftxui::ResizableSplitLeft(tab_with_mouse, menu_tab_toggle, &right_size);
+    container = ftxui::ResizableSplitLeft(tab, menu_tab_toggle, &size);
 
     // Main component/thread with rendering
     // https://github.com/ArthurSonzogni/FTXUI/blob/main/examples/component/canvas_animated.cpp
-    main_component = Renderer(container, [this] { return container->Render() | ftxui::border; });
+    ftxui::Component main_component = Renderer(container, [this] { return container->Render() | ftxui::border; });
+    terminal_screen = std::unique_ptr<TerminalScreen>(new TerminalScreen(main_component, 1000));
+
+    last_time = glfwGetTime();
 }
 
-void Stats::start() {
-    screen_redraw = std::thread{[this]() {
-        while (running) {
-            screen.PostEvent(ftxui::Event::Custom);
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-        }
-    }};
-
-    screen_thread = std::thread{[this]() { screen.Loop(main_component); }};
-}
-
-Stats::~Stats() {
-    running = false;
-    screen.Exit();
-    screen_redraw.join();
-    screen_thread.join();
-}
+void Stats::start() { terminal_screen.get()->start(); }
 
 void Stats::updateFps() {
-    frames++;
+    frames_counter++;
     float current_time = glfwGetTime();
     if (current_time - last_time >= 1) {
-        // std::cout << "updated fps\n";
         count++;
-        total += frames;
-        last_frames = frames;
+        total += frames_counter;
+        last_frames = frames_counter;
+        fps_history.push_back(last_frames);
         avg_fps = getAvgFps();
-        frames = 0;
+
+        frames_counter = 0;
         last_time = current_time;
     }
 }

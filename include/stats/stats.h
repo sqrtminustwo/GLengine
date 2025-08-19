@@ -1,47 +1,42 @@
 #ifndef STATS_H
 #define STATS_H
 
+#include "plot.h"
+#include <terminal_screen.h>
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/screen_interactive.hpp>
+#include <memory>
 
 class Stats {
   public:
     Stats();
-    ~Stats();
 
     void start();
     void updateFps();
 
     double getAvgFps() const { return ((double)total) / ((double)count); }
-    int getFps() const { return last_frames; }
 
   private:
-    int fps = 0;
-    double avg_fps = 0;
-    int selected_tab = 0;
-    int mouse_x = 0;
-    int mouse_y = 0;
-    bool running = true;
-    int count = 0;
-    double last_time;
-    int frames = 0;
-    int last_frames = 0;
-    int total = 0;
-    int right_size = 20;
+    std::vector<int> fps_history;
+    int frames_counter;
+    int last_frames;
+    int total;
+    int count;
+    float last_time;
+    float avg_fps;
 
+    int selected_tab = 0;
+    int size = 50;
+    bool running = true;
+
+    std::unique_ptr<TerminalScreen> terminal_screen;
+    std::unique_ptr<Plot> plot;
     ftxui::Component renderer_text_fps;
     ftxui::Component renderer_text_avg_fps;
-    std::vector<std::string> tab_titles = {"fps", "avg fps"};
+    std::vector<std::string> tab_titles;
     ftxui::Component tab;
-    ftxui::Component tab_with_mouse;
     ftxui::Component menu_tab_toggle;
     ftxui::Component container;
-    ftxui::Component main_component;
-
-    ftxui::ScreenInteractive screen;
-
-    std::thread screen_redraw;
-    std::thread screen_thread;
 
     template <typename T>
     ftxui::Component canvasWithVar(T &var) {
