@@ -1,8 +1,6 @@
 #ifndef STATS_H
 #define STATS_H
 
-#include <plot.h>
-#include <terminal_screen.h>
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/screen_interactive.hpp>
 #include <memory>
@@ -10,6 +8,7 @@
 class Stats {
   public:
     Stats();
+    ~Stats();
 
     void start();
     void updateFps();
@@ -29,8 +28,8 @@ class Stats {
     int size = 50;
     bool running = true;
 
-    std::unique_ptr<TerminalScreen> terminal_screen;
-    std::unique_ptr<Plot> plot;
+    struct HeaderHolder;
+    std::unique_ptr<HeaderHolder> header_holder;
 
     ftxui::Component renderer_text_fps;
     ftxui::Component renderer_text_avg_fps;
