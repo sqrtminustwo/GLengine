@@ -1,7 +1,7 @@
 #ifndef STATS_H
 #define STATS_H
 
-#include "plot.h"
+#include <plot.h>
 #include <terminal_screen.h>
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/screen_interactive.hpp>
@@ -31,6 +31,7 @@ class Stats {
 
     std::unique_ptr<TerminalScreen> terminal_screen;
     std::unique_ptr<Plot> plot;
+
     ftxui::Component renderer_text_fps;
     ftxui::Component renderer_text_avg_fps;
     std::vector<std::string> tab_titles;

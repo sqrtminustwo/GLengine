@@ -1,4 +1,5 @@
 #include <plot.h>
+#include <terminal_screen.h>
 #include <ctime>
 #include <string>
 #include <vector>
@@ -8,6 +9,10 @@
 #include "ftxui/dom/canvas.hpp"
 
 using namespace ftxui;
+
+struct Plot::TerminalScreenHolder {
+    std::unique_ptr<TerminalScreen> terminal_screen;
+};
 
 Plot::Plot(
     std::vector<int> &points, int max_y, ftxui::Color color, int y_split, int max_points_in_graph, int update_time
@@ -20,17 +25,13 @@ Plot::Plot(
         int size = this->points.size();
         int pos = size > this->max_points_in_graph ? size - this->max_points_in_graph : 0;
 
-        std::vector<int>::const_iterator first = this->points.begin() + pos;
-        std::vector<int>::const_iterator last = this->points.begin() + size;
-        std::vector<int> points_subset(first, last);
-
         int coef = 1;
         int x;
-        for (pos = 1; pos < points_subset.size(); pos++) {
+        for (pos += 1; pos < size; pos++) {
             x = coef * step;
             coef++;
-            auto p1 = normalizePoint(points_subset.at(pos - 1));
-            auto p2 = normalizePoint(points_subset.at(pos));
+            auto p1 = normalizePoint(this->points.at(pos - 1));
+            auto p2 = normalizePoint(this->points.at(pos));
             // c.DrawText(1, 0, " " + std::to_string(p1) + " " + std::to_string(p2));
             c.DrawPointLine(x - step, p1, x, p2, this->color);
         }
@@ -51,13 +52,18 @@ Plot::Plot(
     });
 }
 
+Plot::~Plot() = default;
+
 void Plot::startPlotting() {
+    checkMoved();
+    terminal_screen_holder = std::make_unique<TerminalScreenHolder>();
+    terminal_screen_holder->terminal_screen =
+        std::unique_ptr<TerminalScreen>(new TerminalScreen(main_component, update_time));
+    terminal_screen_holder->terminal_screen->start();
     moved = true;
-    terminal_screen = std::unique_ptr<TerminalScreen>(new TerminalScreen(main_component, update_time));
-    terminal_screen->start();
 }
 
 ftxui::Component Plot::getPlot() {
-    if (moved) throw std::runtime_error("Was used for plotting, can't reuse!");
+    checkMoved();
     return main_component;
 }
