@@ -13,16 +13,17 @@ class Stats {
     void start();
     void updateFps();
 
-    double getAvgFps() const { return ((double)total) / ((double)count); }
+    int getAvgFps() { return total / count; }
 
   private:
     std::vector<int> fps_history;
-    int frames_counter;
-    int last_frames;
-    int total;
-    int count;
-    float last_time;
-    float avg_fps;
+    int total{};
+    int count{};
+
+    int frames_counter{};
+    int last_frames{};
+    float last_time{};
+    int avg_fps{};
 
     int selected_tab = 0;
     int size = 50;
