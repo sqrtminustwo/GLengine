@@ -9,9 +9,9 @@ using vec3 = glm::vec3;
 
 class Shape {
   public:
-    mat4 getModelMatrix() { return modelMatrix; }
-    mat4 getProjectionMatrix() { return projectionMatrix; }
-    mat4 getTranslationMatrix() { return translationMatrix; }
+    mat4 getModelMatrix() const { return modelMatrix; }
+    mat4 getProjectionMatrix() const { return projectionMatrix; }
+    mat4 getTranslationMatrix() const { return translationMatrix; }
 
     void setPos(float x, float y, float z);
 
@@ -26,15 +26,15 @@ class Shape {
     void setVAO(unsigned int VAO) { this->VAO = VAO; }
     void setVBO(unsigned int VBO) { this->VBO = VBO; }
 
-    unsigned int getVAO() { return VAO; }
-    unsigned int getVBO() { return VBO; }
-
-  private:
-    unsigned int VAO, VBO;
+    unsigned int getVAO() const { return VAO; }
+    unsigned int getVBO() const { return VBO; }
 
     constexpr static vec3 X{1.0f, 0.0f, 0.0f};
     constexpr static vec3 Y{0.0f, 1.0f, 0.0f};
     constexpr static vec3 Z{0.0f, 0.0f, 0.1f};
+
+  private:
+    unsigned int VAO, VBO;
 
     mat4 modelMatrix{1.0f};
     mat4 projectionMatrix{1.0f};

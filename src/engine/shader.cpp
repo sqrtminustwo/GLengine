@@ -13,15 +13,17 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-void Shader::setModelMatrix(glm::mat4 matrix) { glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(matrix)); }
-void Shader::setProjectionMatrix(glm::mat4 matrix) {
-    glUniformMatrix4fv(projectionLoc, 1, GL_FALSE, glm::value_ptr(matrix));
+void Shader::setMatrix(unsigned int loc, glm::mat4 mat) {
+    use();
+    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
 }
-void Shader::setViewMatrix(glm::mat4 matrix) { glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(matrix)); }
-void Shader::setScaleMatrix(glm::mat4 matrix) { glUniformMatrix4fv(scaleLoc, 1, GL_FALSE, glm::value_ptr(matrix)); }
-void Shader::setTranslationMatrix(glm::mat4 matrix) {
-    glUniformMatrix4fv(translateLoc, 1, GL_FALSE, glm::value_ptr(matrix));
-}
+void Shader::setModelMatrix(glm::mat4 matrix) { setMatrix(modelLoc, matrix); }
+void Shader::setProjectionMatrix(glm::mat4 matrix) { setMatrix(projectionLoc, matrix); }
+void Shader::setViewMatrix(glm::mat4 matrix) { setMatrix(viewLoc, matrix); }
+void Shader::setScaleMatrix(glm::mat4 matrix) { setMatrix(scaleLoc, matrix); }
+void Shader::setTranslationMatrix(glm::mat4 matrix) { setMatrix(translateLoc, matrix); }
+
+void Shader::setLightingColor(float r, float g, float b) { glUniform3f(lightingLoc, r, g, b); }
 
 unsigned int Shader::getUniformLocation(char *name) { return glGetUniformLocation(ID, name); }
 
@@ -78,6 +80,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     projectionLoc = getUniformLocation("projectionMatrix");
     translateLoc = getUniformLocation("translate");
     scaleLoc = getUniformLocation("scaleDown");
+    lightingLoc = getUniformLocation("lightColor");
 
     glEnable(GL_DEPTH_TEST);
 }

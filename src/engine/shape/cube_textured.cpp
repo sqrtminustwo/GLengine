@@ -1,11 +1,10 @@
-#include <shape.h>
-#include <cube.h>
+#include <cube_textured.h>
 #include <glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-Cube::Cube() {
+CubeTextured::CubeTextured() {
     unsigned int VAO, VBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -22,21 +21,4 @@ Cube::Cube() {
 
     setVAO(VAO);
     setVBO(VBO);
-
-    setModelMatrix(mat4(1.0f));
-    setProjectionMatrix(glm::perspective(glm::radians(30.0f), (float)5 / 4, 0.1f, 100.0f));
-}
-
-Cube::Cube(Cube &cube) {
-    setVAO(cube.getVAO());
-    setVBO(cube.getVBO());
-    setModelMatrix(cube.getModelMatrix());
-    setProjectionMatrix(cube.getProjectionMatrix());
-    setTranslationMatrix(cube.getTranslationMatrix());
-}
-
-void Cube::drawShape() {
-    glBindVertexArray(getVAO());
-    glDrawArrays(GL_TRIANGLES, 0, 36);
-    setModelMatrix(mat4(1.0f));
 }

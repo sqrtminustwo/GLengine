@@ -1,14 +1,11 @@
-#ifndef CUBE_H
-#define CUBE_H
+#ifndef CUBE_TEXTURED_H
+#define CUBE_TEXTURED_H
 
-#include <shape.h>
+#include <cube.h>
 
-class Cube : public Shape {
+class CubeTextured : public Cube {
   public:
-    Cube();
-    Cube(Cube &cube);
-
-    void drawShape() override;
+    CubeTextured();
 
   private:
     constexpr static float vertices[] = {

@@ -16,10 +16,12 @@ find_package(ftxui REQUIRED)
 file(GLOB_RECURSE CPP_SOURCES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/engine/shape/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/stats/*.cpp
 )
 file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/stats/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/*.h
 )
@@ -36,6 +38,7 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/include/engine
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape
         ${CMAKE_CURRENT_SOURCE_DIR}/include/stats
         ${CMAKE_CURRENT_SOURCE_DIR}/external/include
         ${FREETYPE_INCLUDE_DIRS} # Include FreeType
