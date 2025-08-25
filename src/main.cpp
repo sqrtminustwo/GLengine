@@ -65,7 +65,7 @@ int main() {
     }
 
     // use() SHOULD BE ALWAYS CALLED BEFORE SETTING UNIFORM (otherwise how would it know what uniform to set if no
-    // shader is being used, use() is called in loadTexture() and all setMatrix()
+    // shader is being used), use() is called in loadTexture() and all setMatrix()
     char background[] = PROJECT_DIR "/resources/textures/yellow.png";
     char frame[] = PROJECT_DIR "/resources/textures/frame4.png";
     shape_shader.loadTexture(background);
