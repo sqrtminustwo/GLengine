@@ -19,6 +19,4 @@ CubeColored::CubeColored() {
 
     setVAO(VAO);
     setVBO(VBO);
-
-    setProjectionMatrix(glm::perspective(glm::radians(30.0f), (float)5 / 4, 0.1f, 100.0f));
 }
