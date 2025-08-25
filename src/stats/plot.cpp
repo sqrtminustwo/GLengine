@@ -15,7 +15,7 @@ struct Plot::TerminalScreenHolder {
 };
 
 Plot::Plot(
-    std::vector<int> &points, int max_y, ftxui::Color color, int y_split, int max_points_in_graph, int update_time
+    const std::vector<int> &points, int max_y, ftxui::Color color, int y_split, int max_points_in_graph, int update_time
 )
     : points(points), max_y(max_y), color(color), y_split(y_split), max_points_in_graph(max_points_in_graph),
       step(getStep()), update_time(update_time) {
@@ -63,7 +63,7 @@ void Plot::startPlotting() {
     moved = true;
 }
 
-ftxui::Component Plot::getPlot() {
+ftxui::Component Plot::getPlot() const {
     checkMoved();
     return main_component;
 }

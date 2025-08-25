@@ -10,10 +10,10 @@ class Stats {
     Stats();
     ~Stats();
 
-    void start();
+    void start() const;
     void updateFps();
 
-    int getAvgFps() { return total / count; }
+    int getAvgFps() const { return total / count; }
 
   private:
     std::vector<int> fps_history;
@@ -40,7 +40,7 @@ class Stats {
     ftxui::Component container;
 
     template <typename T>
-    ftxui::Component canvasWithVar(T &var) {
+    ftxui::Component canvasWithVar(T &var) const {
         return ftxui::Renderer([this, &var] {
             auto c = ftxui::Canvas(30, 10);
             c.DrawText(0, 0, std::to_string(var));

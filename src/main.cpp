@@ -10,7 +10,7 @@
 using triplet = std::tuple<float, float, float>;
 using cube_ptr = std::unique_ptr<Cube>;
 
-void genAndAddCubes(CubeTextured cube_template, std::vector<cube_ptr> &cubes, std::vector<triplet> coords) {
+void genAndAddCubes(CubeTextured cube_template, std::vector<cube_ptr> &cubes, std::vector<triplet> &&coords) {
     for (auto coord : coords) {
         std::unique_ptr<CubeTextured> cube(new CubeTextured{cube_template});
         auto [x, y, z] = coord;
@@ -42,7 +42,6 @@ int main() {
 
     CubeTextured cube_template{};
     std::vector<cube_ptr> cubes;
-    std::vector<triplet> triplet{};
 
     CubeColored cube_light{};
     float dist = -20.0f;
@@ -51,17 +50,23 @@ int main() {
     int size = 10;
 
     for (float i = 0; i <= size; i++) {
-        triplet.clear();
-        triplet.insert(triplet.end(), {{-i, 0.0f, 0.0f}, {-i, -size, 0.0f}, {-i, 0.0f, -size}, {-i, -size, -size}});
-        genAndAddCubes(cube_template, cubes, triplet);
+        genAndAddCubes(
+            cube_template,
+            cubes,
+            {{-i, 0.0f, 0.0f}, {-i, -size, 0.0f}, {-i, 0.0f, -size}, {-i, -size, -size}}
+        );
 
-        triplet.clear();
-        triplet.insert(triplet.end(), {{0.0f, -i, 0.0f}, {-size, -i, 0.0f}, {0.0f, -i, -size}, {-size, -i, -size}});
-        genAndAddCubes(cube_template, cubes, triplet);
+        genAndAddCubes(
+            cube_template,
+            cubes,
+            {{0.0f, -i, 0.0f}, {-size, -i, 0.0f}, {0.0f, -i, -size}, {-size, -i, -size}}
+        );
 
-        triplet.clear();
-        triplet.insert(triplet.end(), {{0.0f, 0.0f, -i}, {0.0f, -size, -i}, {-size, 0.0f, -i}, {-size, -size, -i}});
-        genAndAddCubes(cube_template, cubes, triplet);
+        genAndAddCubes(
+            cube_template,
+            cubes,
+            {{0.0f, 0.0f, -i}, {0.0f, -size, -i}, {-size, 0.0f, -i}, {-size, -size, -i}}
+        );
     }
 
     // use() SHOULD BE ALWAYS CALLED BEFORE SETTING UNIFORM (otherwise how would it know what uniform to set if no
@@ -81,11 +86,11 @@ int main() {
 
     lighting_shader.setProjectionMatrix(cube_light.getProjectionMatrix());
     lighting_shader.setScaleMatrix(scaleDown);
-    // Stats stats{};
-    // stats.start(); // End is defined in class destructor
+    Stats stats{};
+    stats.start(); // End is defined in class destructor
 
     while (!glfwWindowShouldClose(window.getWindow())) {
-        // stats.updateFps();
+        stats.updateFps();
 
         input.processInput();
 

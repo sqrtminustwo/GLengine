@@ -30,7 +30,7 @@ void Window::clearScreen() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-rgba Window::normalizeRGBA(rgba color) {
+rgba Window::normalizeRGBA(rgba color) const {
     auto [r, g, b, a] = color;
     return std::tuple(r / 255.0f, g / 255.0f, b / 255.0f, a);
 }

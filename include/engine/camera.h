@@ -33,7 +33,7 @@ class Camera {
     );
     Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
 
-    glm::mat4 getViewMatrix() { return glm::lookAt(Position, Position + Front, Up); }
+    glm::mat4 getViewMatrix() const { return glm::lookAt(Position, Position + Front, Up); }
 
     void change_fps() { fps = !fps; }
 

@@ -32,7 +32,7 @@ Stats::Stats() {
 }
 Stats::~Stats() = default;
 
-void Stats::start() { header_holder->terminal_screen.get()->start(); }
+void Stats::start() const { header_holder->terminal_screen.get()->start(); }
 
 void Stats::updateFps() {
     frames_counter++;

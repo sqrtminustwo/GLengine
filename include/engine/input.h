@@ -47,7 +47,7 @@ class Input {
     int last_key = -1;
     int input_mode = GLFW_CURSOR_DISABLED;
 
-    std::map<int, std::function<bool()>> KEYS{
+    const std::map<int, std::function<bool()>> KEYS{
         {GLFW_KEY_TAB,
          [this]() -> bool {
              if (last_key == GLFW_KEY_TAB) return false;

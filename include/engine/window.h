@@ -30,7 +30,7 @@ class Window {
     const unsigned int HEIGHT = 1000;
     rgba color;
 
-    rgba normalizeRGBA(rgba color);
+    rgba normalizeRGBA(rgba color) const;
 };
 
 #endif

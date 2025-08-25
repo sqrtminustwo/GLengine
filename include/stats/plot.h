@@ -9,7 +9,7 @@
 class Plot {
   public:
     Plot(
-        std::vector<int> &points, int max_y, ftxui::Color color = ftxui::Color::White, int y_split = 10,
+        const std::vector<int> &points, int max_y, ftxui::Color color = ftxui::Color::White, int y_split = 10,
         int max_points_in_graph = 10, int update_time = 500
     );
     ~Plot();
@@ -24,12 +24,12 @@ class Plot {
     void setYSplit(int y_split) { this->y_split = y_split; }
     void setColor(ftxui::Color color) { this->color = color; }
 
-    ftxui::Component getPlot();
+    ftxui::Component getPlot() const;
 
   private:
-    int normalizePoint(int point) { return ((float)(max_y - point) / (float)max_y) * 100; }
-    int getStep() { return 100 / max_points_in_graph; }
-    void checkMoved() {
+    inline int normalizePoint(int point) const { return ((float)(max_y - point) / (float)max_y) * 100; }
+    int getStep() const { return 100 / max_points_in_graph; }
+    void checkMoved() const {
         if (moved) throw std::runtime_error("Was used for plotting, can't reuse!");
     }
 
@@ -45,7 +45,7 @@ class Plot {
     // In ms (value below 50ms will cause high cpu load)
     int update_time;
     bool moved = false;
-    std::vector<int> &points;
+    const std::vector<int> &points;
 };
 
 #endif
