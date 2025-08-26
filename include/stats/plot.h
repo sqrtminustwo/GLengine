@@ -16,18 +16,18 @@ class Plot {
 
     void startPlotting();
 
-    void setMaxY(int max_y) { this->max_y = max_y; }
-    void setMaxPointsInGraph(int max_points_in_graph) {
+    void setMaxY(const int max_y) { this->max_y = max_y; }
+    void setMaxPointsInGraph(const int max_points_in_graph) {
         this->max_points_in_graph = max_points_in_graph;
         step = getStep();
     };
-    void setYSplit(int y_split) { this->y_split = y_split; }
-    void setColor(ftxui::Color color) { this->color = color; }
+    void setYSplit(const int y_split) { this->y_split = y_split; }
+    void setColor(const ftxui::Color color) { this->color = color; }
 
     ftxui::Component getPlot() const;
 
   private:
-    inline int normalizePoint(int point) const { return ((float)(max_y - point) / (float)max_y) * 100; }
+    inline int normalizePoint(const int point) const { return ((float)(max_y - point) / (float)max_y) * 100; }
     int getStep() const { return 100 / max_points_in_graph; }
     void checkMoved() const {
         if (moved) throw std::runtime_error("Was used for plotting, can't reuse!");

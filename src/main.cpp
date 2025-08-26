@@ -1,5 +1,4 @@
 #include <cube_colored.h>
-#include <iostream>
 #include <window.h>
 #include <camera.h>
 #include <cube_textured.h>
@@ -33,8 +32,8 @@ void applyAndDrawShape(CubeColored cube, Shader shader, bool colored = true) {
 }
 
 int main() {
-    Window window(1280, 1000, std::tuple(0, 0, 0, 0.7));
-    Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+    Window window{1280, 1000, std::tuple(0, 0, 0, 0.7)};
+    Camera camera{glm::vec3(0.0f, 0.0f, 3.0f)};
     Input input(&camera, &window);
 
     Shader shape_shader(
@@ -58,11 +57,11 @@ int main() {
     // For light testing
     // float dist = -2.0f;
     cube_light.setColor(1.0f, 1.0f, 1.0f);
-    constexpr int size = 10;
-    constexpr int middle = size / 2;
+    constexpr auto size = 10;
+    constexpr auto middle = size / 2;
     triplet left_bottom_corner{middle, middle, middle};
 
-    constexpr int radius = 10;
+    constexpr auto radius = 10;
     constexpr triplet middle_point{0, 0, 0};
     cube_light.setPos(-radius, -radius, 0);
     // 1) Make (0, 0, 0) centere of big cube
@@ -100,8 +99,8 @@ int main() {
     // shape_shader.loadTexture(frame);
     shape_shader.setProjectionMatrix(cube_template.getProjectionMatrix());
 
-    glm::mat4 scaleDown = glm::mat4(1.0f);
-    float scale_factor = -0.1;
+    glm::mat4 scaleDown{1.0f};
+    auto scale_factor = -0.1;
     scaleDown = glm::scale(scaleDown, glm::vec3(scale_factor, scale_factor, scale_factor));
     shape_shader.setScaleMatrix(scaleDown);
 
@@ -121,8 +120,8 @@ int main() {
 
         auto time = glfwGetTime();
         // Parametric circle equation
-        auto x = radius * std::cos(glfwGetTime());
-        auto y = radius * std::sin(glfwGetTime());
+        auto x = radius * std::cos(time);
+        auto y = radius * std::sin(time);
         cube_light.setPos(x, y, 0);
 
         applyAndDrawShape(cube_light, lighting_shader, false);

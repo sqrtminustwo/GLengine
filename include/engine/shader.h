@@ -17,17 +17,17 @@ class Shader {
 
     void loadTexture(char *path);
 
-    void setModelMatrix(glm::mat4 matrix);
-    void setProjectionMatrix(glm::mat4 matrix);
-    void setViewMatrix(glm::mat4 matrix);
-    void setScaleMatrix(glm::mat4 matrix);
-    void setTranslationMatrix(glm::mat4 matrix);
-    void setObjectColor(glm::vec3 color);
-    void setLightColor(glm::vec3 color);
-    void setLightPos(glm::vec3 pos);
-    void setViewPos(glm::vec3 pos);
+    void setModelMatrix(const glm::mat4 matrix);
+    void setProjectionMatrix(const glm::mat4 matrix);
+    void setViewMatrix(const glm::mat4 matrix);
+    void setScaleMatrix(const glm::mat4 matrix);
+    void setTranslationMatrix(const glm::mat4 matrix);
+    void setObjectColor(const glm::vec3 color);
+    void setLightColor(const glm::vec3 color);
+    void setLightPos(const glm::vec3 pos);
+    void setViewPos(const glm::vec3 pos);
 
-    unsigned int getUniformLocation(char *name);
+    unsigned int getUniformLocation(const char *name);
 
   private:
     std::vector<unsigned int> textures;
@@ -37,8 +37,8 @@ class Shader {
     void setMatrix(unsigned int loc, glm::mat4 mat);
     void setVec3(unsigned int loc, glm::vec3 vec);
 
-    unsigned int createTexture(char *file_path);
+    const unsigned int createTexture(const char *file_path);
 
-    void checkCompileErrors(unsigned int shader, std::string type);
+    void checkCompileErrors(const unsigned int shader, const std::string type) const;
 };
 #endif

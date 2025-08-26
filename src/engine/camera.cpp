@@ -17,22 +17,6 @@ Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float u
     updateCameraVectors();
 }
 
-bool Camera::processKeyboard(Camera_Movement direction, float deltaTime) {
-    float velocity = MovementSpeed * deltaTime;
-    // TODO: Replace with map with lambdas
-    if (direction == FORWARD) Position += Front * velocity;
-    if (direction == BACKWARD) Position -= Front * velocity;
-    if (direction == LEFT) Position -= Right * velocity;
-    if (direction == RIGHT) Position += Right * velocity;
-    if (fps)
-        Position.y = 0;
-    else {
-        if (direction == UP) Position += Up * velocity;
-        if (direction == DOWN) Position -= Up * velocity;
-    }
-    return true;
-}
-
 void Camera::processMouseMovement(float xoffset, float yoffset, bool constrainPitch) {
     xoffset *= MouseSensitivity;
     yoffset *= MouseSensitivity;
@@ -49,7 +33,23 @@ void Camera::processMouseMovement(float xoffset, float yoffset, bool constrainPi
     updateCameraVectors();
 }
 
-void Camera::ProcessMouseScroll(float yoffset) {
+bool Camera::processKeyboard(const Camera_Movement direction, const float deltaTime) {
+    float velocity = MovementSpeed * deltaTime;
+    // TODO: Replace with map
+    if (direction == FORWARD) Position += Front * velocity;
+    if (direction == BACKWARD) Position -= Front * velocity;
+    if (direction == LEFT) Position -= Right * velocity;
+    if (direction == RIGHT) Position += Right * velocity;
+    if (fps)
+        Position.y = 0;
+    else {
+        if (direction == UP) Position += Up * velocity;
+        if (direction == DOWN) Position -= Up * velocity;
+    }
+    return true;
+}
+
+void Camera::ProcessMouseScroll(const float yoffset) {
     Zoom -= (float)yoffset;
     if (Zoom < 1.0f) Zoom = 1.0f;
     if (Zoom > 45.0f) Zoom = 45.0f;

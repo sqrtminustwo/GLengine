@@ -13,26 +13,26 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-void Shader::setMatrix(unsigned int loc, glm::mat4 mat) {
+void Shader::setMatrix(const unsigned int loc, const glm::mat4 mat) {
     use();
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
 }
-void Shader::setModelMatrix(glm::mat4 matrix) { setMatrix(modelLoc, matrix); }
-void Shader::setProjectionMatrix(glm::mat4 matrix) { setMatrix(projectionLoc, matrix); }
-void Shader::setViewMatrix(glm::mat4 matrix) { setMatrix(viewLoc, matrix); }
-void Shader::setScaleMatrix(glm::mat4 matrix) { setMatrix(scaleLoc, matrix); }
-void Shader::setTranslationMatrix(glm::mat4 matrix) { setMatrix(translateLoc, matrix); }
+void Shader::setModelMatrix(const glm::mat4 matrix) { setMatrix(modelLoc, matrix); }
+void Shader::setProjectionMatrix(const glm::mat4 matrix) { setMatrix(projectionLoc, matrix); }
+void Shader::setViewMatrix(const glm::mat4 matrix) { setMatrix(viewLoc, matrix); }
+void Shader::setScaleMatrix(const glm::mat4 matrix) { setMatrix(scaleLoc, matrix); }
+void Shader::setTranslationMatrix(const glm::mat4 matrix) { setMatrix(translateLoc, matrix); }
 
-void Shader::setVec3(unsigned int loc, glm::vec3 vec) {
+void Shader::setVec3(const unsigned int loc, const glm::vec3 vec) {
     use();
     glUniform3f(loc, vec.x, vec.y, vec.z);
 }
-void Shader::setObjectColor(glm::vec3 color) { setVec3(objectColorLoc, color); }
-void Shader::setLightColor(glm::vec3 color) { setVec3(lightColorLoc, color); }
-void Shader::setLightPos(glm::vec3 pos) { setVec3(lightPosLoc, pos); }
-void Shader::setViewPos(glm::vec3 pos) { setVec3(viewPosLoc, pos); }
+void Shader::setObjectColor(const glm::vec3 color) { setVec3(objectColorLoc, color); }
+void Shader::setLightColor(const glm::vec3 color) { setVec3(lightColorLoc, color); }
+void Shader::setLightPos(const glm::vec3 pos) { setVec3(lightPosLoc, pos); }
+void Shader::setViewPos(const glm::vec3 pos) { setVec3(viewPosLoc, pos); }
 
-unsigned int Shader::getUniformLocation(char *name) { return glGetUniformLocation(ID, name); }
+unsigned int Shader::getUniformLocation(const char *name) { return glGetUniformLocation(ID, name); }
 
 Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     std::string vertexCode;
@@ -125,7 +125,7 @@ void Shader::loadTexture(char *path) {
     }
 }
 
-unsigned int Shader::createTexture(char *file_path) {
+const unsigned int Shader::createTexture(const char *file_path) {
     static std::map<int, GLenum> color_formats{{1, GL_RED}, {3, GL_RGB}, {4, GL_RGBA}};
     unsigned int texture;
     glGenTextures(1, &texture);
@@ -157,7 +157,7 @@ unsigned int Shader::createTexture(char *file_path) {
     return texture;
 }
 
-void Shader::checkCompileErrors(unsigned int shader, std::string type) {
+void Shader::checkCompileErrors(const unsigned int shader, const std::string type) const {
     int success;
     char infoLog[1024];
     if (type != "PROGRAM") {

@@ -2,7 +2,7 @@
 #include <window.h>
 #include <iostream>
 
-Window::Window(unsigned int WIDTH, unsigned int HEIGHT) : WIDTH(WIDTH), HEIGHT(HEIGHT) {
+Window::Window(const unsigned int WIDTH, const unsigned int HEIGHT) : WIDTH(WIDTH), HEIGHT(HEIGHT) {
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -22,7 +22,9 @@ Window::Window(unsigned int WIDTH, unsigned int HEIGHT) : WIDTH(WIDTH), HEIGHT(H
     }
 }
 
-Window::Window(unsigned int WIDTH, unsigned int HEIGHT, rgba color) : Window(WIDTH, HEIGHT) { setColor(color); }
+Window::Window(const unsigned int WIDTH, const unsigned int HEIGHT, const rgba color) : Window(WIDTH, HEIGHT) {
+    setColor(color);
+}
 
 void Window::clearScreen() {
     auto [r, g, b, a] = color;

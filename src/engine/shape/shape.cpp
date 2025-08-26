@@ -7,7 +7,7 @@ void Shape::free_VAO_VBO() {
     glDeleteBuffers(1, &VBO);
 }
 
-void Shape::setPos(float x, float y, float z) {
+void Shape::setPos(const float x, const float y, const float z) {
     pos = glm::vec3(x, y, z);
     glm::mat4 translationMatrix{1.0f};
     translationMatrix = glm::translate(translationMatrix, pos);

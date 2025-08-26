@@ -5,11 +5,11 @@
 
 enum Camera_Movement { FORWARD, BACKWARD, LEFT, RIGHT, UP, DOWN };
 
-const float YAW = -90.0f;
-const float PITCH = 0.0f;
-const float SPEED = 1.5f;
-const float SENSITIVITY = 0.03f;
-const float ZOOM = 45.0f;
+constexpr float YAW = -90.0f;
+constexpr float PITCH = 0.0f;
+constexpr float SPEED = 1.5f;
+constexpr float SENSITIVITY = 0.03f;
+constexpr float ZOOM = 45.0f;
 
 class Camera {
   public:
@@ -24,9 +24,9 @@ class Camera {
 
     void change_fps() { fps = !fps; }
 
-    bool processKeyboard(Camera_Movement direction, float deltaTime);
     void processMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
-    void ProcessMouseScroll(float yoffset);
+    bool processKeyboard(const Camera_Movement direction, const float deltaTime);
+    void ProcessMouseScroll(const float yoffset);
 
   private:
     glm::vec3 Position;

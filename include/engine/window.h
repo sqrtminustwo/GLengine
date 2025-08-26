@@ -9,16 +9,16 @@ using rgba = std::tuple<float, float, float, float>;
 class Window {
 
   public:
-    Window(unsigned int WIDTH, unsigned int HEIGHT);
-    Window(unsigned int WIDTH, unsigned int HEIGHT, rgba color);
+    Window(const unsigned int WIDTH, const unsigned int HEIGHT);
+    Window(const unsigned int WIDTH, const unsigned int HEIGHT, const rgba color);
 
-    void setColor(rgba color) { this->color = normalizeRGBA(color); }
+    void setColor(const rgba color) { this->color = normalizeRGBA(color); }
 
     void clearScreen();
 
-    GLFWwindow *getWindow() { return window; }
-    unsigned int getWidth() { return WIDTH; }
-    unsigned int getHeight() { return HEIGHT; }
+    GLFWwindow *getWindow() const { return window; }
+    unsigned int getWidth() const { return WIDTH; }
+    unsigned int getHeight() const { return HEIGHT; }
 
     static void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
         glViewport(0, 0, width, height);
