@@ -46,6 +46,7 @@ int main() {
     CubeColored cube_light{};
     float dist = -20.0f;
     cube_light.setPos(dist, dist, dist);
+    cube_light.setColor(1.0f, 1.0f, 1.0f);
 
     int size = 10;
 
