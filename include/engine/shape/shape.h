@@ -4,21 +4,19 @@
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
 
-using mat4 = glm::mat4;
-using vec3 = glm::vec3;
-
 class Shape {
+
   public:
-    mat4 getModelMatrix() const { return modelMatrix; }
-    mat4 getProjectionMatrix() const { return projectionMatrix; }
-    mat4 getTranslationMatrix() const { return translationMatrix; }
-    vec3 getPos() const { return pos; }
+    glm::mat4 getModelMatrix() const { return modelMatrix; }
+    glm::mat4 getProjectionMatrix() const { return projectionMatrix; }
+    glm::mat4 getTranslationMatrix() const { return translationMatrix; }
+    glm::vec3 getPos() const { return pos; }
 
     void setPos(float x, float y, float z);
 
-    void setModelMatrix(mat4 matrix) { modelMatrix = matrix; }
-    void setProjectionMatrix(mat4 matrix) { projectionMatrix = matrix; }
-    void setTranslationMatrix(mat4 matrix) { translationMatrix = matrix; }
+    void setModelMatrix(glm::mat4 matrix) { modelMatrix = matrix; }
+    void setProjectionMatrix(glm::mat4 matrix) { projectionMatrix = matrix; }
+    void setTranslationMatrix(glm::mat4 matrix) { translationMatrix = matrix; }
 
     virtual void drawShape() = 0;
     void free_VAO_VBO();
@@ -30,17 +28,17 @@ class Shape {
     unsigned int getVAO() const { return VAO; }
     unsigned int getVBO() const { return VBO; }
 
-    constexpr static vec3 X{1.0f, 0.0f, 0.0f};
-    constexpr static vec3 Y{0.0f, 1.0f, 0.0f};
-    constexpr static vec3 Z{0.0f, 0.0f, 0.1f};
+    constexpr static glm::vec3 X{1.0f, 0.0f, 0.0f};
+    constexpr static glm::vec3 Y{0.0f, 1.0f, 0.0f};
+    constexpr static glm::vec3 Z{0.0f, 0.0f, 0.1f};
 
   private:
     unsigned int VAO, VBO;
 
-    vec3 pos{0.0f};
-    mat4 modelMatrix{1.0f};
-    mat4 projectionMatrix{1.0f};
-    mat4 translationMatrix{1.0f};
+    glm::vec3 pos{0.0f};
+    glm::mat4 modelMatrix{1.0f};
+    glm::mat4 projectionMatrix{1.0f};
+    glm::mat4 translationMatrix{1.0f};
 };
 
 #endif

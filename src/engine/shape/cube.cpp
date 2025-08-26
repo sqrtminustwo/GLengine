@@ -18,5 +18,5 @@ Cube::Cube(const Cube &cube) {
 void Cube::drawShape() {
     glBindVertexArray(getVAO());
     glDrawArrays(GL_TRIANGLES, 0, 36);
-    setModelMatrix(mat4(1.0f));
+    setModelMatrix(glm::mat4(1.0f));
 }

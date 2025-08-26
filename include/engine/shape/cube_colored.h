@@ -8,12 +8,12 @@ class CubeColored : public Cube {
     CubeColored();
     CubeColored(const CubeColored &other);
 
-    void setColor(float r, float g, float b) { color = vec3(r, g, b); }
+    void setColor(float r, float g, float b) { color = glm::vec3(r, g, b); }
 
-    vec3 getColor() const { return color; }
+    glm::vec3 getColor() const { return color; }
 
   private:
-    vec3 color{1.0f};
+    glm::vec3 color{1.0f};
     // Positions + normal vectors
     constexpr static float vertices[] = {
         -0.5f, -0.5f, -0.5f, 0.0f,  0.0f,  -1.0f, 0.5f,  -0.5f, -0.5f, 0.0f,  0.0f,  -1.0f,

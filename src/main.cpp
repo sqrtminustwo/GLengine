@@ -12,11 +12,14 @@ using triplet = std::tuple<float, float, float>;
 using cube_type = CubeColored;
 using cube_ptr = std::unique_ptr<cube_type>;
 
-void genAndAddCubes(cube_type cube_template, std::vector<cube_ptr> &cubes, std::vector<triplet> &&coords) {
+void genAndAddCubes(
+    cube_type cube_template, std::vector<cube_ptr> &cubes, std::vector<triplet> &&coords, triplet left_bottom_corner
+) {
     for (auto coord : coords) {
         std::unique_ptr<cube_type> cube(new cube_type{cube_template});
+        auto [base_x, base_y, base_z] = left_bottom_corner;
         auto [x, y, z] = coord;
-        cube->setPos(x, y, z);
+        cube->setPos(base_x + x, base_y + y, base_z + z);
         cubes.push_back(std::move(cube));
     }
 }
@@ -51,34 +54,41 @@ int main() {
     // genAndAddCubes(cube_template, cubes, {{0.0f, 0.0f, 0.0f}});
 
     CubeColored cube_light{};
-
     // Normal
-    float dist = -20.0f;
     // For light testing
     // float dist = -2.0f;
-
-    cube_light.setPos(dist, dist, dist);
     cube_light.setColor(1.0f, 1.0f, 1.0f);
+    constexpr int size = 10;
+    constexpr int middle = size / 2;
+    triplet left_bottom_corner{middle, middle, middle};
 
-    int size = 10;
+    constexpr int radius = 10;
+    constexpr triplet middle_point{0, 0, 0};
+    cube_light.setPos(-radius, -radius, 0);
+    // 1) Make (0, 0, 0) centere of big cube
+    // 1) Make cube move from [radius, -radius] with constant Y and Z
+    // 2) Calculate Y using circle function and make it non static (Z stays static, cube moves in 2D)
 
     for (float i = 0; i <= size; i++) {
         genAndAddCubes(
             cube_template,
             cubes,
-            {{-i, 0.0f, 0.0f}, {-i, -size, 0.0f}, {-i, 0.0f, -size}, {-i, -size, -size}}
+            {{-i, 0.0f, 0.0f}, {-i, -size, 0.0f}, {-i, 0.0f, -size}, {-i, -size, -size}},
+            left_bottom_corner
         );
 
         genAndAddCubes(
             cube_template,
             cubes,
-            {{0.0f, -i, 0.0f}, {-size, -i, 0.0f}, {0.0f, -i, -size}, {-size, -i, -size}}
+            {{0.0f, -i, 0.0f}, {-size, -i, 0.0f}, {0.0f, -i, -size}, {-size, -i, -size}},
+            left_bottom_corner
         );
 
         genAndAddCubes(
             cube_template,
             cubes,
-            {{0.0f, 0.0f, -i}, {0.0f, -size, -i}, {-size, 0.0f, -i}, {-size, -size, -i}}
+            {{0.0f, 0.0f, -i}, {0.0f, -size, -i}, {-size, 0.0f, -i}, {-size, -size, -i}},
+            left_bottom_corner
         );
     }
 
@@ -108,6 +118,13 @@ int main() {
         window.clearScreen();
 
         lighting_shader.setViewMatrix(camera.getViewMatrix());
+
+        auto time = glfwGetTime();
+        // Parametric circle equation
+        auto x = radius * std::cos(glfwGetTime());
+        auto y = radius * std::sin(glfwGetTime());
+        cube_light.setPos(x, y, 0);
+
         applyAndDrawShape(cube_light, lighting_shader, false);
 
         shape_shader.setLightPos(cube_light.getPos());
