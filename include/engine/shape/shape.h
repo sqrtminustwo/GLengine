@@ -12,6 +12,7 @@ class Shape {
     mat4 getModelMatrix() const { return modelMatrix; }
     mat4 getProjectionMatrix() const { return projectionMatrix; }
     mat4 getTranslationMatrix() const { return translationMatrix; }
+    vec3 getPos() const { return pos; }
 
     void setPos(float x, float y, float z);
 
@@ -36,6 +37,7 @@ class Shape {
   private:
     unsigned int VAO, VBO;
 
+    vec3 pos{0.0f};
     mat4 modelMatrix{1.0f};
     mat4 projectionMatrix{1.0f};
     mat4 translationMatrix{1.0f};

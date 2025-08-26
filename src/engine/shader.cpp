@@ -23,7 +23,14 @@ void Shader::setViewMatrix(glm::mat4 matrix) { setMatrix(viewLoc, matrix); }
 void Shader::setScaleMatrix(glm::mat4 matrix) { setMatrix(scaleLoc, matrix); }
 void Shader::setTranslationMatrix(glm::mat4 matrix) { setMatrix(translateLoc, matrix); }
 
-void Shader::setLightingColor(float r, float g, float b) { glUniform3f(lightingLoc, r, g, b); }
+void Shader::setVec3(unsigned int loc, glm::vec3 vec) {
+    use();
+    glUniform3f(loc, vec.x, vec.y, vec.z);
+}
+void Shader::setObjectColor(glm::vec3 color) { setVec3(objectColorLoc, color); }
+void Shader::setLightColor(glm::vec3 color) { setVec3(lightColorLoc, color); }
+void Shader::setLightPos(glm::vec3 pos) { setVec3(lightPosLoc, pos); }
+void Shader::setViewPos(glm::vec3 pos) { setVec3(viewPosLoc, pos); }
 
 unsigned int Shader::getUniformLocation(char *name) { return glGetUniformLocation(ID, name); }
 
@@ -78,9 +85,15 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     viewLoc = getUniformLocation("viewMatrix");
     modelLoc = getUniformLocation("modelMatrix");
     projectionLoc = getUniformLocation("projectionMatrix");
+
     translateLoc = getUniformLocation("translate");
     scaleLoc = getUniformLocation("scaleDown");
-    lightingLoc = getUniformLocation("lightColor");
+
+    lightColorLoc = getUniformLocation("lightColor");
+    objectColorLoc = getUniformLocation("objectColor");
+    lightPosLoc = getUniformLocation("lightPos");
+
+    viewPosLoc = getUniformLocation("viewPos");
 
     glEnable(GL_DEPTH_TEST);
 }

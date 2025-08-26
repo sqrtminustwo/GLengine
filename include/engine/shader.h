@@ -22,16 +22,20 @@ class Shader {
     void setViewMatrix(glm::mat4 matrix);
     void setScaleMatrix(glm::mat4 matrix);
     void setTranslationMatrix(glm::mat4 matrix);
-
-    void setLightingColor(float r, float g, float b);
+    void setObjectColor(glm::vec3 color);
+    void setLightColor(glm::vec3 color);
+    void setLightPos(glm::vec3 pos);
+    void setViewPos(glm::vec3 pos);
 
     unsigned int getUniformLocation(char *name);
 
   private:
     std::vector<unsigned int> textures;
-    unsigned int viewLoc, modelLoc, projectionLoc, translateLoc, scaleLoc, lightingLoc;
+    unsigned int viewLoc, modelLoc, projectionLoc, translateLoc, scaleLoc, objectColorLoc, lightColorLoc, lightPosLoc,
+        viewPosLoc;
 
     void setMatrix(unsigned int loc, glm::mat4 mat);
+    void setVec3(unsigned int loc, glm::vec3 vec);
 
     unsigned int createTexture(char *file_path);
 
