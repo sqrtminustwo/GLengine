@@ -18,7 +18,8 @@
 //   public:
 //     Text(Shader shader);
 //
-//     void renderText(Shader shader, std::string text, float x, float y, float scale, glm::vec3 color);
+//     void renderText(Shader shader, std::string text, float x, float y, float scale, glm::vec3
+//     color);
 //
 //   private:
 //     std::map<char, Character> Characters;

@@ -5,11 +5,6 @@ uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
-uniform mat4 scaleDown;
-uniform mat4 translate;
-
 void main() {
-    gl_Position = translate * vec4(aPos, 1.0);
-    gl_Position = scaleDown * gl_Position;
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * gl_Position;
+    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(aPos, 1.0);
 }

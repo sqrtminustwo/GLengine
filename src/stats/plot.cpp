@@ -15,10 +15,11 @@ struct Plot::TerminalScreenHolder {
 };
 
 Plot::Plot(
-    const std::vector<int> &points, int max_y, ftxui::Color color, int y_split, int max_points_in_graph, int update_time
+    const std::vector<int> &points, int max_y, ftxui::Color color, int y_split,
+    int max_points_in_graph, int update_time
 )
-    : points(points), max_y(max_y), color(color), y_split(y_split), max_points_in_graph(max_points_in_graph),
-      step(getStep()), update_time(update_time) {
+    : points(points), max_y(max_y), color(color), y_split(y_split),
+      max_points_in_graph(max_points_in_graph), step(getStep()), update_time(update_time) {
     main_component = Renderer([this] {
         auto c = Canvas(100, 100);
 

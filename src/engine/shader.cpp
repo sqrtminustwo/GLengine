@@ -20,8 +20,6 @@ void Shader::setMatrix(const unsigned int loc, const glm::mat4 mat) {
 void Shader::setModelMatrix(const glm::mat4 matrix) { setMatrix(modelLoc, matrix); }
 void Shader::setProjectionMatrix(const glm::mat4 matrix) { setMatrix(projectionLoc, matrix); }
 void Shader::setViewMatrix(const glm::mat4 matrix) { setMatrix(viewLoc, matrix); }
-void Shader::setScaleMatrix(const glm::mat4 matrix) { setMatrix(scaleLoc, matrix); }
-void Shader::setTranslationMatrix(const glm::mat4 matrix) { setMatrix(translateLoc, matrix); }
 
 void Shader::setVec3(const unsigned int loc, const glm::vec3 vec) {
     use();
@@ -86,9 +84,6 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     modelLoc = getUniformLocation("modelMatrix");
     projectionLoc = getUniformLocation("projectionMatrix");
 
-    translateLoc = getUniformLocation("translate");
-    scaleLoc = getUniformLocation("scaleDown");
-
     lightColorLoc = getUniformLocation("lightColor");
     objectColorLoc = getUniformLocation("objectColor");
     lightPosLoc = getUniformLocation("lightPos");
@@ -143,7 +138,8 @@ const unsigned int Shader::createTexture(const char *file_path) {
         if (color_formats.count(nrChannels))
             format = color_formats[nrChannels];
         else {
-            std::cerr << "Unsupported number of channels: " << nrChannels << " for " << file_path << std::endl;
+            std::cerr << "Unsupported number of channels: " << nrChannels << " for " << file_path
+                      << std::endl;
             stbi_image_free(data);
             throw std::runtime_error("Image color type is unsupported.");
         }

@@ -15,7 +15,8 @@
 //     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 //
 //     glm::mat4 projection = glm::mat4(1.0f);
-//     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+//     glUniformMatrix4fv(glGetUniformLocation(shader.ID, "projection"), 1, GL_FALSE,
+//     glm::value_ptr(projection));
 //
 //     FT_Library ft;
 //     // All functions return a value different than 0 whenever an error occurred
@@ -90,7 +91,8 @@
 //     glBindVertexArray(0);
 // }
 //
-// void Text::renderText(Shader shader, std::string text, float x, float y, float scale, glm::vec3 color) {
+// void Text::renderText(Shader shader, std::string text, float x, float y, float scale, glm::vec3
+// color) {
 //     glEnable(GL_CULL_FACE);
 //     glEnable(GL_BLEND);
 //
@@ -135,7 +137,8 @@
 //         // render quad
 //         glDrawArrays(GL_TRIANGLES, 0, 6);
 //         // now advance cursors for next glyph (note that advance is number of 1/64 pixels)
-//         x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide amount of 1/64th
+//         x += (ch.Advance >> 6) * scale; // bitshift by 6 to get value in pixels (2^6 = 64 (divide
+//         amount of 1/64th
 //                                         // pixels by 64 to get amount of pixels))
 //     }
 //     glBindVertexArray(0);

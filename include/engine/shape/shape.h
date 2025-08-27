@@ -11,17 +11,19 @@ class Shape {
     glm::mat4 getProjectionMatrix() const { return projectionMatrix; }
     glm::mat4 getTranslationMatrix() const { return translationMatrix; }
     glm::vec3 getPos() const { return pos; }
+    float getScaleFactor() const { return scale_factor; }
 
     void setPos(const float x, const float y, const float z);
-
-    void setModelMatrix(const glm::mat4 matrix) { modelMatrix = matrix; }
-    void setProjectionMatrix(const glm::mat4 matrix) { projectionMatrix = matrix; }
-    void setTranslationMatrix(const glm::mat4 matrix) { translationMatrix = matrix; }
+    void setScale(const float scale_factor);
 
     virtual void drawShape() = 0;
     void free_VAO_VBO();
 
   protected:
+    void setModelMatrix(const glm::mat4 matrix) { modelMatrix = matrix; }
+    void setProjectionMatrix(const glm::mat4 matrix) { projectionMatrix = matrix; }
+    void setTranslationMatrix(const glm::mat4 matrix) { translationMatrix = matrix; }
+
     void setVAO(const unsigned int VAO) { this->VAO = VAO; }
     void setVBO(const unsigned int VBO) { this->VBO = VBO; }
 
@@ -36,7 +38,9 @@ class Shape {
     unsigned int VAO, VBO;
 
     glm::vec3 pos{0.0f};
+    float scale_factor{1.0f};
     glm::mat4 modelMatrix{1.0f};
+
     glm::mat4 projectionMatrix{1.0f};
     glm::mat4 translationMatrix{1.0f};
 };

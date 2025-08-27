@@ -14,10 +14,12 @@ constexpr float ZOOM = 45.0f;
 class Camera {
   public:
     Camera(
-        glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW,
-        float pitch = PITCH
+        glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
+        glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW, float pitch = PITCH
     );
-    Camera(float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch);
+    Camera(
+        float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch
+    );
 
     glm::mat4 getViewMatrix() const { return glm::lookAt(Position, Position + Front, Up); }
     glm::vec3 getPosition() const { return Position; }

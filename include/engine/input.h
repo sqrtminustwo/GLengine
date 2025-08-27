@@ -58,7 +58,8 @@ class Input {
         {GLFW_KEY_ESCAPE,
          [this]() -> bool {
              if (last_key == GLFW_KEY_ESCAPE) return false;
-             input_mode = input_mode == GLFW_CURSOR_DISABLED ? GLFW_CURSOR_NORMAL : GLFW_CURSOR_DISABLED;
+             input_mode = input_mode == GLFW_CURSOR_DISABLED ? GLFW_CURSOR_NORMAL
+                                                             : GLFW_CURSOR_DISABLED;
              glfwSetInputMode(window->getWindow(), GLFW_CURSOR, input_mode);
              last_key = GLFW_KEY_ESCAPE;
              return true;
@@ -68,7 +69,8 @@ class Input {
         {GLFW_KEY_A, [this]() -> bool { return camera->processKeyboard(LEFT, deltaTime); }},
         {GLFW_KEY_D, [this]() -> bool { return camera->processKeyboard(RIGHT, deltaTime); }},
         {GLFW_KEY_SPACE, [this]() -> bool { return camera->processKeyboard(UP, deltaTime); }},
-        {GLFW_KEY_LEFT_CONTROL, [this]() -> bool { return camera->processKeyboard(DOWN, deltaTime); }},
+        {GLFW_KEY_LEFT_CONTROL,
+         [this]() -> bool { return camera->processKeyboard(DOWN, deltaTime); }},
     };
 };
 

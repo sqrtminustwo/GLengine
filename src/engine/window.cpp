@@ -22,7 +22,8 @@ Window::Window(const unsigned int WIDTH, const unsigned int HEIGHT) : WIDTH(WIDT
     }
 }
 
-Window::Window(const unsigned int WIDTH, const unsigned int HEIGHT, const rgba color) : Window(WIDTH, HEIGHT) {
+Window::Window(const unsigned int WIDTH, const unsigned int HEIGHT, const rgba color)
+    : Window(WIDTH, HEIGHT) {
     setColor(color);
 }
 

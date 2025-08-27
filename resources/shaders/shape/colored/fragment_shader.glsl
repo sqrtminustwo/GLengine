@@ -9,8 +9,7 @@ uniform vec3 viewPos;
 uniform vec3 lightColor;
 uniform vec3 objectColor;
 
-void main()
-{
+void main() {
     // ambient
     float ambientStrength = 0.1;
     vec3 ambient = ambientStrength * lightColor;
@@ -28,7 +27,7 @@ void main()
     // Reflect needs vector pointing from light source to object
     vec3 reflectDir = reflect(-lightDir, norm);
     // 32 - the lower the more reflection, the higher the less reflection
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 256);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
     vec3 specular = specularStrength * spec * lightColor;
 
     vec3 result = (ambient + diffuse + specular) * objectColor;

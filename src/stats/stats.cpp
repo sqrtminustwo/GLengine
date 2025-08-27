@@ -10,7 +10,8 @@ struct Stats::HeaderHolder {
 
 Stats::Stats() {
     header_holder = std::make_unique<HeaderHolder>();
-    header_holder->plot = std::unique_ptr<Plot>(new Plot(fps_history, 240, ftxui::Color::White, 10, 20, 1000));
+    header_holder->plot =
+        std::unique_ptr<Plot>(new Plot(fps_history, 240, ftxui::Color::White, 10, 20, 1000));
     renderer_text_fps = canvasWithVar(last_frames);
     renderer_text_avg_fps = canvasWithVar(avg_fps);
 
@@ -25,8 +26,10 @@ Stats::Stats() {
 
     // Main component/thread with rendering
     // https://github.com/ArthurSonzogni/FTXUI/blob/main/examples/component/canvas_animated.cpp
-    ftxui::Component main_component = Renderer(container, [this] { return container->Render() | ftxui::border; });
-    header_holder->terminal_screen = std::unique_ptr<TerminalScreen>(new TerminalScreen(main_component, 1000));
+    ftxui::Component main_component =
+        Renderer(container, [this] { return container->Render() | ftxui::border; });
+    header_holder->terminal_screen =
+        std::unique_ptr<TerminalScreen>(new TerminalScreen(main_component, 1000));
 
     last_time = glfwGetTime();
 }
