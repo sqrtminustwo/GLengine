@@ -1,5 +1,4 @@
 #include <cube_colored.h>
-#include <iostream>
 #include <window.h>
 #include <camera.h>
 #include <cube_textured.h>
@@ -25,7 +24,7 @@ void genAndAddCubes(
     }
 }
 
-void applyAndDrawShape(CubeColored cube, Shader shader) {
+void applyAndDrawShape(CubeColored &cube, Shader &shader) {
     shader.setModelMatrix(cube.getModelMatrix());
     shader.setProjectionMatrix(cube.getProjectionMatrix());
     shader.setObjectColor(cube.getColor());
@@ -60,31 +59,31 @@ int main() {
     constexpr auto middle = size / 2;
     triplet left_bottom_corner{middle, middle, middle};
 
-    constexpr auto radius = 2;
+    constexpr auto radius = 10;
     cube_light.setPos(radius, radius, 0);
 
-    // for (float i = 0; i <= size; i++) {
-    //     genAndAddCubes(
-    //         cube_template,
-    //         cubes,
-    //         {{-i, 0.0f, 0.0f}, {-i, -size, 0.0f}, {-i, 0.0f, -size}, {-i, -size, -size}},
-    //         left_bottom_corner
-    //     );
-    //
-    //     genAndAddCubes(
-    //         cube_template,
-    //         cubes,
-    //         {{0.0f, -i, 0.0f}, {-size, -i, 0.0f}, {0.0f, -i, -size}, {-size, -i, -size}},
-    //         left_bottom_corner
-    //     );
-    //
-    //     genAndAddCubes(
-    //         cube_template,
-    //         cubes,
-    //         {{0.0f, 0.0f, -i}, {0.0f, -size, -i}, {-size, 0.0f, -i}, {-size, -size, -i}},
-    //         left_bottom_corner
-    //     );
-    // }
+    for (float i = 0; i <= size; i++) {
+        genAndAddCubes(
+            cube_template,
+            cubes,
+            {{-i, 0.0f, 0.0f}, {-i, -size, 0.0f}, {-i, 0.0f, -size}, {-i, -size, -size}},
+            left_bottom_corner
+        );
+
+        genAndAddCubes(
+            cube_template,
+            cubes,
+            {{0.0f, -i, 0.0f}, {-size, -i, 0.0f}, {0.0f, -i, -size}, {-size, -i, -size}},
+            left_bottom_corner
+        );
+
+        genAndAddCubes(
+            cube_template,
+            cubes,
+            {{0.0f, 0.0f, -i}, {0.0f, -size, -i}, {-size, 0.0f, -i}, {-size, -size, -i}},
+            left_bottom_corner
+        );
+    }
 
     // use() SHOULD BE ALWAYS CALLED BEFORE SETTING UNIFORM (otherwise how would it know what
     // uniform to set if no shader is being used), use() is called in loadTexture() and all
@@ -115,8 +114,7 @@ int main() {
         shape_shader.setLightColor(cube_light.getColor());
         shape_shader.setViewMatrix(camera.getViewMatrix());
         shape_shader.setViewPos(camera.getPosition());
-        applyAndDrawShape(cube_template, shape_shader);
-        // for (auto &&cube : cubes) applyAndDrawShape(*cube, shape_shader);
+        for (auto &&cube : cubes) applyAndDrawShape(*cube, shape_shader);
 
         glfwSwapBuffers(window.getWindow());
         glfwPollEvents();
