@@ -12,8 +12,8 @@ using cube_type = CubeColored;
 using cube_ptr = std::unique_ptr<cube_type>;
 
 void genAndAddCubes(
-    const cube_type cube_template, std::vector<cube_ptr> &cubes,
-    const std::vector<triplet> &&coords, const triplet left_bottom_corner
+    const cube_type &cube_template, std::vector<cube_ptr> &cubes,
+    const std::vector<triplet> &&coords, const triplet &left_bottom_corner
 ) {
     for (auto coord : coords) {
         std::unique_ptr<cube_type> cube(new cube_type{cube_template});
