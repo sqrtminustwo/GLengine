@@ -13,25 +13,35 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-void Shader::setMatrix(const unsigned int loc, const glm::mat4 mat) {
+void Shader::setMat4(const unsigned int loc, const glm::mat4 mat) {
     use();
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
 }
-void Shader::setModelMatrix(const glm::mat4 matrix) { setMatrix(modelLoc, matrix); }
-void Shader::setModelNoTranslationMatrix(const glm::mat4 matrix) {
-    setMatrix(modelNoTranslationLoc, matrix);
-}
-void Shader::setProjectionMatrix(const glm::mat4 matrix) { setMatrix(projectionLoc, matrix); }
-void Shader::setViewMatrix(const glm::mat4 matrix) { setMatrix(viewLoc, matrix); }
-
 void Shader::setVec3(const unsigned int loc, const glm::vec3 vec) {
     use();
     glUniform3f(loc, vec.x, vec.y, vec.z);
 }
+void Shader::setFloat(const unsigned int loc, const float num) {
+    use();
+    glUniform1f(loc, num);
+}
+
+void Shader::setModelMatrix(const glm::mat4 matrix) { setMat4(modelLoc, matrix); }
+void Shader::setModelNoTranslationMatrix(const glm::mat4 matrix) {
+    setMat4(modelNoTranslationLoc, matrix);
+}
+void Shader::setProjectionMatrix(const glm::mat4 matrix) { setMat4(projectionLoc, matrix); }
+void Shader::setViewMatrix(const glm::mat4 matrix) { setMat4(viewLoc, matrix); }
+
 void Shader::setObjectColor(const glm::vec3 color) { setVec3(objectColorLoc, color); }
 void Shader::setLightColor(const glm::vec3 color) { setVec3(lightColorLoc, color); }
 void Shader::setLightPos(const glm::vec3 pos) { setVec3(lightPosLoc, pos); }
 void Shader::setViewPos(const glm::vec3 pos) { setVec3(viewPosLoc, pos); }
+
+void Shader::setAmbient(const glm::vec3 vec) { setVec3(ambientLoc, vec); }
+void Shader::setDiffuse(const glm::vec3 vec) { setVec3(diffuseLoc, vec); }
+void Shader::setSpecular(const glm::vec3 vec) { setVec3(specularLoc, vec); }
+void Shader::setShininess(const float num) { setFloat(shininessLoc, num); }
 
 unsigned int Shader::getUniformLocation(const char *name) { return glGetUniformLocation(ID, name); }
 
@@ -91,8 +101,12 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     lightColorLoc = getUniformLocation("lightColor");
     objectColorLoc = getUniformLocation("objectColor");
     lightPosLoc = getUniformLocation("lightPos");
-
     viewPosLoc = getUniformLocation("viewPos");
+
+    ambientLoc = getUniformLocation("material.ambient");
+    diffuseLoc = getUniformLocation("material.diffuse");
+    specularLoc = getUniformLocation("material.specular");
+    shininessLoc = getUniformLocation("material.shininess");
 
     glEnable(GL_DEPTH_TEST);
 }

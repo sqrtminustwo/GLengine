@@ -27,15 +27,21 @@ class Shader {
     void setLightPos(const glm::vec3 pos);
     void setViewPos(const glm::vec3 pos);
 
+    void setAmbient(const glm::vec3 vec);
+    void setDiffuse(const glm::vec3 vec);
+    void setSpecular(const glm::vec3 vec);
+    void setShininess(const float value);
+
     unsigned int getUniformLocation(const char *name);
 
   private:
     std::vector<unsigned int> textures;
     unsigned int viewLoc, modelLoc, modelNoTranslationLoc, projectionLoc, objectColorLoc,
-        lightColorLoc, lightPosLoc, viewPosLoc;
+        lightColorLoc, lightPosLoc, viewPosLoc, ambientLoc, diffuseLoc, specularLoc, shininessLoc;
 
-    void setMatrix(unsigned int loc, glm::mat4 mat);
-    void setVec3(unsigned int loc, glm::vec3 vec);
+    void setMat4(const unsigned int loc, const glm::mat4 mat);
+    void setVec3(const unsigned int loc, const glm::vec3 vec);
+    void setFloat(const unsigned int loc, const float num);
 
     const unsigned int createTexture(const char *file_path);
 

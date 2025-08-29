@@ -16,9 +16,15 @@ Cube::Cube() {
 Cube::Cube(const Cube &cube) {
     setVAO(cube.getVAO());
     setVBO(cube.getVBO());
+
     setScale(cube.getScaleFactor());
     setProjectionMatrix(cube.getProjectionMatrix());
     setTranslationMatrix(cube.getTranslationMatrix());
+
+    setAmbient(cube.getAmbient());
+    setDiffuse(cube.getDiffuse());
+    setSpecular(cube.getSpecular());
+    setShininess(cube.setShininess());
 }
 
 void Cube::drawShape() {

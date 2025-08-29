@@ -28,7 +28,13 @@ void applyAndDrawShape(CubeColored &cube, Shader &shader) {
     shader.setModelMatrix(cube.getModelMatrix());
     shader.setModelNoTranslationMatrix(cube.getModelNoTranslationMatrix());
     shader.setProjectionMatrix(cube.getProjectionMatrix());
+
     shader.setObjectColor(cube.getColor());
+    shader.setAmbient(cube.getAmbient());
+    shader.setDiffuse(cube.getDiffuse());
+    shader.setSpecular(cube.getSpecular());
+    shader.setShininess(cube.setShininess());
+
     cube.drawShape();
 }
 
@@ -51,6 +57,10 @@ int main() {
     cube_type cube_template{};
     cube_template.setColor(1.0f, 0.5f, 0.3f);
     cube_template.setScale(scaleFactor);
+    cube_template.setAmbient(1.0f, 0.5f, 0.31f);
+    cube_template.setDiffuse(1.0f, 0.5f, 0.31f);
+    cube_template.setSpecular(0.5f, 0.5f, 0.5f);
+    cube_template.setShininess(32.0f);
     std::vector<cube_ptr> cubes;
 
     CubeColored cube_light{};
