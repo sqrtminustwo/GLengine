@@ -7,6 +7,11 @@ void Shape::free_VAO_VBO() {
     glDeleteBuffers(1, &VBO);
 }
 
+glm::mat4 Shape::getModelNoTranslationMatrix() const {
+    glm::mat4 modelNoTranslation = modelMatrix;
+    return glm::transpose(glm::inverse(modelNoTranslation));
+}
+
 void Shape::setPos(const float x, const float y, const float z) {
     modelMatrix = glm::translate(modelMatrix, glm::vec3{-pos.x, -pos.y, -pos.z});
     pos = glm::vec3(x, y, z);

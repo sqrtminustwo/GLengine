@@ -8,6 +8,7 @@ class Shape {
 
   public:
     glm::mat4 getModelMatrix() const { return modelMatrix; }
+    glm::mat4 getModelNoTranslationMatrix() const;
     glm::mat4 getProjectionMatrix() const { return projectionMatrix; }
     glm::mat4 getTranslationMatrix() const { return translationMatrix; }
     glm::vec3 getPos() const { return pos; }

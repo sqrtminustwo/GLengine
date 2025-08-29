@@ -18,6 +18,9 @@ void Shader::setMatrix(const unsigned int loc, const glm::mat4 mat) {
     glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
 }
 void Shader::setModelMatrix(const glm::mat4 matrix) { setMatrix(modelLoc, matrix); }
+void Shader::setModelNoTranslationMatrix(const glm::mat4 matrix) {
+    setMatrix(modelNoTranslationLoc, matrix);
+}
 void Shader::setProjectionMatrix(const glm::mat4 matrix) { setMatrix(projectionLoc, matrix); }
 void Shader::setViewMatrix(const glm::mat4 matrix) { setMatrix(viewLoc, matrix); }
 
@@ -82,6 +85,7 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
 
     viewLoc = getUniformLocation("viewMatrix");
     modelLoc = getUniformLocation("modelMatrix");
+    modelNoTranslationLoc = getUniformLocation("modelNoTranslationMatrix");
     projectionLoc = getUniformLocation("projectionMatrix");
 
     lightColorLoc = getUniformLocation("lightColor");

@@ -14,12 +14,9 @@ Cube::Cube() {
 // Keep that in mind when removing things that should be copied (or always pass by reference)
 // Removing setting of model matrix can lead to loss of translation/scaling
 Cube::Cube(const Cube &cube) {
-    static int i = 0;
-    i++;
-    std::cout << "Coppied cube " << i << "\n";
     setVAO(cube.getVAO());
     setVBO(cube.getVBO());
-    setModelMatrix(cube.getModelMatrix());
+    setScale(cube.getScaleFactor());
     setProjectionMatrix(cube.getProjectionMatrix());
     setTranslationMatrix(cube.getTranslationMatrix());
 }

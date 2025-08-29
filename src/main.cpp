@@ -26,6 +26,7 @@ void genAndAddCubes(
 
 void applyAndDrawShape(CubeColored &cube, Shader &shader) {
     shader.setModelMatrix(cube.getModelMatrix());
+    shader.setModelNoTranslationMatrix(cube.getModelNoTranslationMatrix());
     shader.setProjectionMatrix(cube.getProjectionMatrix());
     shader.setObjectColor(cube.getColor());
     cube.drawShape();
@@ -107,7 +108,7 @@ int main() {
         auto x = radius * std::cos(time);
         auto y = radius * std::sin(time);
         auto z = 0;
-        cube_light.setPos(x, y, 0);
+        cube_light.setPos(x, y, y);
         applyAndDrawShape(cube_light, lighting_shader);
 
         shape_shader.setLightPos(cube_light.getPos());
