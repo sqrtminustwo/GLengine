@@ -1,4 +1,3 @@
-#include <iostream>
 #include <shape.h>
 #include <cube.h>
 #include <glad.h>

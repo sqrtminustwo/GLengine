@@ -8,7 +8,7 @@ class Shader;
 
 class Shape {
   public:
-    void applyShapeBase(Shader &shader);
+    void applyBaseShape(Shader &shader);
     virtual void applyShape(Shader &shader) = 0;
 
     glm::mat4 getModelMatrix() const { return modelMatrix; }

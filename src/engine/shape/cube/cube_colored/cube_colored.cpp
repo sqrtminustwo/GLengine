@@ -27,19 +27,15 @@ CubeColored::CubeColored() {
 }
 
 CubeColored::CubeColored(const CubeColored &other) : Cube(other) {
-    setColor(other.getColor());
     setAmbient(other.getAmbient());
     setDiffuse(other.getDiffuse());
     setSpecular(other.getSpecular());
-    setShininess(other.setShininess());
 }
 
-void CubeColored::applyShape(Shader &shader) {
-    shader.setVec3(Shader::OBJECT_COLOR, color);
+void CubeColored::applyColoredShape(Shader &shader) {
     shader.setVec3(Shader::MATERIAL_AMBIENT, ambient);
     shader.setVec3(Shader::MATERIAL_DIFFUSE, diffuse);
     shader.setVec3(Shader::MATERIAL_SPECULAR, specular);
-    shader.setFloat(Shader::MATERIAL_SHININESS, shininess);
 
-    applyShapeBase(shader);
+    applyBaseShape(shader);
 }

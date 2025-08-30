@@ -14,8 +14,6 @@ class Shader {
         MODEL_MAT,
         MODEL_NO_TRANSLATION_MAT,
         PROJECTION_MAT,
-        OBJECT_COLOR,
-        LIGHT_COLOR,
         VIEW_POS,
         LIGHT_POS,
         LIGHT_AMBIENT,

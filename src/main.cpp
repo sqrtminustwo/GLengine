@@ -1,5 +1,5 @@
-#include <cube_colored.h>
-#include <iostream>
+#include <cube_light.h>
+#include <cube_material.h>
 #include <window.h>
 #include <camera.h>
 #include <input.h>
@@ -8,7 +8,7 @@
 #include <plot.h>
 
 using triplet = std::tuple<float, float, float>;
-using cube_type = CubeColored;
+using cube_type = CubeMaterial;
 using cube_ptr = std::unique_ptr<cube_type>;
 
 void genAndAddCubes(
@@ -48,8 +48,11 @@ int main() {
     cube_template.setShininess(32.0f);
     std::vector<cube_ptr> cubes;
 
-    CubeColored cube_light{};
+    CubeLight cube_light{};
     cube_light.setScale(scaleFactor);
+    cube_light.setAmbient(0.2f, 0.2f, 0.2f);
+    cube_light.setDiffuse(0.5f, 0.5f, 0.5f);
+    cube_light.setSpecular(1.0f, 1.0f, 1.0f);
     constexpr auto size = 10;
     constexpr auto middle = size / 2;
     triplet left_bottom_corner{middle, middle, middle};
@@ -96,9 +99,7 @@ int main() {
 
         window.clearScreen();
 
-        // lighting_shader.setViewMatrix(camera.getViewMatrix());
         lighting_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
-
         auto time = glfwGetTime();
         auto x = radius * std::cos(time);
         auto y = radius * std::sin(time);
@@ -107,16 +108,11 @@ int main() {
         cube_light.applyShape(lighting_shader);
         cube_light.drawShape();
 
-        // shape_shader.setLightPos(cube_light.getPos());
-        // shape_shader.setLightColor(cube_light.getColor());
-        // shape_shader.setViewMatrix(camera.getViewMatrix());
-        // shape_shader.setViewPos(camera.getPosition());
         shape_shader.setVec3(Shader::LIGHT_POS, cube_light.getPos());
-        shape_shader.setVec3(Shader::LIGHT_COLOR, cube_light.getColor());
         shape_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
         shape_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
-
         for (auto &&cube : cubes) {
+            cube_light.applyLight(shape_shader);
             cube->applyShape(shape_shader);
             cube->drawShape();
         }

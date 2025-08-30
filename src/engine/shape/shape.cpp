@@ -3,7 +3,7 @@
 #include <shape.h>
 #include <shader.h>
 
-void Shape::applyShapeBase(Shader &shader) {
+void Shape::applyBaseShape(Shader &shader) {
     shader.setMat4(Shader::MODEL_MAT, modelMatrix);
     shader.setMat4(Shader::MODEL_NO_TRANSLATION_MAT, getModelNoTranslationMatrix());
     shader.setMat4(Shader::PROJECTION_MAT, projectionMatrix);

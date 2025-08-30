@@ -81,8 +81,6 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     uniforms[MODEL_NO_TRANSLATION_MAT] = getUniformLocation("modelNoTranslationMatrix");
     uniforms[PROJECTION_MAT] = getUniformLocation("projectionMatrix");
 
-    uniforms[LIGHT_COLOR] = getUniformLocation("lightColor");
-    uniforms[OBJECT_COLOR] = getUniformLocation("objectColor");
     uniforms[VIEW_POS] = getUniformLocation("viewPos");
 
     uniforms[LIGHT_POS] = getUniformLocation("light.position");
