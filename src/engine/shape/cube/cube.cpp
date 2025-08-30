@@ -13,18 +13,13 @@ Cube::Cube() {
 // WARNING: cube can be copied when passing to function
 // Keep that in mind when removing things that should be copied (or always pass by reference)
 // Removing setting of model matrix can lead to loss of translation/scaling
-Cube::Cube(const Cube &cube) {
-    setVAO(cube.getVAO());
-    setVBO(cube.getVBO());
+Cube::Cube(const Cube &other) {
+    setVAO(other.getVAO());
+    setVBO(other.getVBO());
 
-    setScale(cube.getScaleFactor());
-    setProjectionMatrix(cube.getProjectionMatrix());
-    setTranslationMatrix(cube.getTranslationMatrix());
-
-    setAmbient(cube.getAmbient());
-    setDiffuse(cube.getDiffuse());
-    setSpecular(cube.getSpecular());
-    setShininess(cube.setShininess());
+    setScale(other.getScaleFactor());
+    setProjectionMatrix(other.getProjectionMatrix());
+    setTranslationMatrix(other.getTranslationMatrix());
 }
 
 void Cube::drawShape() {

@@ -13,35 +13,18 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb_image.h>
 
-void Shader::setMat4(const unsigned int loc, const glm::mat4 mat) {
+void Shader::setMat4(UniformType uniformType, const glm::mat4 mat) {
     use();
-    glUniformMatrix4fv(loc, 1, GL_FALSE, glm::value_ptr(mat));
+    glUniformMatrix4fv(uniforms[uniformType], 1, GL_FALSE, glm::value_ptr(mat));
 }
-void Shader::setVec3(const unsigned int loc, const glm::vec3 vec) {
+void Shader::setVec3(UniformType uniformType, const glm::vec3 vec) {
     use();
-    glUniform3f(loc, vec.x, vec.y, vec.z);
+    glUniform3f(uniforms[uniformType], vec.x, vec.y, vec.z);
 }
-void Shader::setFloat(const unsigned int loc, const float num) {
+void Shader::setFloat(UniformType uniformType, const float num) {
     use();
-    glUniform1f(loc, num);
+    glUniform1f(uniforms[uniformType], num);
 }
-
-void Shader::setModelMatrix(const glm::mat4 matrix) { setMat4(modelLoc, matrix); }
-void Shader::setModelNoTranslationMatrix(const glm::mat4 matrix) {
-    setMat4(modelNoTranslationLoc, matrix);
-}
-void Shader::setProjectionMatrix(const glm::mat4 matrix) { setMat4(projectionLoc, matrix); }
-void Shader::setViewMatrix(const glm::mat4 matrix) { setMat4(viewLoc, matrix); }
-
-void Shader::setObjectColor(const glm::vec3 color) { setVec3(objectColorLoc, color); }
-void Shader::setLightColor(const glm::vec3 color) { setVec3(lightColorLoc, color); }
-void Shader::setLightPos(const glm::vec3 pos) { setVec3(lightPosLoc, pos); }
-void Shader::setViewPos(const glm::vec3 pos) { setVec3(viewPosLoc, pos); }
-
-void Shader::setAmbient(const glm::vec3 vec) { setVec3(ambientLoc, vec); }
-void Shader::setDiffuse(const glm::vec3 vec) { setVec3(diffuseLoc, vec); }
-void Shader::setSpecular(const glm::vec3 vec) { setVec3(specularLoc, vec); }
-void Shader::setShininess(const float num) { setFloat(shininessLoc, num); }
 
 unsigned int Shader::getUniformLocation(const char *name) { return glGetUniformLocation(ID, name); }
 
@@ -93,20 +76,24 @@ Shader::Shader(const char *vertexPath, const char *fragmentPath) {
     glDeleteShader(vertex);
     glDeleteShader(fragment);
 
-    viewLoc = getUniformLocation("viewMatrix");
-    modelLoc = getUniformLocation("modelMatrix");
-    modelNoTranslationLoc = getUniformLocation("modelNoTranslationMatrix");
-    projectionLoc = getUniformLocation("projectionMatrix");
+    uniforms[VIEW_MAT] = getUniformLocation("viewMatrix");
+    uniforms[MODEL_MAT] = getUniformLocation("modelMatrix");
+    uniforms[MODEL_NO_TRANSLATION_MAT] = getUniformLocation("modelNoTranslationMatrix");
+    uniforms[PROJECTION_MAT] = getUniformLocation("projectionMatrix");
 
-    lightColorLoc = getUniformLocation("lightColor");
-    objectColorLoc = getUniformLocation("objectColor");
-    lightPosLoc = getUniformLocation("lightPos");
-    viewPosLoc = getUniformLocation("viewPos");
+    uniforms[LIGHT_COLOR] = getUniformLocation("lightColor");
+    uniforms[OBJECT_COLOR] = getUniformLocation("objectColor");
+    uniforms[VIEW_POS] = getUniformLocation("viewPos");
 
-    ambientLoc = getUniformLocation("material.ambient");
-    diffuseLoc = getUniformLocation("material.diffuse");
-    specularLoc = getUniformLocation("material.specular");
-    shininessLoc = getUniformLocation("material.shininess");
+    uniforms[LIGHT_POS] = getUniformLocation("light.position");
+    uniforms[LIGHT_AMBIENT] = getUniformLocation("light.ambient");
+    uniforms[LIGHT_DIFFUSE] = getUniformLocation("light.diffuse");
+    uniforms[LIGHT_SPECULAR] = getUniformLocation("light.specular");
+
+    uniforms[MATERIAL_AMBIENT] = getUniformLocation("material.ambient");
+    uniforms[MATERIAL_DIFFUSE] = getUniformLocation("material.diffuse");
+    uniforms[MATERIAL_SPECULAR] = getUniformLocation("material.specular");
+    uniforms[MATERIAL_SHININESS] = getUniformLocation("material.shininess");
 
     glEnable(GL_DEPTH_TEST);
 }
@@ -123,6 +110,7 @@ void Shader::use() {
 }
 
 void Shader::loadTexture(char *path) {
+    std::cout << "Called loadTexture\n";
     try {
         unsigned int texture = createTexture(path);
         unsigned int texture_num = textures.size();
@@ -139,6 +127,7 @@ void Shader::loadTexture(char *path) {
 }
 
 const unsigned int Shader::createTexture(const char *file_path) {
+    std::cout << "Called createTexture\n";
     static std::map<int, GLenum> color_formats{{1, GL_RED}, {3, GL_RGB}, {4, GL_RGBA}};
     unsigned int texture;
     glGenTextures(1, &texture);

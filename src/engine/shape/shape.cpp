@@ -1,6 +1,13 @@
-#include <shape.h>
 #include <glad.h>
 #include <GLFW/glfw3.h>
+#include <shape.h>
+#include <shader.h>
+
+void Shape::applyShapeBase(Shader &shader) {
+    shader.setMat4(Shader::MODEL_MAT, modelMatrix);
+    shader.setMat4(Shader::MODEL_NO_TRANSLATION_MAT, getModelNoTranslationMatrix());
+    shader.setMat4(Shader::PROJECTION_MAT, projectionMatrix);
+}
 
 void Shape::free_VAO_VBO() {
     glDeleteVertexArrays(1, &VAO);

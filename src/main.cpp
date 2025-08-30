@@ -1,7 +1,7 @@
 #include <cube_colored.h>
+#include <iostream>
 #include <window.h>
 #include <camera.h>
-#include <cube_textured.h>
 #include <input.h>
 #include <shader.h>
 #include <stats.h>
@@ -24,20 +24,6 @@ void genAndAddCubes(
     }
 }
 
-void applyAndDrawShape(CubeColored &cube, Shader &shader) {
-    shader.setModelMatrix(cube.getModelMatrix());
-    shader.setModelNoTranslationMatrix(cube.getModelNoTranslationMatrix());
-    shader.setProjectionMatrix(cube.getProjectionMatrix());
-
-    shader.setObjectColor(cube.getColor());
-    shader.setAmbient(cube.getAmbient());
-    shader.setDiffuse(cube.getDiffuse());
-    shader.setSpecular(cube.getSpecular());
-    shader.setShininess(cube.setShininess());
-
-    cube.drawShape();
-}
-
 int main() {
     Window window{1280, 1000, std::tuple(0, 0, 0, 0.7)};
     Camera camera{glm::vec3(0.0f, 0.0f, 3.0f)};
@@ -55,7 +41,6 @@ int main() {
     constexpr float scaleFactor = 0.1f;
 
     cube_type cube_template{};
-    cube_template.setColor(1.0f, 0.5f, 0.3f);
     cube_template.setScale(scaleFactor);
     cube_template.setAmbient(1.0f, 0.5f, 0.31f);
     cube_template.setDiffuse(1.0f, 0.5f, 0.31f);
@@ -65,7 +50,6 @@ int main() {
 
     CubeColored cube_light{};
     cube_light.setScale(scaleFactor);
-    cube_light.setColor(1.0f, 1.0f, 1.0f);
     constexpr auto size = 10;
     constexpr auto middle = size / 2;
     triplet left_bottom_corner{middle, middle, middle};
@@ -112,20 +96,30 @@ int main() {
 
         window.clearScreen();
 
-        lighting_shader.setViewMatrix(camera.getViewMatrix());
+        // lighting_shader.setViewMatrix(camera.getViewMatrix());
+        lighting_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
 
         auto time = glfwGetTime();
         auto x = radius * std::cos(time);
         auto y = radius * std::sin(time);
         auto z = 0;
         cube_light.setPos(x, y, y);
-        applyAndDrawShape(cube_light, lighting_shader);
+        cube_light.applyShape(lighting_shader);
+        cube_light.drawShape();
 
-        shape_shader.setLightPos(cube_light.getPos());
-        shape_shader.setLightColor(cube_light.getColor());
-        shape_shader.setViewMatrix(camera.getViewMatrix());
-        shape_shader.setViewPos(camera.getPosition());
-        for (auto &&cube : cubes) applyAndDrawShape(*cube, shape_shader);
+        // shape_shader.setLightPos(cube_light.getPos());
+        // shape_shader.setLightColor(cube_light.getColor());
+        // shape_shader.setViewMatrix(camera.getViewMatrix());
+        // shape_shader.setViewPos(camera.getPosition());
+        shape_shader.setVec3(Shader::LIGHT_POS, cube_light.getPos());
+        shape_shader.setVec3(Shader::LIGHT_COLOR, cube_light.getColor());
+        shape_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        shape_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
+
+        for (auto &&cube : cubes) {
+            cube->applyShape(shape_shader);
+            cube->drawShape();
+        }
 
         glfwSwapBuffers(window.getWindow());
         glfwPollEvents();

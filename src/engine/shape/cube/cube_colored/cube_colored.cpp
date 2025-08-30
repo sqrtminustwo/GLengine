@@ -1,3 +1,4 @@
+#include <shader.h>
 #include <cube_colored.h>
 #include <glad.h>
 #include <GLFW/glfw3.h>
@@ -26,6 +27,19 @@ CubeColored::CubeColored() {
 }
 
 CubeColored::CubeColored(const CubeColored &other) : Cube(other) {
-    auto color = other.getColor();
-    setColor(color.x, color.y, color.z);
+    setColor(other.getColor());
+    setAmbient(other.getAmbient());
+    setDiffuse(other.getDiffuse());
+    setSpecular(other.getSpecular());
+    setShininess(other.setShininess());
+}
+
+void CubeColored::applyShape(Shader &shader) {
+    shader.setVec3(Shader::OBJECT_COLOR, color);
+    shader.setVec3(Shader::MATERIAL_AMBIENT, ambient);
+    shader.setVec3(Shader::MATERIAL_DIFFUSE, diffuse);
+    shader.setVec3(Shader::MATERIAL_SPECULAR, specular);
+    shader.setFloat(Shader::MATERIAL_SHININESS, shininess);
+
+    applyShapeBase(shader);
 }

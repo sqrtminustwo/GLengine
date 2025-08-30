@@ -4,10 +4,29 @@
 #include <glm/ext/matrix_float4x4.hpp>
 #include <vector>
 #include <string>
+#include <array>
 
 class Shader {
   public:
-    unsigned int ID;
+    // Not meant to do VALUE = ..., so using last variable as SIZE stays safe
+    enum UniformType {
+        VIEW_MAT,
+        MODEL_MAT,
+        MODEL_NO_TRANSLATION_MAT,
+        PROJECTION_MAT,
+        OBJECT_COLOR,
+        LIGHT_COLOR,
+        VIEW_POS,
+        LIGHT_POS,
+        LIGHT_AMBIENT,
+        LIGHT_DIFFUSE,
+        LIGHT_SPECULAR,
+        MATERIAL_AMBIENT,
+        MATERIAL_DIFFUSE,
+        MATERIAL_SPECULAR,
+        MATERIAL_SHININESS,
+        SIZE
+    };
 
     Shader(const char *vertexPath, const char *fragmentPath);
 
@@ -17,34 +36,21 @@ class Shader {
 
     void loadTexture(char *path);
 
-    void setModelMatrix(const glm::mat4 matrix);
-    void setModelNoTranslationMatrix(const glm::mat4 matrix);
-    void setProjectionMatrix(const glm::mat4 matrix);
-    void setViewMatrix(const glm::mat4 matrix);
-
-    void setObjectColor(const glm::vec3 color);
-    void setLightColor(const glm::vec3 color);
-    void setLightPos(const glm::vec3 pos);
-    void setViewPos(const glm::vec3 pos);
-
-    void setAmbient(const glm::vec3 vec);
-    void setDiffuse(const glm::vec3 vec);
-    void setSpecular(const glm::vec3 vec);
-    void setShininess(const float value);
+    void setMat4(UniformType, const glm::mat4);
+    void setVec3(UniformType, const glm::vec3);
+    void setFloat(UniformType, const float);
 
     unsigned int getUniformLocation(const char *name);
 
   private:
-    std::vector<unsigned int> textures;
-    unsigned int viewLoc, modelLoc, modelNoTranslationLoc, projectionLoc, objectColorLoc,
-        lightColorLoc, lightPosLoc, viewPosLoc, ambientLoc, diffuseLoc, specularLoc, shininessLoc;
+    unsigned int ID;
 
-    void setMat4(const unsigned int loc, const glm::mat4 mat);
-    void setVec3(const unsigned int loc, const glm::vec3 vec);
-    void setFloat(const unsigned int loc, const float num);
+    std::array<unsigned int, SIZE> uniforms;
+    std::vector<unsigned int> textures;
 
     const unsigned int createTexture(const char *file_path);
 
     void checkCompileErrors(const unsigned int shader, const std::string type) const;
 };
+
 #endif
