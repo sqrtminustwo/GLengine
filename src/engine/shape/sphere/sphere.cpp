@@ -21,11 +21,10 @@
 const int MIN_SECTOR_COUNT = 2;
 const int MIN_STACK_COUNT = 2;
 
-Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up) {
+Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up) : Shape() {
     interleavedStride = 32;
     set(radius, sectors, stacks, smooth, up);
 
-    setProjectionMatrix(glm::perspective(glm::radians(30.0f), (float)5 / 4, 0.1f, 100.0f));
     buildVerticesSmooth();
 
     unsigned int VAO, VBO, IBO;

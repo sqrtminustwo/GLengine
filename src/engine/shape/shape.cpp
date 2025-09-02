@@ -1,8 +1,12 @@
 #include <glad.h>
 #include <GLFW/glfw3.h>
+#include <glm/ext/matrix_clip_space.hpp>
 #include <shape.h>
 #include <shader.h>
 
+Shape::Shape() {
+    setProjectionMatrix(glm::perspective(glm::radians(30.0f), (float)5 / 4, 0.1f, 100.0f));
+}
 // WARNING: cube can be copied when passing to function
 // Keep that in mind when removing things that should be copied (or always pass by reference)
 // Removing setting of model matrix can lead to loss of translation/scaling

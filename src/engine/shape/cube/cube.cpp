@@ -5,9 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-Cube::Cube() {
-    setProjectionMatrix(glm::perspective(glm::radians(30.0f), (float)5 / 4, 0.1f, 100.0f));
-}
+Cube::Cube() : Shape() {}
 
 Cube::Cube(const Cube &other) : Shape(other) { setScale(other.getScaleFactor()); }
 

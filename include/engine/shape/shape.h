@@ -8,7 +8,7 @@ class Shader;
 
 class Shape {
   public:
-    Shape() = default;
+    Shape();
     Shape(const Shape &);
 
     void applyBaseShape(Shader &);
