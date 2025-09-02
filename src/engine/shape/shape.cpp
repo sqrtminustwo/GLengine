@@ -3,6 +3,18 @@
 #include <shape.h>
 #include <shader.h>
 
+// WARNING: cube can be copied when passing to function
+// Keep that in mind when removing things that should be copied (or always pass by reference)
+// Removing setting of model matrix can lead to loss of translation/scaling
+Shape::Shape(const Shape &other) {
+    setVAO(other.getVAO());
+    setVBO(other.getVBO());
+    setIBO(other.getIBO());
+
+    setProjectionMatrix(other.getProjectionMatrix());
+    setTranslationMatrix(other.getTranslationMatrix());
+}
+
 void Shape::applyBaseShape(Shader &shader) {
     shader.setMat4(Shader::MODEL_MAT, modelMatrix);
     shader.setMat4(Shader::MODEL_NO_TRANSLATION_MAT, getModelNoTranslationMatrix());
@@ -24,10 +36,4 @@ void Shape::setPos(const float x, const float y, const float z) {
     modelMatrix = glm::translate(modelMatrix, glm::vec3{-pos.x, -pos.y, -pos.z});
     pos = glm::vec3(x, y, z);
     modelMatrix = glm::translate(modelMatrix, glm::vec3{pos.x, pos.y, pos.z});
-}
-
-void Shape::setScale(const float scale_factor) {
-    modelMatrix = glm::scale(modelMatrix, glm::vec3{1 / this->scale_factor});
-    this->scale_factor = scale_factor;
-    modelMatrix = glm::scale(modelMatrix, glm::vec3{this->scale_factor});
 }

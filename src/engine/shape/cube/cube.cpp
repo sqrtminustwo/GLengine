@@ -9,19 +9,15 @@ Cube::Cube() {
     setProjectionMatrix(glm::perspective(glm::radians(30.0f), (float)5 / 4, 0.1f, 100.0f));
 }
 
-// WARNING: cube can be copied when passing to function
-// Keep that in mind when removing things that should be copied (or always pass by reference)
-// Removing setting of model matrix can lead to loss of translation/scaling
-Cube::Cube(const Cube &other) {
-    setVAO(other.getVAO());
-    setVBO(other.getVBO());
-
-    setScale(other.getScaleFactor());
-    setProjectionMatrix(other.getProjectionMatrix());
-    setTranslationMatrix(other.getTranslationMatrix());
-}
+Cube::Cube(const Cube &other) : Shape(other) { setScale(other.getScaleFactor()); }
 
 void Cube::drawShape() {
     glBindVertexArray(getVAO());
     glDrawArrays(GL_TRIANGLES, 0, 36);
+}
+
+void Cube::setScale(const float scale_factor) {
+    setModelMatrix(glm::scale(getModelMatrix(), glm::vec3{1 / this->scale_factor}));
+    this->scale_factor = scale_factor;
+    setModelMatrix(glm::scale(getModelMatrix(), glm::vec3{this->scale_factor}));
 }

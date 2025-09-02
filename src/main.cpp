@@ -118,12 +118,10 @@ int main() {
         cube_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
 
         cube_light.applyLight(cube_shader);
-        cube_template.applyShape(cube_shader);
-        cube_template.drawShape();
-        // for (auto &&cube : cubes) {
-        //     cube->applyShape(cube_shader);
-        //     cube->drawShape();
-        // }
+        for (auto &&cube : cubes) {
+            cube->applyShape(cube_shader);
+            cube->drawShape();
+        }
 
         sphere_shader.use();
         sphere_shader.setVec3(Shader::LIGHT_POS, cube_light.getPos());
