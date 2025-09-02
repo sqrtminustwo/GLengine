@@ -26,9 +26,11 @@ void Shader::setFloat(UniformType uniformType, const float num) {
     glUniform1f(uniforms[uniformType], num);
 }
 
-unsigned int Shader::getUniformLocation(const char *name) { return glGetUniformLocation(ID, name); }
+unsigned int Shader::getUniformLocation(const std::string name) {
+    return glGetUniformLocation(ID, name.c_str());
+}
 
-Shader::Shader(const char *vertexPath, const char *fragmentPath) {
+Shader::Shader(const std::string vertexPath, const std::string fragmentPath) {
     std::string vertexCode;
     std::string fragmentCode;
     std::ifstream vShaderFile;
@@ -101,31 +103,34 @@ void Shader::destruct() { glDeleteProgram(ID); }
 void Shader::use() {
     glUseProgram(ID);
     // Use textures
-    for (int i = 0; i < textures.size(); i++) {
+    int i = 0;
+    for (const auto &pair : textures) {
         glActiveTexture(GL_TEXTURE0 + i);
-        glBindTexture(GL_TEXTURE_2D, textures.at(i));
+        glBindTexture(GL_TEXTURE_2D, pair.second);
+        i++;
     }
 }
 
-void Shader::loadTexture(char *path) {
-    std::cout << "Called loadTexture\n";
+void Shader::loadTexture(const std::string path, const UniformType type) {
+    if (textures.find(path) != textures.end()) return;
+    std::cout << "Actually loading texture\n";
     try {
         unsigned int texture = createTexture(path);
-        unsigned int texture_num = textures.size();
-        char texture_name[9] = "texture ";
-        texture_name[7] = texture_num + '0';
         use();
-        glUniform1i(getUniformLocation(texture_name), texture_num);
-        textures.push_back(texture);
+        glUniform1i(uniforms[type], textures.size());
+        textures[path] = texture;
     } catch (std::exception ex) {
         std::cerr << "Error loading texture: " << std::endl;
         std::cerr << ex.what() << std::endl;
         throw;
     }
 }
+void Shader::loadDiffuseTexture(const std::string path) { loadTexture(path, MATERIAL_DIFFUSE); }
+void Shader::loadSpecualarTexture(const std::string path) { loadTexture(path, MATERIAL_SPECULAR); }
 
-const unsigned int Shader::createTexture(const char *file_path) {
+const unsigned int Shader::createTexture(const std::string file_path) {
     std::cout << "Called createTexture\n";
+    use();
     static std::map<int, GLenum> color_formats{{1, GL_RED}, {3, GL_RGB}, {4, GL_RGBA}};
     unsigned int texture;
     glGenTextures(1, &texture);
@@ -137,7 +142,7 @@ const unsigned int Shader::createTexture(const char *file_path) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     int width, height, nrChannels;
-    unsigned char *data = stbi_load(file_path, &width, &height, &nrChannels, 0);
+    unsigned char *data = stbi_load(file_path.c_str(), &width, &height, &nrChannels, 0);
     if (data) {
         GLenum format;
         if (color_formats.count(nrChannels))

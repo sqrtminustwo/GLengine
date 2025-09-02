@@ -1,3 +1,4 @@
+#include <cube_textured.h>
 #include <cube_light.h>
 #include <cube_material.h>
 #include <window.h>
@@ -8,7 +9,7 @@
 #include <plot.h>
 
 using triplet = std::tuple<float, float, float>;
-using cube_type = CubeMaterial;
+using cube_type = CubeTextured;
 using cube_ptr = std::unique_ptr<cube_type>;
 
 void genAndAddCubes(
@@ -29,9 +30,13 @@ int main() {
     Camera camera{glm::vec3(0.0f, 0.0f, 3.0f)};
     Input input(&camera, &window);
 
-    Shader shape_shader(
-        PROJECT_DIR "/resources/shaders/shape/colored/vertex_shader.glsl",
-        PROJECT_DIR "/resources/shaders/shape/colored/fragment_shader.glsl"
+    // Shader colored_shape_shader(
+    //     PROJECT_DIR "/resources/shaders/shape/colored/vertex_shader.glsl",
+    //     PROJECT_DIR "/resources/shaders/shape/colored/fragment_shader.glsl"
+    // );
+    Shader textured_shape_shader(
+        PROJECT_DIR "/resources/shaders/shape/textured/vertex_shader.glsl",
+        PROJECT_DIR "/resources/shaders/shape/textured/fragment_shader.glsl"
     );
     Shader lighting_shader(
         PROJECT_DIR "/resources/shaders/lighting/vertex_shader.glsl",
@@ -39,13 +44,19 @@ int main() {
     );
 
     constexpr float scaleFactor = 0.1f;
+    std::string diffuse_texture = PROJECT_DIR "/resources/textures/container.png";
+    std::string specular_texture = PROJECT_DIR "/resources/textures/container_specular.png";
+    // textured_shape_shader.loadTexture(diffuse_texture, "texture0");
 
     cube_type cube_template{};
     cube_template.setScale(scaleFactor);
-    cube_template.setAmbient(1.0f, 0.5f, 0.31f);
-    cube_template.setDiffuse(1.0f, 0.5f, 0.31f);
-    cube_template.setSpecular(0.5f, 0.5f, 0.5f);
-    cube_template.setShininess(32.0f);
+    cube_template.setDiffuse(diffuse_texture);
+    cube_template.setSpecular(specular_texture);
+    cube_template.setShininess(10.0f);
+    // cube_template.setAmbient(1.0f, 0.5f, 0.31f);
+    // cube_template.setDiffuse(1.0f, 0.5f, 0.31f);
+    // cube_template.setSpecular(0.5f, 0.5f, 0.5f);
+    // cube_template.setShininess(32.0f);
     std::vector<cube_ptr> cubes;
 
     CubeLight cube_light{};
@@ -83,12 +94,6 @@ int main() {
         );
     }
 
-    // use() SHOULD BE ALWAYS CALLED BEFORE SETTING UNIFORM (otherwise how would it know what
-    // uniform to set if no shader is being used), use() is called in loadTexture() and all
-    // setMatrix() char background[] = PROJECT_DIR "/resources/textures/yellow.png"; char frame[] =
-    // PROJECT_DIR "/resources/textures/frame4.png"; shape_shader.loadTexture(background);
-    // shape_shader.loadTexture(frame);
-
     // Stats stats{};
     // stats.start(); // End is defined in class destructor
 
@@ -108,12 +113,17 @@ int main() {
         cube_light.applyShape(lighting_shader);
         cube_light.drawShape();
 
-        shape_shader.setVec3(Shader::LIGHT_POS, cube_light.getPos());
-        shape_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
-        shape_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
+        // colored_shape_shader.setVec3(Shader::LIGHT_POS, cube_light.getPos());
+        // colored_shape_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        // colored_shape_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
+
+        textured_shape_shader.setVec3(Shader::LIGHT_POS, cube_light.getPos());
+        textured_shape_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        textured_shape_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
+
         for (auto &&cube : cubes) {
-            cube_light.applyLight(shape_shader);
-            cube->applyShape(shape_shader);
+            cube_light.applyLight(textured_shape_shader);
+            cube->applyShape(textured_shape_shader);
             cube->drawShape();
         }
 

@@ -8,8 +8,8 @@ class Shader;
 
 class Shape {
   public:
-    void applyBaseShape(Shader &shader);
-    virtual void applyShape(Shader &shader) = 0;
+    void applyBaseShape(Shader &);
+    virtual void applyShape(Shader &) = 0;
 
     glm::mat4 getModelMatrix() const { return modelMatrix; }
     glm::mat4 getModelNoTranslationMatrix() const;
@@ -17,9 +17,11 @@ class Shape {
     glm::mat4 getTranslationMatrix() const { return translationMatrix; }
     glm::vec3 getPos() const { return pos; }
     float getScaleFactor() const { return scale_factor; }
+    float getShininess() const { return shininess; }
 
     void setPos(const float x, const float y, const float z);
     void setScale(const float scale_factor);
+    void setShininess(const float value) { shininess = value; }
 
     virtual void drawShape() = 0;
     void free_VAO_VBO();
@@ -44,6 +46,7 @@ class Shape {
 
     glm::vec3 pos{0.0f};
     float scale_factor{1.0f};
+    float shininess{1.0f};
     glm::mat4 modelMatrix{1.0f};
 
     glm::mat4 projectionMatrix{1.0f};

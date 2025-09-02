@@ -2,7 +2,7 @@
 #define SHADER_H
 
 #include <glm/ext/matrix_float4x4.hpp>
-#include <vector>
+#include <map>
 #include <string>
 #include <array>
 
@@ -26,27 +26,29 @@ class Shader {
         SIZE
     };
 
-    Shader(const char *vertexPath, const char *fragmentPath);
+    Shader(const std::string vertexPath, const std::string fragmentPath);
 
     void destruct();
 
     void use();
 
-    void loadTexture(char *path);
+    void loadDiffuseTexture(const std::string path);
+    void loadSpecualarTexture(const std::string path);
 
     void setMat4(UniformType, const glm::mat4);
     void setVec3(UniformType, const glm::vec3);
     void setFloat(UniformType, const float);
 
-    unsigned int getUniformLocation(const char *name);
+    unsigned int getUniformLocation(const std::string name);
 
   private:
     unsigned int ID;
 
     std::array<unsigned int, SIZE> uniforms;
-    std::vector<unsigned int> textures;
+    std::map<std::string, unsigned int> textures;
 
-    const unsigned int createTexture(const char *file_path);
+    void loadTexture(const std::string path, const UniformType name);
+    const unsigned int createTexture(const std::string file_path);
 
     void checkCompileErrors(const unsigned int shader, const std::string type) const;
 };

@@ -6,16 +6,9 @@
 class CubeMaterial : public CubeColored {
   public:
     CubeMaterial();
-    CubeMaterial(const CubeMaterial &other);
+    CubeMaterial(const CubeMaterial &);
 
-    void applyShape(Shader &shader) override;
-
-    float getShininess() const { return shininess; }
-
-    void setShininess(const float value) { shininess = value; }
-
-  private:
-    float shininess{1.0f};
+    void applyShape(Shader &) override;
 };
 
 #endif

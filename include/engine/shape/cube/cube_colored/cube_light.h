@@ -6,8 +6,8 @@
 class CubeLight : public CubeColored {
   public:
     CubeLight();
-    void applyShape(Shader &shader) override;
-    void applyLight(Shader &shader);
+    void applyShape(Shader &) override;
+    void applyLight(Shader &);
 };
 
 #endif

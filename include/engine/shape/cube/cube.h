@@ -6,7 +6,7 @@
 class Cube : public Shape {
   public:
     Cube();
-    Cube(const Cube &cube);
+    Cube(const Cube &);
 
     void drawShape() override;
 };
