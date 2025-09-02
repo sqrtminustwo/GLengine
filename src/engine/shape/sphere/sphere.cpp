@@ -69,7 +69,7 @@ void Sphere::applyShape(Shader &shader) {
     // shader.loadSpecualarTexture(specular);
     applyBaseShape(shader);
 }
-void Sphere::drawShape() { drawFull(); }
+void Sphere::drawShape() { drawLines(); }
 
 ///////////////////////////////////////////////////////////////////////////////
 // setters
