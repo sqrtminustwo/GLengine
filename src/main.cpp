@@ -1,3 +1,6 @@
+#include <glad.h>
+#include <GLFW/glfw3.h>
+#include "sphere.h"
 #include <cube_textured.h>
 #include <cube_light.h>
 #include <cube_material.h>
@@ -30,33 +33,32 @@ int main() {
     Camera camera{glm::vec3(0.0f, 0.0f, 3.0f)};
     Input input(&camera, &window);
 
-    // Shader colored_shape_shader(
-    //     PROJECT_DIR "/resources/shaders/shape/colored/vertex_shader.glsl",
-    //     PROJECT_DIR "/resources/shaders/shape/colored/fragment_shader.glsl"
-    // );
-    Shader textured_shape_shader(
-        PROJECT_DIR "/resources/shaders/shape/textured/vertex_shader.glsl",
-        PROJECT_DIR "/resources/shaders/shape/textured/fragment_shader.glsl"
+    // WARNING: test sphere code
+    Shader sphere_shader(
+        PROJECT_DIR "/resources/shaders/shape/sphere/vertex_shader.glsl",
+        PROJECT_DIR "/resources/shaders/shape/sphere/fragment_shader.glsl"
+    );
+
+    Sphere sphere;
+
+    Shader cube_shader(
+        PROJECT_DIR "/resources/shaders/shape/cube/textured/vertex_shader.glsl",
+        PROJECT_DIR "/resources/shaders/shape/cube/textured/fragment_shader.glsl"
     );
     Shader lighting_shader(
-        PROJECT_DIR "/resources/shaders/lighting/vertex_shader.glsl",
-        PROJECT_DIR "/resources/shaders/lighting/fragment_shader.glsl"
+        PROJECT_DIR "/resources/shaders/shape/cube/lighting/vertex_shader.glsl",
+        PROJECT_DIR "/resources/shaders/shape/cube/lighting/fragment_shader.glsl"
     );
 
     constexpr float scaleFactor = 0.1f;
     std::string diffuse_texture = PROJECT_DIR "/resources/textures/container.png";
     std::string specular_texture = PROJECT_DIR "/resources/textures/container_specular.png";
-    // textured_shape_shader.loadTexture(diffuse_texture, "texture0");
 
     cube_type cube_template{};
     cube_template.setScale(scaleFactor);
     cube_template.setDiffuse(diffuse_texture);
     cube_template.setSpecular(specular_texture);
     cube_template.setShininess(10.0f);
-    // cube_template.setAmbient(1.0f, 0.5f, 0.31f);
-    // cube_template.setDiffuse(1.0f, 0.5f, 0.31f);
-    // cube_template.setSpecular(0.5f, 0.5f, 0.5f);
-    // cube_template.setShininess(32.0f);
     std::vector<cube_ptr> cubes;
 
     CubeLight cube_light{};
@@ -113,19 +115,17 @@ int main() {
         cube_light.applyShape(lighting_shader);
         cube_light.drawShape();
 
-        // colored_shape_shader.setVec3(Shader::LIGHT_POS, cube_light.getPos());
-        // colored_shape_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
-        // colored_shape_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
+        cube_shader.setVec3(Shader::LIGHT_POS, cube_light.getPos());
+        cube_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        cube_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
 
-        textured_shape_shader.setVec3(Shader::LIGHT_POS, cube_light.getPos());
-        textured_shape_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
-        textured_shape_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
-
-        for (auto &&cube : cubes) {
-            cube_light.applyLight(textured_shape_shader);
-            cube->applyShape(textured_shape_shader);
-            cube->drawShape();
-        }
+        cube_light.applyLight(cube_shader);
+        cube_template.applyShape(cube_shader);
+        cube_template.drawShape();
+        // for (auto &&cube : cubes) {
+        //     cube->applyShape(cube_shader);
+        //     cube->drawShape();
+        // }
 
         glfwSwapBuffers(window.getWindow());
         glfwPollEvents();

@@ -23,6 +23,7 @@ file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/cube/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/sphere/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/cube/cube_colored/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/cube/cube_textured/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/stats/*.h
@@ -43,6 +44,7 @@ target_include_directories(${PROJECT_NAME}
         ${CMAKE_CURRENT_SOURCE_DIR}/include/engine
         ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape
         ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/cube
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/sphere
         ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/cube/cube_colored
         ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/cube/cube_textured
         ${CMAKE_CURRENT_SOURCE_DIR}/include/stats
