@@ -14,9 +14,11 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
+#include <shape.h>
+#include <string>
 #include <vector>
 
-class Sphere {
+class Sphere : Shape {
   public:
     // ctor/dtor
     Sphere(
@@ -24,6 +26,9 @@ class Sphere {
         int up = 3
     );
     ~Sphere() {}
+
+    void applyShape(Shader &);
+    void drawShape();
 
     // getters/setters
     float getRadius() const { return radius; }
@@ -69,14 +74,19 @@ class Sphere {
     const float *getInterleavedVertices() const { return interleavedVertices.data(); }
 
     // draw in VertexArray mode
-    void draw() const;                                  // draw surface
-    void drawLines(const float lineColor[4]) const;     // draw lines only
-    void drawWithLines(const float lineColor[4]) const; // draw surface and lines
+    void drawFull() const;  // draw surface
+    void drawLines() const; // draw lines only
 
     // debug
     void printSelf() const;
 
+    void setDiffuse(const std::string texture) { diffuse = texture; }
+    void setSpecular(const std::string texture) { specular = texture; }
+
   private:
+    std::string diffuse{};
+    std::string specular{};
+
     // member functions
     void buildVerticesSmooth();
     void buildVerticesFlat();
@@ -87,6 +97,8 @@ class Sphere {
     void addNormal(float x, float y, float z);
     void addTexCoord(float s, float t);
     void addIndices(unsigned int i1, unsigned int i2, unsigned int i3);
+    void draw(unsigned int) const;
+
     std::vector<float> computeFaceNormal(
         float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3
     );
@@ -97,9 +109,11 @@ class Sphere {
     int stackCount;  // latitude, # of stacks
     bool smooth;
     int upAxis; // +X=1, +Y=2, +z=3 (default)
+
     std::vector<float> vertices;
     std::vector<float> normals;
     std::vector<float> texCoords;
+
     std::vector<unsigned int> indices;
     std::vector<unsigned int> lineIndices;
 

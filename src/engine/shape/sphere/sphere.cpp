@@ -11,31 +11,65 @@
 // UPDATED: 2024-07-19
 ///////////////////////////////////////////////////////////////////////////////
 
-#ifdef _WIN32
-#include <windows.h> // include windows.h to avoid thousands of compile errors even though this class is not depending on Windows
-#endif
-
-#ifdef __APPLE__
-#include <OpenGL/gl.h>
-#else
-#include <GL/gl.h>
-#endif
-
+#include <glad.h>
+#include <glm/ext/matrix_clip_space.hpp>
 #include <iostream>
-#include <iomanip>
 #include <cmath>
 #include <sphere.h>
+#include <shader.h>
 
-// constants //////////////////////////////////////////////////////////////////
 const int MIN_SECTOR_COUNT = 2;
 const int MIN_STACK_COUNT = 2;
 
-///////////////////////////////////////////////////////////////////////////////
-// ctor
-///////////////////////////////////////////////////////////////////////////////
-Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up) : interleavedStride(32) {
+Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up) {
+    interleavedStride = 32;
     set(radius, sectors, stacks, smooth, up);
+
+    setProjectionMatrix(glm::perspective(glm::radians(30.0f), (float)5 / 4, 0.1f, 100.0f));
+    buildVerticesSmooth();
+
+    unsigned int VAO, VBO, IBO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    // create vertex buffer objects
+    glGenBuffers(1, &VBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(
+        GL_ARRAY_BUFFER,
+        getInterleavedVertexSize(),
+        getInterleavedVertices(),
+        GL_STATIC_DRAW
+    );
+
+    glGenBuffers(1, &IBO);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, getIndexSize(), getIndices(), GL_STATIC_DRAW);
+
+    // enable vertex array attributes for bound VAO
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+
+    // store vertex array pointers to bound VAO
+    int stride = getInterleavedStride();
+    glVertexAttribPointer(0, 3, GL_FLOAT, false, stride, 0);
+    glVertexAttribPointer(1, 3, GL_FLOAT, false, stride, (void *)(3 * sizeof(float)));
+    glVertexAttribPointer(2, 2, GL_FLOAT, false, stride, (void *)(6 * sizeof(float)));
+
+    setVAO(VAO);
+    setVBO(VBO);
+    setIBO(IBO);
 }
+
+void Sphere::applyShape(Shader &shader) {
+    shader.loadDiffuseTexture(diffuse);
+    // shader.loadSpecualarTexture(specular);
+    applyBaseShape(shader);
+}
+void Sphere::drawShape() { drawFull(); }
 
 ///////////////////////////////////////////////////////////////////////////////
 // setters
@@ -129,86 +163,27 @@ void Sphere::printSelf() const {
               << "TexCoord Count: " << getTexCoordCount() << std::endl;
 }
 
+void Sphere::draw(unsigned int type) const {
+    glBindVertexArray(getVAO());
+    glDrawElements(
+        type,            // primitive type
+        getIndexCount(), // # of indices
+        GL_UNSIGNED_INT, // data type
+        (void *)0        // ptr to indices
+
+    );
+}
 ///////////////////////////////////////////////////////////////////////////////
 // draw a sphere in VertexArray mode
 // OpenGL RC must be set before calling it
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::draw() const {
-    // interleaved array
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glEnableClientState(GL_NORMAL_ARRAY);
-    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-    glVertexPointer(3, GL_FLOAT, interleavedStride, &interleavedVertices[0]);
-    glNormalPointer(GL_FLOAT, interleavedStride, &interleavedVertices[3]);
-    glTexCoordPointer(2, GL_FLOAT, interleavedStride, &interleavedVertices[6]);
-
-    glDrawElements(GL_TRIANGLES, (unsigned int)indices.size(), GL_UNSIGNED_INT, indices.data());
-
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glDisableClientState(GL_NORMAL_ARRAY);
-    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-}
+void Sphere::drawFull() const { draw(GL_TRIANGLES); }
 
 ///////////////////////////////////////////////////////////////////////////////
 // draw lines only
 // the caller must set the line width before call this
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::drawLines(const float lineColor[4]) const {
-    // set line colour
-    glColor4fv(lineColor);
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, lineColor);
-
-    // draw lines with VA
-    glDisable(GL_LIGHTING);
-    glDisable(GL_TEXTURE_2D);
-    glEnableClientState(GL_VERTEX_ARRAY);
-    glVertexPointer(3, GL_FLOAT, 0, vertices.data());
-
-    glDrawElements(GL_LINES, (unsigned int)lineIndices.size(), GL_UNSIGNED_INT, lineIndices.data());
-
-    glDisableClientState(GL_VERTEX_ARRAY);
-    glEnable(GL_LIGHTING);
-    glEnable(GL_TEXTURE_2D);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-// draw a sphere surfaces and lines on top of it
-// the caller must set the line width before call this
-///////////////////////////////////////////////////////////////////////////////
-void Sphere::drawWithLines(const float lineColor[4]) const {
-    glEnable(GL_POLYGON_OFFSET_FILL);
-    glPolygonOffset(1.0, 1.0f); // move polygon backward
-    this->draw();
-    glDisable(GL_POLYGON_OFFSET_FILL);
-
-    // draw lines with VA
-    drawLines(lineColor);
-}
-
-/*@@ FIXME: when the radius = 0
-///////////////////////////////////////////////////////////////////////////////
-// update vertex positions only
-///////////////////////////////////////////////////////////////////////////////
-void Sphere::updateRadius()
-{
-    float scale = sqrtf(radius * radius / (vertices[0] * vertices[0] + vertices[1] * vertices[1] +
-vertices[2] * vertices[2]));
-
-    std::size_t i, j;
-    std::size_t count = vertices.size();
-    for(i = 0, j = 0; i < count; i += 3, j += 8)
-    {
-        vertices[i]   *= scale;
-        vertices[i+1] *= scale;
-        vertices[i+2] *= scale;
-
-        // for interleaved array
-        interleavedVertices[j]   *= scale;
-        interleavedVertices[j+1] *= scale;
-        interleavedVertices[j+2] *= scale;
-    }
-}
-*/
+void Sphere::drawLines() const { draw(GL_LINES); }
 
 ///////////////////////////////////////////////////////////////////////////////
 // dealloc vectors

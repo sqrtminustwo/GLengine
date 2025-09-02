@@ -113,7 +113,6 @@ void Shader::use() {
 
 void Shader::loadTexture(const std::string path, const UniformType type) {
     if (textures.find(path) != textures.end()) return;
-    std::cout << "Actually loading texture\n";
     try {
         unsigned int texture = createTexture(path);
         use();
@@ -129,7 +128,6 @@ void Shader::loadDiffuseTexture(const std::string path) { loadTexture(path, MATE
 void Shader::loadSpecualarTexture(const std::string path) { loadTexture(path, MATERIAL_SPECULAR); }
 
 const unsigned int Shader::createTexture(const std::string file_path) {
-    std::cout << "Called createTexture\n";
     use();
     static std::map<int, GLenum> color_formats{{1, GL_RED}, {3, GL_RGB}, {4, GL_RGBA}};
     unsigned int texture;

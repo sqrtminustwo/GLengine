@@ -4,6 +4,7 @@
 #include <cube_textured.h>
 #include <cube_light.h>
 #include <cube_material.h>
+#include <iostream>
 #include <window.h>
 #include <camera.h>
 #include <input.h>
@@ -33,14 +34,10 @@ int main() {
     Camera camera{glm::vec3(0.0f, 0.0f, 3.0f)};
     Input input(&camera, &window);
 
-    // WARNING: test sphere code
     Shader sphere_shader(
         PROJECT_DIR "/resources/shaders/shape/sphere/vertex_shader.glsl",
         PROJECT_DIR "/resources/shaders/shape/sphere/fragment_shader.glsl"
     );
-
-    Sphere sphere;
-
     Shader cube_shader(
         PROJECT_DIR "/resources/shaders/shape/cube/textured/vertex_shader.glsl",
         PROJECT_DIR "/resources/shaders/shape/cube/textured/fragment_shader.glsl"
@@ -51,13 +48,14 @@ int main() {
     );
 
     constexpr float scaleFactor = 0.1f;
-    std::string diffuse_texture = PROJECT_DIR "/resources/textures/container.png";
-    std::string specular_texture = PROJECT_DIR "/resources/textures/container_specular.png";
+
+    Sphere sphere(0.5f);
+    sphere.setDiffuse(PROJECT_DIR "/resources/textures/moon.png");
 
     cube_type cube_template{};
     cube_template.setScale(scaleFactor);
-    cube_template.setDiffuse(diffuse_texture);
-    cube_template.setSpecular(specular_texture);
+    cube_template.setDiffuse(PROJECT_DIR "/resources/textures/container.png");
+    cube_template.setSpecular(PROJECT_DIR "/resources/textures/container_specular.png");
     cube_template.setShininess(10.0f);
     std::vector<cube_ptr> cubes;
 
@@ -126,6 +124,14 @@ int main() {
         //     cube->applyShape(cube_shader);
         //     cube->drawShape();
         // }
+
+        sphere_shader.use();
+        sphere_shader.setVec3(Shader::LIGHT_POS, cube_light.getPos());
+        sphere_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        sphere_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
+        cube_light.applyLight(sphere_shader);
+        sphere.applyShape(sphere_shader);
+        sphere.drawShape();
 
         glfwSwapBuffers(window.getWindow());
         glfwPollEvents();

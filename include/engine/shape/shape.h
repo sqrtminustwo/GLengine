@@ -33,16 +33,18 @@ class Shape {
 
     void setVAO(const unsigned int VAO) { this->VAO = VAO; }
     void setVBO(const unsigned int VBO) { this->VBO = VBO; }
+    void setIBO(const unsigned int IBO) { this->IBO = IBO; }
 
     unsigned int getVAO() const { return VAO; }
     unsigned int getVBO() const { return VBO; }
+    unsigned int getIBO() const { return IBO; }
 
     constexpr static glm::vec3 X{1.0f, 0.0f, 0.0f};
     constexpr static glm::vec3 Y{0.0f, 1.0f, 0.0f};
     constexpr static glm::vec3 Z{0.0f, 0.0f, 0.1f};
 
   private:
-    unsigned int VAO, VBO;
+    unsigned int VAO, VBO, IBO;
 
     glm::vec3 pos{0.0f};
     float scale_factor{1.0f};
