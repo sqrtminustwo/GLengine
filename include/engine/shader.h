@@ -32,8 +32,8 @@ class Shader {
 
     void use();
 
-    void loadDiffuseTexture(const std::string path);
-    void loadSpecualarTexture(const std::string path);
+    void useDiffuseTexture(const std::string path);
+    void useSpecualarTexture(const std::string path);
 
     void setMat4(UniformType, const glm::mat4);
     void setVec3(UniformType, const glm::vec3);
@@ -48,6 +48,8 @@ class Shader {
     std::map<std::string, unsigned int> textures;
 
     void loadTexture(const std::string path, const UniformType name);
+    void useTexture(const std::string path, const UniformType type);
+    bool loaded(const std::string path) const;
     const unsigned int createTexture(const std::string file_path);
 
     void checkCompileErrors(const unsigned int shader, const std::string type) const;

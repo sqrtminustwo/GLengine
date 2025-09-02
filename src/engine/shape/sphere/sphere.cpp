@@ -64,11 +64,11 @@ Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up) : Sha
 }
 
 void Sphere::applyShape(Shader &shader) {
-    shader.loadDiffuseTexture(diffuse);
-    // shader.loadSpecualarTexture(specular);
+    shader.useDiffuseTexture(diffuse);
+    // shader.useSpecualarTexture(specular);
     applyBaseShape(shader);
 }
-void Sphere::drawShape() { drawLines(); }
+void Sphere::drawShape() { drawFull(); }
 
 ///////////////////////////////////////////////////////////////////////////////
 // setters

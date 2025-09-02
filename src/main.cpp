@@ -35,16 +35,16 @@ int main() {
     Input input(&camera, &window);
 
     Shader sphere_shader(
-        PROJECT_DIR "/resources/shaders/shape/sphere/vertex_shader.glsl",
-        PROJECT_DIR "/resources/shaders/shape/sphere/fragment_shader.glsl"
+        PROJECT_DIR "/resources/shaders/shape/textured/vertex_shader.glsl",
+        PROJECT_DIR "/resources/shaders/shape/textured/fragment_shader.glsl"
     );
     Shader cube_shader(
-        PROJECT_DIR "/resources/shaders/shape/cube/textured/vertex_shader.glsl",
-        PROJECT_DIR "/resources/shaders/shape/cube/textured/fragment_shader.glsl"
+        PROJECT_DIR "/resources/shaders/shape/textured/vertex_shader.glsl",
+        PROJECT_DIR "/resources/shaders/shape/textured/fragment_shader.glsl"
     );
     Shader lighting_shader(
-        PROJECT_DIR "/resources/shaders/shape/cube/lighting/vertex_shader.glsl",
-        PROJECT_DIR "/resources/shaders/shape/cube/lighting/fragment_shader.glsl"
+        PROJECT_DIR "/resources/shaders/shape/lighting/vertex_shader.glsl",
+        PROJECT_DIR "/resources/shaders/shape/lighting/fragment_shader.glsl"
     );
 
     constexpr float scaleFactor = 0.1f;
@@ -123,7 +123,6 @@ int main() {
             cube->drawShape();
         }
 
-        sphere_shader.use();
         sphere_shader.setVec3(Shader::LIGHT_POS, cube_light.getPos());
         sphere_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
         sphere_shader.setVec3(Shader::VIEW_POS, camera.getPosition());

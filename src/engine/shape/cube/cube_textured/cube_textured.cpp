@@ -35,7 +35,7 @@ CubeTextured::CubeTextured(const CubeTextured &other) : Cube(other) {
 }
 
 void CubeTextured::applyShape(Shader &shader) {
-    shader.loadDiffuseTexture(diffuse);
-    shader.loadSpecualarTexture(specular);
+    shader.useDiffuseTexture(diffuse);
+    shader.useSpecualarTexture(specular);
     applyBaseShape(shader);
 }

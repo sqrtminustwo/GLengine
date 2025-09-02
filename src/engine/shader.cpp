@@ -102,13 +102,16 @@ void Shader::destruct() { glDeleteProgram(ID); }
 
 void Shader::use() {
     glUseProgram(ID);
+    // WARNING: moved to useTexture() function (but i doubt the use of static counter)
+    // But for now it works and it fixes binding texture evrytime use() is called
     // Use textures
-    int i = 0;
-    for (const auto &pair : textures) {
-        glActiveTexture(GL_TEXTURE0 + i);
-        glBindTexture(GL_TEXTURE_2D, pair.second);
-        i++;
-    }
+    // int i = 0;
+    // for (const auto &pair : textures) {
+    //     std::cout << pair.second << " " << pair.first << "\n";
+    //     glActiveTexture(GL_TEXTURE0 + i);
+    //     glBindTexture(GL_TEXTURE_2D, pair.second);
+    //     i++;
+    // }
 }
 
 void Shader::loadTexture(const std::string path, const UniformType type) {
@@ -124,8 +127,18 @@ void Shader::loadTexture(const std::string path, const UniformType type) {
         throw;
     }
 }
-void Shader::loadDiffuseTexture(const std::string path) { loadTexture(path, MATERIAL_DIFFUSE); }
-void Shader::loadSpecualarTexture(const std::string path) { loadTexture(path, MATERIAL_SPECULAR); }
+
+void Shader::useTexture(const std::string path, const UniformType type) {
+    static int cur = 0;
+    cur = cur >= textures.size() - 1 ? 0 : cur + 1;
+    if (textures.find(path) == textures.end()) loadTexture(path, type);
+    auto texture_id = textures[path];
+    glActiveTexture(GL_TEXTURE0 + cur);
+    glBindTexture(GL_TEXTURE_2D, texture_id);
+}
+bool Shader::loaded(const std::string path) const { return textures.find(path) == textures.end(); }
+void Shader::useDiffuseTexture(const std::string path) { useTexture(path, MATERIAL_DIFFUSE); }
+void Shader::useSpecualarTexture(const std::string path) { useTexture(path, MATERIAL_DIFFUSE); }
 
 const unsigned int Shader::createTexture(const std::string file_path) {
     use();
