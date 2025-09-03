@@ -15,6 +15,7 @@ Shape::Shape(const Shape &other) {
     setVBO(other.getVBO());
     setIBO(other.getIBO());
 
+    setScale(other.getScaleFactor());
     setProjectionMatrix(other.getProjectionMatrix());
     setTranslationMatrix(other.getTranslationMatrix());
 }
@@ -40,4 +41,10 @@ void Shape::setPos(const float x, const float y, const float z) {
     modelMatrix = glm::translate(modelMatrix, glm::vec3{-pos.x, -pos.y, -pos.z});
     pos = glm::vec3(x, y, z);
     modelMatrix = glm::translate(modelMatrix, glm::vec3{pos.x, pos.y, pos.z});
+}
+
+void Shape::setScale(const float scale_factor) {
+    setModelMatrix(glm::scale(getModelMatrix(), glm::vec3{1 / this->scale_factor}));
+    this->scale_factor = scale_factor;
+    setModelMatrix(glm::scale(getModelMatrix(), glm::vec3{this->scale_factor}));
 }

@@ -102,7 +102,7 @@ void Shader::destruct() { glDeleteProgram(ID); }
 
 void Shader::use() {
     glUseProgram(ID);
-    // WARNING: moved to useTexture() function (but i doubt the use of static counter)
+    // WARNING: moved to useTexture() function (but i doubt the use counting with bound_texture var)
     // But for now it works and it fixes binding texture evrytime use() is called
     // Use textures
     // int i = 0;
@@ -129,11 +129,10 @@ void Shader::loadTexture(const std::string path, const UniformType type) {
 }
 
 void Shader::useTexture(const std::string path, const UniformType type) {
-    static int cur = 0;
-    cur = cur >= textures.size() - 1 ? 0 : cur + 1;
     if (textures.find(path) == textures.end()) loadTexture(path, type);
     auto texture_id = textures[path];
-    glActiveTexture(GL_TEXTURE0 + cur);
+    bound_texture = bound_texture >= textures.size() - 1 ? 0 : bound_texture + 1;
+    glActiveTexture(GL_TEXTURE0 + bound_texture);
     glBindTexture(GL_TEXTURE_2D, texture_id);
 }
 bool Shader::loaded(const std::string path) const { return textures.find(path) == textures.end(); }

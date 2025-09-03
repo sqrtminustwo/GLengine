@@ -12,7 +12,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #include <glad.h>
-#include <glm/ext/matrix_clip_space.hpp>
 #include <iostream>
 #include <cmath>
 #include <sphere.h>
@@ -22,10 +21,7 @@ const int MIN_SECTOR_COUNT = 2;
 const int MIN_STACK_COUNT = 2;
 
 Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up) : Shape() {
-    interleavedStride = 32;
     set(radius, sectors, stacks, smooth, up);
-
-    buildVerticesSmooth();
 
     unsigned int VAO, VBO, IBO;
     glGenVertexArrays(1, &VAO);
@@ -62,13 +58,47 @@ Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up) : Sha
     setVBO(VBO);
     setIBO(IBO);
 }
+Sphere::Sphere(const Sphere &other) : Shape(other) {
+    radius = other.getRadius();
+    sectorCount = other.getSectorCount();
+    stackCount = other.getStackCount();
+    smooth = other.getSmooth();
+    upAxis = other.getUpAxis();
+    // WARNING: i hightly doubt usage of this
+    indices_size = other.getIndexCount();
+
+    diffuse = other.getDiffuse();
+    specular = other.getSpecular();
+}
 
 void Sphere::applyShape(Shader &shader) {
-    shader.useDiffuseTexture(diffuse);
-    // shader.useSpecualarTexture(specular);
+    if (!diffuse.empty()) shader.useDiffuseTexture(diffuse);
+    if (!specular.empty()) shader.useSpecualarTexture(specular);
     applyBaseShape(shader);
 }
 void Sphere::drawShape() { drawFull(); }
+
+void Sphere::draw(unsigned int type) const {
+    glBindVertexArray(getVAO());
+    glDrawElements(
+        type,            // primitive type
+        indices_size,    // # of indices
+        GL_UNSIGNED_INT, // data type
+        (void *)0        // ptr to indices
+
+    );
+}
+///////////////////////////////////////////////////////////////////////////////
+// draw a sphere in VertexArray mode
+// OpenGL RC must be set before calling it
+///////////////////////////////////////////////////////////////////////////////
+void Sphere::drawFull() const { draw(GL_TRIANGLES); }
+
+///////////////////////////////////////////////////////////////////////////////
+// draw lines only
+// the caller must set the line width before call this
+///////////////////////////////////////////////////////////////////////////////
+void Sphere::drawLines() const { draw(GL_LINES); }
 
 ///////////////////////////////////////////////////////////////////////////////
 // setters
@@ -87,6 +117,7 @@ void Sphere::set(float radius, int sectors, int stacks, bool smooth, int up) {
         buildVerticesSmooth();
     else
         buildVerticesFlat();
+    indices_size = getIndexCount();
 }
 
 void Sphere::setRadius(float radius) {
@@ -161,28 +192,6 @@ void Sphere::printSelf() const {
               << "  Normal Count: " << getNormalCount() << "\n"
               << "TexCoord Count: " << getTexCoordCount() << std::endl;
 }
-
-void Sphere::draw(unsigned int type) const {
-    glBindVertexArray(getVAO());
-    glDrawElements(
-        type,            // primitive type
-        getIndexCount(), // # of indices
-        GL_UNSIGNED_INT, // data type
-        (void *)0        // ptr to indices
-
-    );
-}
-///////////////////////////////////////////////////////////////////////////////
-// draw a sphere in VertexArray mode
-// OpenGL RC must be set before calling it
-///////////////////////////////////////////////////////////////////////////////
-void Sphere::drawFull() const { draw(GL_TRIANGLES); }
-
-///////////////////////////////////////////////////////////////////////////////
-// draw lines only
-// the caller must set the line width before call this
-///////////////////////////////////////////////////////////////////////////////
-void Sphere::drawLines() const { draw(GL_LINES); }
 
 ///////////////////////////////////////////////////////////////////////////////
 // dealloc vectors

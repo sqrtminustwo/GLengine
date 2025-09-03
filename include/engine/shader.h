@@ -46,6 +46,7 @@ class Shader {
 
     std::array<unsigned int, SIZE> uniforms;
     std::map<std::string, unsigned int> textures;
+    int bound_texture{};
 
     void loadTexture(const std::string path, const UniformType name);
     void useTexture(const std::string path, const UniformType type);

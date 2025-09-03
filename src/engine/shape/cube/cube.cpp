@@ -7,15 +7,7 @@
 
 Cube::Cube() : Shape() {}
 
-Cube::Cube(const Cube &other) : Shape(other) { setScale(other.getScaleFactor()); }
-
 void Cube::drawShape() {
     glBindVertexArray(getVAO());
     glDrawArrays(GL_TRIANGLES, 0, 36);
-}
-
-void Cube::setScale(const float scale_factor) {
-    setModelMatrix(glm::scale(getModelMatrix(), glm::vec3{1 / this->scale_factor}));
-    this->scale_factor = scale_factor;
-    setModelMatrix(glm::scale(getModelMatrix(), glm::vec3{this->scale_factor}));
 }

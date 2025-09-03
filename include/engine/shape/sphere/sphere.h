@@ -18,29 +18,73 @@
 #include <string>
 #include <vector>
 
-class Sphere : Shape {
+class Sphere : public Shape {
   public:
-    // ctor/dtor
     Sphere(
         float radius = 1.0f, int sectorCount = 36, int stackCount = 18, bool smooth = true,
         int up = 3
     );
+    Sphere(const Sphere &);
     ~Sphere() {}
 
     void applyShape(Shader &);
     void drawShape();
 
-    // getters/setters
+    void drawFull() const;
+    void drawLines() const;
+
     float getRadius() const { return radius; }
     int getSectorCount() const { return sectorCount; }
     int getStackCount() const { return stackCount; }
+    bool getSmooth() const { return smooth; }
     int getUpAxis() const { return upAxis; }
-    void set(float radius, int sectorCount, int stackCount, bool smooth = true, int up = 3);
+    std::string getDiffuse() const { return diffuse; }
+    std::string getSpecular() const { return specular; }
+
     void setRadius(float radius);
     void setSectorCount(int sectorCount);
     void setStackCount(int stackCount);
     void setSmooth(bool smooth);
     void setUpAxis(int up);
+    void setDiffuse(const std::string texture) { diffuse = texture; }
+    void setSpecular(const std::string texture) { specular = texture; }
+
+  private:
+    std::string diffuse{};
+    std::string specular{};
+
+    // memeber vars
+    float radius;
+    int sectorCount; // longitude, # of slices
+    int stackCount;  // latitude, # of stacks
+    bool smooth;
+    int upAxis; // +X=1, +Y=2, +z=3 (default)
+    int indices_size;
+
+    std::vector<float> vertices;
+    std::vector<float> normals;
+    std::vector<float> texCoords;
+
+    std::vector<unsigned int> indices;
+    std::vector<unsigned int> lineIndices;
+
+    // interleaved
+    std::vector<float> interleavedVertices;
+    int interleavedStride = 32; // # of bytes to hop to the next vertex (should be 32 bytes)
+
+    // member functions
+    void set(float radius, int sectors, int stacks, bool smooth, int up);
+    void buildVerticesSmooth();
+    void buildVerticesFlat();
+    void buildInterleavedVertices();
+    void changeUpAxis(int from, int to);
+    void clearArrays();
+    void addVertex(float x, float y, float z);
+    void addNormal(float x, float y, float z);
+    void addTexCoord(float s, float t);
+    void addIndices(unsigned int i1, unsigned int i2, unsigned int i3);
+    void draw(unsigned int) const;
+
     void reverseNormals();
 
     // for vertex data
@@ -73,53 +117,12 @@ class Sphere : Shape {
     int getInterleavedStride() const { return interleavedStride; } // should be 32 bytes
     const float *getInterleavedVertices() const { return interleavedVertices.data(); }
 
-    // draw in VertexArray mode
-    void drawFull() const;  // draw surface
-    void drawLines() const; // draw lines only
-
-    // debug
-    void printSelf() const;
-
-    void setDiffuse(const std::string texture) { diffuse = texture; }
-    void setSpecular(const std::string texture) { specular = texture; }
-
-  private:
-    std::string diffuse{};
-    std::string specular{};
-
-    // member functions
-    void buildVerticesSmooth();
-    void buildVerticesFlat();
-    void buildInterleavedVertices();
-    void changeUpAxis(int from, int to);
-    void clearArrays();
-    void addVertex(float x, float y, float z);
-    void addNormal(float x, float y, float z);
-    void addTexCoord(float s, float t);
-    void addIndices(unsigned int i1, unsigned int i2, unsigned int i3);
-    void draw(unsigned int) const;
-
     std::vector<float> computeFaceNormal(
         float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3
     );
 
-    // memeber vars
-    float radius;
-    int sectorCount; // longitude, # of slices
-    int stackCount;  // latitude, # of stacks
-    bool smooth;
-    int upAxis; // +X=1, +Y=2, +z=3 (default)
-
-    std::vector<float> vertices;
-    std::vector<float> normals;
-    std::vector<float> texCoords;
-
-    std::vector<unsigned int> indices;
-    std::vector<unsigned int> lineIndices;
-
-    // interleaved
-    std::vector<float> interleavedVertices;
-    int interleavedStride; // # of bytes to hop to the next vertex (should be 32 bytes)
+    // debug
+    void printSelf() const;
 };
 
 #endif
