@@ -1,24 +1,18 @@
 #ifndef CUBE_TEXTURED_H
 #define CUBE_TEXTURED_H
 
-#include <cube.h>
-#include <string>
+#include <shape_textured.h>
+#include <draw_cube.h>
 
-class CubeTextured : public Cube {
+class CubeTextured : public ShapeTextured, private DrawCube {
   public:
     CubeTextured();
     CubeTextured(const CubeTextured &);
+
     void applyShape(Shader &shader) override;
-
-    std::string getDiffuse() const { return diffuse; }
-    std::string getSpecular() const { return specular; }
-
-    void setDiffuse(const std::string texture) { diffuse = texture; }
-    void setSpecular(const std::string texture) { specular = texture; }
+    void drawShape() override;
 
   private:
-    std::string diffuse{};
-    std::string specular{};
     // clang-format off
     static constexpr float vertices[] = {
         // positions                          // normals                       // texture coords

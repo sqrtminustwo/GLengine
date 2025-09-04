@@ -1,6 +1,6 @@
 #include <glad.h>
 #include <GLFW/glfw3.h>
-#include "sphere.h"
+#include <sphere_textured.h>
 #include <cube_textured.h>
 #include <cube_light.h>
 #include <cube_material.h>
@@ -38,24 +38,24 @@ int main() {
         PROJECT_DIR "/resources/shaders/shape/textured/vertex_shader.glsl",
         PROJECT_DIR "/resources/shaders/shape/textured/fragment_shader.glsl"
     );
+    Shader sphere_light_shader(
+        PROJECT_DIR "/resources/shaders/shape/lighting/textured/vertex_shader.glsl",
+        PROJECT_DIR "/resources/shaders/shape/lighting/textured/fragment_shader.glsl"
+    );
     Shader cube_shader(
         PROJECT_DIR "/resources/shaders/shape/textured/vertex_shader.glsl",
         PROJECT_DIR "/resources/shaders/shape/textured/fragment_shader.glsl"
     );
-    Shader lighting_shader(
-        PROJECT_DIR "/resources/shaders/shape/lighting/vertex_shader.glsl",
-        PROJECT_DIR "/resources/shaders/shape/lighting/fragment_shader.glsl"
-    );
 
     constexpr float scaleFactor = 0.1f;
 
-    Sphere sphere;
-    sphere.setScale(scaleFactor);
-    // sphere.setDiffuse(PROJECT_DIR "/resources/textures/moon.png");
+    SphereTextured sphere_light;
+    sphere_light.setScale(scaleFactor);
+    sphere_light.setDiffuse(PROJECT_DIR "/resources/textures/moon.png");
 
-    Sphere sphere2{sphere};
-    sphere2.setScale(0.5f);
-    sphere2.setDiffuse(PROJECT_DIR "/resources/textures/moon.png");
+    SphereTextured sphere_middle{sphere_light};
+    sphere_middle.setScale(0.5f);
+    sphere_middle.setLinesOnly(true);
 
     cube_type cube_template{};
     cube_template.setScale(scaleFactor);
@@ -64,17 +64,18 @@ int main() {
     cube_template.setShininess(10.0f);
     std::vector<cube_ptr> cubes;
 
-    CubeLight cube_light{};
-    cube_light.setScale(scaleFactor);
-    cube_light.setAmbient(0.2f, 0.2f, 0.2f);
-    cube_light.setDiffuse(0.5f, 0.5f, 0.5f);
-    cube_light.setSpecular(1.0f, 1.0f, 1.0f);
+    // TODO: do some sort of abstraction for light source (not shape dependent)
+    CubeLight light_source{};
+    light_source.setScale(scaleFactor);
+    light_source.setAmbient(0.2f, 0.2f, 0.2f);
+    light_source.setDiffuse(0.5f, 0.5f, 0.5f);
+    light_source.setSpecular(1.0f, 1.0f, 1.0f);
     constexpr auto size = 10;
     constexpr auto middle = size / 2;
     triplet left_bottom_corner{middle, middle, middle};
 
     constexpr auto radius = 10;
-    cube_light.setPos(radius, radius, 0);
+    light_source.setPos(radius, radius, 0);
 
     for (float i = 0; i <= size; i++) {
         genAndAddCubes(
@@ -109,41 +110,39 @@ int main() {
 
         window.clearScreen();
 
-        lighting_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        sphere_light_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
         auto time = glfwGetTime();
         auto x = radius * std::cos(time);
         auto y = radius * std::sin(time);
         auto z = 0;
-        // cube_light.setPos(x, y, y);
-        // cube_light.applyShape(lighting_shader);
-        // cube_light.drawShape();
-        sphere.setPos(x, y, y);
-        sphere.applyShape(lighting_shader);
-        sphere.drawShape();
+        sphere_light.setPos(x, y, y);
+        sphere_light.applyShape(sphere_light_shader);
+        sphere_light.drawShape();
 
-        cube_shader.setVec3(Shader::LIGHT_POS, sphere.getPos());
+        cube_shader.setVec3(Shader::LIGHT_POS, sphere_light.getPos());
         cube_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
         cube_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
 
-        cube_light.applyLight(cube_shader);
+        light_source.applyLight(cube_shader);
         for (auto &&cube : cubes) {
             cube->applyShape(cube_shader);
             cube->drawShape();
         }
 
-        sphere_shader.setVec3(Shader::LIGHT_POS, sphere.getPos());
+        sphere_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        sphere_shader.setVec3(Shader::LIGHT_POS, sphere_light.getPos());
         sphere_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
         sphere_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
-        cube_light.applyLight(sphere_shader);
-        sphere2.applyShape(sphere_shader);
-        sphere2.drawShape();
+        light_source.applyLight(sphere_shader);
+        sphere_middle.applyShape(sphere_shader);
+        sphere_middle.drawShape();
 
         glfwSwapBuffers(window.getWindow());
         glfwPollEvents();
     }
 
     cube_template.free_VAO_VBO();
-    cube_light.free_VAO_VBO();
+    light_source.free_VAO_VBO();
     glfwTerminate();
     return 0;
 }

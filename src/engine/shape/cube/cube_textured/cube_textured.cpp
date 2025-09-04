@@ -5,7 +5,7 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <shader.h>
 
-CubeTextured::CubeTextured() {
+CubeTextured::CubeTextured() : ShapeTextured() {
     unsigned int VAO, VBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -29,13 +29,7 @@ CubeTextured::CubeTextured() {
     setVBO(VBO);
 }
 
-CubeTextured::CubeTextured(const CubeTextured &other) : Cube(other) {
-    diffuse = other.getDiffuse();
-    specular = other.getSpecular();
-}
+CubeTextured::CubeTextured(const CubeTextured &other) : ShapeTextured(other) {}
 
-void CubeTextured::applyShape(Shader &shader) {
-    shader.useDiffuseTexture(diffuse);
-    shader.useSpecualarTexture(specular);
-    applyBaseShape(shader);
-}
+void CubeTextured::applyShape(Shader &shader) { applyTexturedShape(shader); }
+void CubeTextured::drawShape() { drawCube(getVAO()); }

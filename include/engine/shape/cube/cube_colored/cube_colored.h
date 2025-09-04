@@ -1,14 +1,16 @@
 #ifndef CUBE_COLORED_H
 #define CUBE_COLORED_H
 
-#include <cube.h>
+#include <shape.h>
+#include <draw_cube.h>
 
-class CubeColored : public Cube {
+class CubeColored : public Shape, private DrawCube {
   public:
     CubeColored();
     CubeColored(const CubeColored &);
 
     void applyColoredShape(Shader &);
+    void drawShape() override;
 
     glm::vec3 getAmbient() const { return ambient; }
     glm::vec3 getDiffuse() const { return diffuse; }

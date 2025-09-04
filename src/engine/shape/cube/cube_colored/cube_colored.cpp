@@ -4,7 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-CubeColored::CubeColored() {
+CubeColored::CubeColored() : Shape() {
     unsigned int VAO, VBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -25,7 +25,7 @@ CubeColored::CubeColored() {
     setVBO(VBO);
 }
 
-CubeColored::CubeColored(const CubeColored &other) : Cube(other) {
+CubeColored::CubeColored(const CubeColored &other) : Shape(other) {
     setAmbient(other.getAmbient());
     setDiffuse(other.getDiffuse());
     setSpecular(other.getSpecular());
@@ -38,3 +38,4 @@ void CubeColored::applyColoredShape(Shader &shader) {
 
     applyBaseShape(shader);
 }
+void CubeColored::drawShape() { drawCube(getVAO()); }

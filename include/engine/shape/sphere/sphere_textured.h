@@ -14,21 +14,20 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include <shape.h>
-#include <string>
+#include <shape_textured.h>
 #include <vector>
 
-class Sphere : public Shape {
+class SphereTextured : public ShapeTextured {
   public:
-    Sphere(
+    SphereTextured(
         float radius = 1.0f, int sectorCount = 36, int stackCount = 18, bool smooth = true,
         int up = 3
     );
-    Sphere(const Sphere &);
-    ~Sphere() {}
+    SphereTextured(const SphereTextured &);
+    ~SphereTextured() {}
 
-    void applyShape(Shader &);
-    void drawShape();
+    void applyShape(Shader &) override;
+    void drawShape() override;
 
     void drawFull() const;
     void drawLines() const;
@@ -38,21 +37,15 @@ class Sphere : public Shape {
     int getStackCount() const { return stackCount; }
     bool getSmooth() const { return smooth; }
     int getUpAxis() const { return upAxis; }
-    std::string getDiffuse() const { return diffuse; }
-    std::string getSpecular() const { return specular; }
 
     void setRadius(float radius);
     void setSectorCount(int sectorCount);
     void setStackCount(int stackCount);
     void setSmooth(bool smooth);
     void setUpAxis(int up);
-    void setDiffuse(const std::string texture) { diffuse = texture; }
-    void setSpecular(const std::string texture) { specular = texture; }
+    void setLinesOnly(bool lines_only) { this->lines_only = lines_only; }
 
   private:
-    std::string diffuse{};
-    std::string specular{};
-
     // memeber vars
     float radius;
     int sectorCount; // longitude, # of slices
@@ -60,6 +53,7 @@ class Sphere : public Shape {
     bool smooth;
     int upAxis; // +X=1, +Y=2, +z=3 (default)
     int indices_size;
+    bool lines_only = false;
 
     std::vector<float> vertices;
     std::vector<float> normals;

@@ -14,13 +14,14 @@
 #include <glad.h>
 #include <iostream>
 #include <cmath>
-#include <sphere.h>
+#include <sphere_textured.h>
 #include <shader.h>
 
 const int MIN_SECTOR_COUNT = 2;
 const int MIN_STACK_COUNT = 2;
 
-Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up) : Shape() {
+SphereTextured::SphereTextured(float radius, int sectors, int stacks, bool smooth, int up)
+    : ShapeTextured() {
     set(radius, sectors, stacks, smooth, up);
 
     unsigned int VAO, VBO, IBO;
@@ -58,7 +59,7 @@ Sphere::Sphere(float radius, int sectors, int stacks, bool smooth, int up) : Sha
     setVBO(VBO);
     setIBO(IBO);
 }
-Sphere::Sphere(const Sphere &other) : Shape(other) {
+SphereTextured::SphereTextured(const SphereTextured &other) : ShapeTextured(other) {
     radius = other.getRadius();
     sectorCount = other.getSectorCount();
     stackCount = other.getStackCount();
@@ -66,19 +67,17 @@ Sphere::Sphere(const Sphere &other) : Shape(other) {
     upAxis = other.getUpAxis();
     // WARNING: i hightly doubt usage of this
     indices_size = other.getIndexCount();
-
-    diffuse = other.getDiffuse();
-    specular = other.getSpecular();
 }
 
-void Sphere::applyShape(Shader &shader) {
-    if (!diffuse.empty()) shader.useDiffuseTexture(diffuse);
-    if (!specular.empty()) shader.useSpecualarTexture(specular);
-    applyBaseShape(shader);
+void SphereTextured::applyShape(Shader &shader) { applyTexturedShape(shader); }
+void SphereTextured::drawShape() {
+    if (lines_only)
+        drawLines();
+    else
+        drawFull();
 }
-void Sphere::drawShape() { drawFull(); }
 
-void Sphere::draw(unsigned int type) const {
+void SphereTextured::draw(unsigned int type) const {
     glBindVertexArray(getVAO());
     glDrawElements(
         type,            // primitive type
@@ -92,18 +91,18 @@ void Sphere::draw(unsigned int type) const {
 // draw a sphere in VertexArray mode
 // OpenGL RC must be set before calling it
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::drawFull() const { draw(GL_TRIANGLES); }
+void SphereTextured::drawFull() const { draw(GL_TRIANGLES); }
 
 ///////////////////////////////////////////////////////////////////////////////
 // draw lines only
 // the caller must set the line width before call this
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::drawLines() const { draw(GL_LINES); }
+void SphereTextured::drawLines() const { draw(GL_LINES); }
 
 ///////////////////////////////////////////////////////////////////////////////
 // setters
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::set(float radius, int sectors, int stacks, bool smooth, int up) {
+void SphereTextured::set(float radius, int sectors, int stacks, bool smooth, int up) {
     if (radius > 0) this->radius = radius;
     this->sectorCount = sectors;
     if (sectors < MIN_SECTOR_COUNT) this->sectorCount = MIN_SECTOR_COUNT;
@@ -120,19 +119,19 @@ void Sphere::set(float radius, int sectors, int stacks, bool smooth, int up) {
     indices_size = getIndexCount();
 }
 
-void Sphere::setRadius(float radius) {
+void SphereTextured::setRadius(float radius) {
     if (radius != this->radius) set(radius, sectorCount, stackCount, smooth, upAxis);
 }
 
-void Sphere::setSectorCount(int sectors) {
+void SphereTextured::setSectorCount(int sectors) {
     if (sectors != this->sectorCount) set(radius, sectors, stackCount, smooth, upAxis);
 }
 
-void Sphere::setStackCount(int stacks) {
+void SphereTextured::setStackCount(int stacks) {
     if (stacks != this->stackCount) set(radius, sectorCount, stacks, smooth, upAxis);
 }
 
-void Sphere::setSmooth(bool smooth) {
+void SphereTextured::setSmooth(bool smooth) {
     if (this->smooth == smooth) return;
 
     this->smooth = smooth;
@@ -142,7 +141,7 @@ void Sphere::setSmooth(bool smooth) {
         buildVerticesFlat();
 }
 
-void Sphere::setUpAxis(int up) {
+void SphereTextured::setUpAxis(int up) {
     if (this->upAxis == up || up < 1 || up > 3) return;
 
     changeUpAxis(this->upAxis, up);
@@ -152,7 +151,7 @@ void Sphere::setUpAxis(int up) {
 ///////////////////////////////////////////////////////////////////////////////
 // flip the face normals to opposite directions
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::reverseNormals() {
+void SphereTextured::reverseNormals() {
     std::size_t i, j;
     std::size_t count = normals.size();
     for (i = 0, j = 3; i < count; i += 3, j += 8) {
@@ -179,7 +178,7 @@ void Sphere::reverseNormals() {
 ///////////////////////////////////////////////////////////////////////////////
 // print itself
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::printSelf() const {
+void SphereTextured::printSelf() const {
     std::cout << "===== Sphere =====\n"
               << "        Radius: " << radius << "\n"
               << "  Sector Count: " << sectorCount << "\n"
@@ -196,7 +195,7 @@ void Sphere::printSelf() const {
 ///////////////////////////////////////////////////////////////////////////////
 // dealloc vectors
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::clearArrays() {
+void SphereTextured::clearArrays() {
     std::vector<float>().swap(vertices);
     std::vector<float>().swap(normals);
     std::vector<float>().swap(texCoords);
@@ -212,7 +211,7 @@ void Sphere::clearArrays() {
 // where u: stack(latitude) angle (-90 <= u <= 90)
 //       v: sector(longitude) angle (0 <= v <= 360)
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::buildVerticesSmooth() {
+void SphereTextured::buildVerticesSmooth() {
     const float PI = acos(-1.0f);
 
     // clear memory of prev arrays
@@ -296,7 +295,7 @@ void Sphere::buildVerticesSmooth() {
 // generate vertices with flat shading
 // each triangle is independent (no shared vertices)
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::buildVerticesFlat() {
+void SphereTextured::buildVerticesFlat() {
     const float PI = acos(-1.0f);
 
     // tmp vertex definition (x,y,z,s,t)
@@ -457,7 +456,7 @@ void Sphere::buildVerticesFlat() {
 // generate interleaved vertices: V/N/T
 // stride must be 32 bytes
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::buildInterleavedVertices() {
+void SphereTextured::buildInterleavedVertices() {
     std::vector<float>().swap(interleavedVertices);
 
     std::size_t i, j;
@@ -480,7 +479,7 @@ void Sphere::buildInterleavedVertices() {
 // transform vertex/normal (x,y,z) coords
 // assume from/to values are validated: 1~3 and from != to
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::changeUpAxis(int from, int to) {
+void SphereTextured::changeUpAxis(int from, int to) {
     // initial transform matrix cols
     float tx[] = {1.0f, 0.0f, 0.0f}; // x-axis (left)
     float ty[] = {0.0f, 1.0f, 0.0f}; // y-axis (up)
@@ -563,7 +562,7 @@ void Sphere::changeUpAxis(int from, int to) {
 ///////////////////////////////////////////////////////////////////////////////
 // add single vertex to array
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::addVertex(float x, float y, float z) {
+void SphereTextured::addVertex(float x, float y, float z) {
     vertices.push_back(x);
     vertices.push_back(y);
     vertices.push_back(z);
@@ -572,7 +571,7 @@ void Sphere::addVertex(float x, float y, float z) {
 ///////////////////////////////////////////////////////////////////////////////
 // add single normal to array
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::addNormal(float nx, float ny, float nz) {
+void SphereTextured::addNormal(float nx, float ny, float nz) {
     normals.push_back(nx);
     normals.push_back(ny);
     normals.push_back(nz);
@@ -581,7 +580,7 @@ void Sphere::addNormal(float nx, float ny, float nz) {
 ///////////////////////////////////////////////////////////////////////////////
 // add single texture coord to array
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::addTexCoord(float s, float t) {
+void SphereTextured::addTexCoord(float s, float t) {
     texCoords.push_back(s);
     texCoords.push_back(t);
 }
@@ -589,7 +588,7 @@ void Sphere::addTexCoord(float s, float t) {
 ///////////////////////////////////////////////////////////////////////////////
 // add 3 indices to array
 ///////////////////////////////////////////////////////////////////////////////
-void Sphere::addIndices(unsigned int i1, unsigned int i2, unsigned int i3) {
+void SphereTextured::addIndices(unsigned int i1, unsigned int i2, unsigned int i3) {
     indices.push_back(i1);
     indices.push_back(i2);
     indices.push_back(i3);
@@ -599,7 +598,7 @@ void Sphere::addIndices(unsigned int i1, unsigned int i2, unsigned int i3) {
 // return face normal of a triangle v1-v2-v3
 // if a triangle has no surface (normal length = 0), then return a zero vector
 ///////////////////////////////////////////////////////////////////////////////
-std::vector<float> Sphere::computeFaceNormal(
+std::vector<float> SphereTextured::computeFaceNormal(
     float x1, float y1, float z1, // v1
     float x2, float y2, float z2, // v2
     float x3, float y3, float z3
