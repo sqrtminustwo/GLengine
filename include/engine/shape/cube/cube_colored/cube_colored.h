@@ -9,6 +9,7 @@ class CubeColored : public Shape, private DrawCube {
     CubeColored();
     CubeColored(const CubeColored &);
 
+    void applyLightBeta(Shader &shader);
     void applyColoredShape(Shader &);
     void drawShape() override;
 

@@ -16,6 +16,7 @@ Shape::Shape(const Shape &other) {
     setIBO(other.getIBO());
 
     setScale(other.getScaleFactor());
+    setShininess(other.getShininess());
     setProjectionMatrix(other.getProjectionMatrix());
     setTranslationMatrix(other.getTranslationMatrix());
 }

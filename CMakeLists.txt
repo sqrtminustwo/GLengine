@@ -21,6 +21,7 @@ file(GLOB_RECURSE CPP_SOURCES CONFIGURE_DEPENDS
 )
 file(GLOB_RECURSE HEADERS CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shader_data/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/cube/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/sphere/*.h
@@ -42,6 +43,7 @@ target_include_directories(${PROJECT_NAME}
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${CMAKE_CURRENT_SOURCE_DIR}/include/engine
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shader_data
         ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape
         ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/cube
         ${CMAKE_CURRENT_SOURCE_DIR}/include/engine/shape/sphere

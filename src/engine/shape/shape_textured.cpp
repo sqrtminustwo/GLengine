@@ -2,13 +2,9 @@
 #include <shader.h>
 
 ShapeTextured::ShapeTextured() : Shape() {}
-ShapeTextured::ShapeTextured(const ShapeTextured &other) : Shape(other) {
-    diffuse = other.getDiffuse();
-    specular = other.getSpecular();
-}
+ShapeTextured::ShapeTextured(const ShapeTextured &other) : Shape(other), Texture(other) {}
 
 void ShapeTextured::applyTexturedShape(Shader &shader) {
-    if (!diffuse.empty()) shader.useDiffuseTexture(diffuse);
-    if (!specular.empty()) shader.useSpecualarTexture(specular);
+    applyTexture(shader);
     applyBaseShape(shader);
 }

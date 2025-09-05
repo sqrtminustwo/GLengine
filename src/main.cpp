@@ -1,10 +1,8 @@
+#include "light.h"
 #include <glad.h>
 #include <GLFW/glfw3.h>
 #include <sphere_textured.h>
 #include <cube_textured.h>
-#include <cube_light.h>
-#include <cube_material.h>
-#include <iostream>
 #include <window.h>
 #include <camera.h>
 #include <input.h>
@@ -55,27 +53,23 @@ int main() {
 
     SphereTextured sphere_middle{sphere_light};
     sphere_middle.setScale(0.5f);
-    sphere_middle.setLinesOnly(true);
+    // sphere_middle.setLinesOnly(true);
 
     cube_type cube_template{};
     cube_template.setScale(scaleFactor);
     cube_template.setDiffuse(PROJECT_DIR "/resources/textures/container.png");
     cube_template.setSpecular(PROJECT_DIR "/resources/textures/container_specular.png");
-    cube_template.setShininess(10.0f);
     std::vector<cube_ptr> cubes;
 
-    // TODO: do some sort of abstraction for light source (not shape dependent)
-    CubeLight light_source{};
-    light_source.setScale(scaleFactor);
+    Light light_source{};
     light_source.setAmbient(0.2f, 0.2f, 0.2f);
     light_source.setDiffuse(0.5f, 0.5f, 0.5f);
     light_source.setSpecular(1.0f, 1.0f, 1.0f);
+
     constexpr auto size = 10;
     constexpr auto middle = size / 2;
     triplet left_bottom_corner{middle, middle, middle};
-
     constexpr auto radius = 10;
-    light_source.setPos(radius, radius, 0);
 
     for (float i = 0; i <= size; i++) {
         genAndAddCubes(
@@ -142,7 +136,6 @@ int main() {
     }
 
     cube_template.free_VAO_VBO();
-    light_source.free_VAO_VBO();
     glfwTerminate();
     return 0;
 }
