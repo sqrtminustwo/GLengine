@@ -54,6 +54,7 @@ int main() {
     SphereTextured sphere_middle{sphere_light};
     sphere_middle.setScale(0.5f);
     // sphere_middle.setLinesOnly(true);
+    sphere_middle.setDiffuse(PROJECT_DIR "/resources/textures/earth.png");
 
     cube_type cube_template{};
     cube_template.setScale(scaleFactor);
