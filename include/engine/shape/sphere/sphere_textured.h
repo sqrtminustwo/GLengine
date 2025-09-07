@@ -46,7 +46,6 @@ class SphereTextured : public ShapeTextured {
     void setLinesOnly(bool lines_only) { this->lines_only = lines_only; }
 
   private:
-    // memeber vars
     float radius;
     int sectorCount; // longitude, # of slices
     int stackCount;  // latitude, # of stacks
@@ -62,11 +61,9 @@ class SphereTextured : public ShapeTextured {
     std::vector<unsigned int> indices;
     std::vector<unsigned int> lineIndices;
 
-    // interleaved
     std::vector<float> interleavedVertices;
     int interleavedStride = 32; // # of bytes to hop to the next vertex (should be 32 bytes)
 
-    // member functions
     void set(float radius, int sectors, int stacks, bool smooth, int up);
     void buildVerticesSmooth();
     void buildVerticesFlat();

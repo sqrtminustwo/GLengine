@@ -60,6 +60,8 @@ int main() {
     cube_template.setScale(scaleFactor);
     cube_template.setDiffuse(PROJECT_DIR "/resources/textures/container.png");
     cube_template.setSpecular(PROJECT_DIR "/resources/textures/container_specular.png");
+    // cube_template.setEmission(PROJECT_DIR "/resources/textures/container_emission.jpg");
+    cube_template.setShininess(1.0f);
     std::vector<cube_ptr> cubes;
 
     Light light_source{};

@@ -14,13 +14,16 @@ class Texture {
 
     std::string getDiffuse() const { return diffuse; }
     std::string getSpecular() const { return specular; }
+    std::string getEmission() const { return emission; }
 
     void setDiffuse(const std::string texture) { diffuse = texture; }
     void setSpecular(const std::string texture) { specular = texture; }
+    void setEmission(const std::string texture) { emission = texture; }
 
   private:
     std::string diffuse{};
     std::string specular{};
+    std::string emission{};
 };
 
 #endif

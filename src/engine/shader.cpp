@@ -7,7 +7,6 @@
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <map>
-#include <vector>
 #include <string>
 
 #define STB_IMAGE_IMPLEMENTATION
@@ -24,6 +23,10 @@ void Shader::setVec3(UniformType uniformType, const glm::vec3 vec) {
 void Shader::setFloat(UniformType uniformType, const float num) {
     use();
     glUniform1f(uniforms[uniformType], num);
+}
+void Shader::setBool(UniformType uniformType, const bool value) {
+    use();
+    glUniform1i(uniforms[uniformType], value);
 }
 
 unsigned int Shader::getUniformLocation(const std::string name) {
@@ -93,6 +96,8 @@ Shader::Shader(const std::string vertexPath, const std::string fragmentPath) {
     uniforms[MATERIAL_AMBIENT] = getUniformLocation("material.ambient");
     uniforms[MATERIAL_DIFFUSE] = getUniformLocation("material.diffuse");
     uniforms[MATERIAL_SPECULAR] = getUniformLocation("material.specular");
+    uniforms[MATERIAL_EMISSION] = getUniformLocation("material.emission");
+    uniforms[MATERIAL_HAS_EMISSION] = getUniformLocation("material.has_emission");
     uniforms[MATERIAL_SHININESS] = getUniformLocation("material.shininess");
 
     glEnable(GL_DEPTH_TEST);
@@ -138,6 +143,7 @@ void Shader::useTexture(const std::string path, const UniformType type) {
 bool Shader::loaded(const std::string path) const { return textures.find(path) == textures.end(); }
 void Shader::useDiffuseTexture(const std::string path) { useTexture(path, MATERIAL_DIFFUSE); }
 void Shader::useSpecualarTexture(const std::string path) { useTexture(path, MATERIAL_DIFFUSE); }
+void Shader::useEmissionTexture(const std::string path) { useTexture(path, MATERIAL_EMISSION); }
 
 const unsigned int Shader::createTexture(const std::string file_path) {
     use();

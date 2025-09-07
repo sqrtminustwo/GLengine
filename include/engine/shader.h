@@ -22,6 +22,8 @@ class Shader {
         MATERIAL_AMBIENT,
         MATERIAL_DIFFUSE,
         MATERIAL_SPECULAR,
+        MATERIAL_EMISSION,
+        MATERIAL_HAS_EMISSION,
         MATERIAL_SHININESS,
         SIZE
     };
@@ -34,10 +36,12 @@ class Shader {
 
     void useDiffuseTexture(const std::string path);
     void useSpecualarTexture(const std::string path);
+    void useEmissionTexture(const std::string path);
 
     void setMat4(UniformType, const glm::mat4);
     void setVec3(UniformType, const glm::vec3);
     void setFloat(UniformType, const float);
+    void setBool(UniformType, const bool);
 
     unsigned int getUniformLocation(const std::string name);
 
