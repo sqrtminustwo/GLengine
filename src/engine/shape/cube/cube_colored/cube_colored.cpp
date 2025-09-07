@@ -38,4 +38,4 @@ void CubeColored::applyColoredShape(Shader &shader) {
 
     applyBaseShape(shader);
 }
-void CubeColored::drawShape() { drawCube(getVAO()); }
+void CubeColored::drawShape() { drawCube(getVAO(), 36); }

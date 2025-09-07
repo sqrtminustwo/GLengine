@@ -2,9 +2,9 @@
 #define CUBE_COLORED_H
 
 #include <shape.h>
-#include <draw_cube.h>
+#include <draw_triangles.h>
 
-class CubeColored : public Shape, private DrawCube {
+class CubeColored : public Shape, private DrawTriangles {
   public:
     CubeColored();
     CubeColored(const CubeColored &);

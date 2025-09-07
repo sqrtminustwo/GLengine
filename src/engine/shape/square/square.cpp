@@ -1,11 +1,7 @@
-#include <cube_textured.h>
 #include <glad.h>
-#include <GLFW/glfw3.h>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-#include <shader.h>
+#include <square.h>
 
-CubeTextured::CubeTextured() : ShapeTextured() {
+Square::Square() : ShapeTextured() {
     unsigned int VAO, VBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -29,7 +25,7 @@ CubeTextured::CubeTextured() : ShapeTextured() {
     setVBO(VBO);
 }
 
-CubeTextured::CubeTextured(const CubeTextured &other) : ShapeTextured(other) {}
+Square::Square(const Square &other) : ShapeTextured(other) {}
 
-void CubeTextured::applyShape(Shader &shader) { applyTexturedShape(shader); }
-void CubeTextured::drawShape() { drawCube(getVAO(), lengthof(vertices)); }
+void Square::applyShape(Shader &shader) { applyTexturedShape(shader); }
+void Square::drawShape() { drawCube(getVAO(), lengthof(vertices)); }

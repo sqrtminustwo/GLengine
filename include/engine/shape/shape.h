@@ -3,11 +3,14 @@
 
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/ext/matrix_transform.hpp>
+#include <vector>
 
 class Shader;
 
 class Shape {
   public:
+    enum Axis { X, Y, Z };
+
     Shape();
     Shape(const Shape &);
 
@@ -22,9 +25,12 @@ class Shape {
     glm::vec3 getPos() const { return pos; }
     float getShininess() const { return shininess; }
     float getScaleFactor() const { return scale_factor; }
+    float getRotaionDegree() const { return rotation_degree; }
+    Axis getRotationAxis() const { return rotation_axis; }
 
     void setScale(const float scale_factor);
     void setPos(const float x, const float y, const float z);
+    void setRotate(const float degrees, Axis);
     void setShininess(const float value) { shininess = value; }
 
     void free_VAO_VBO();
@@ -42,15 +48,24 @@ class Shape {
     unsigned int getVBO() const { return VBO; }
     unsigned int getIBO() const { return IBO; }
 
-    constexpr static glm::vec3 X{1.0f, 0.0f, 0.0f};
-    constexpr static glm::vec3 Y{0.0f, 1.0f, 0.0f};
-    constexpr static glm::vec3 Z{0.0f, 0.0f, 0.1f};
+    template <typename T, unsigned int sz>
+    inline unsigned int lengthof(T (&)[sz]) {
+        return sz;
+    }
+
+    static inline std::vector<glm::vec3> axises{
+        glm::vec3{1.0f, 0.0f, 0.0f},
+        glm::vec3{0.0f, 1.0f, 0.0f},
+        glm::vec3{0.0f, 0.0f, 0.1f}
+    };
 
   private:
     unsigned int VAO, VBO, IBO;
 
     glm::vec3 pos{0.0f};
     float scale_factor{1.0f};
+    float rotation_degree{0.0f};
+    Axis rotation_axis{X};
     float shininess{1.0f};
 
     glm::mat4 modelMatrix{1.0f};

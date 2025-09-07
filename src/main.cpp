@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <sphere_textured.h>
 #include <cube_textured.h>
+#include <square.h>
 #include <window.h>
 #include <camera.h>
 #include <input.h>
@@ -44,6 +45,10 @@ int main() {
         PROJECT_DIR "/resources/shaders/shape/textured/vertex_shader.glsl",
         PROJECT_DIR "/resources/shaders/shape/textured/fragment_shader.glsl"
     );
+    Shader square_shader(
+        PROJECT_DIR "/resources/shaders/shape/textured/vertex_shader.glsl",
+        PROJECT_DIR "/resources/shaders/shape/textured/fragment_shader.glsl"
+    );
 
     constexpr float scaleFactor = 0.1f;
 
@@ -68,6 +73,14 @@ int main() {
     light_source.setAmbient(0.2f, 0.2f, 0.2f);
     light_source.setDiffuse(0.5f, 0.5f, 0.5f);
     light_source.setSpecular(1.0f, 1.0f, 1.0f);
+
+    Square square;
+    square.setScale(scaleFactor);
+    square.setRotate(90.0f, Shape::X);
+    square.setDiffuse(PROJECT_DIR "/resources/textures/grass.jpg");
+
+    Square square2{square};
+    square2.setPos(0.0f, -1.0f, 0.0f);
 
     constexpr auto size = 10;
     constexpr auto middle = size / 2;
@@ -116,23 +129,34 @@ int main() {
         sphere_light.applyShape(sphere_light_shader);
         sphere_light.drawShape();
 
-        cube_shader.setVec3(Shader::LIGHT_POS, sphere_light.getPos());
-        cube_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
-        cube_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
+        // cube_shader.setVec3(Shader::LIGHT_POS, sphere_light.getPos());
+        // cube_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        // cube_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
+        //
+        // light_source.applyLight(cube_shader);
+        // for (auto &&cube : cubes) {
+        //     cube->applyShape(cube_shader);
+        //     cube->drawShape();
+        // }
+        //
+        // sphere_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        // sphere_shader.setVec3(Shader::LIGHT_POS, sphere_light.getPos());
+        // sphere_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        // sphere_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
+        // light_source.applyLight(sphere_shader);
+        // sphere_middle.applyShape(sphere_shader);
+        // sphere_middle.drawShape();
 
-        light_source.applyLight(cube_shader);
-        for (auto &&cube : cubes) {
-            cube->applyShape(cube_shader);
-            cube->drawShape();
-        }
+        square_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        square_shader.setVec3(Shader::LIGHT_POS, sphere_light.getPos());
+        square_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        square_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
+        light_source.applyLight(square_shader);
+        square.applyShape(square_shader);
+        square.drawShape();
 
-        sphere_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
-        sphere_shader.setVec3(Shader::LIGHT_POS, sphere_light.getPos());
-        sphere_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
-        sphere_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
-        light_source.applyLight(sphere_shader);
-        sphere_middle.applyShape(sphere_shader);
-        sphere_middle.drawShape();
+        square2.applyShape(square_shader);
+        square2.drawShape();
 
         glfwSwapBuffers(window.getWindow());
         glfwPollEvents();

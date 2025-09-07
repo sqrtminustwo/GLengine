@@ -2,9 +2,9 @@
 #define CUBE_TEXTURED_H
 
 #include <shape_textured.h>
-#include <draw_cube.h>
+#include <draw_triangles.h>
 
-class CubeTextured : public ShapeTextured, private DrawCube {
+class CubeTextured : public ShapeTextured, private DrawTriangles {
   public:
     CubeTextured();
     CubeTextured(const CubeTextured &);

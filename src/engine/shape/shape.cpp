@@ -16,6 +16,7 @@ Shape::Shape(const Shape &other) {
     setIBO(other.getIBO());
 
     setScale(other.getScaleFactor());
+    setRotate(glm::degrees(other.getRotaionDegree()), other.getRotationAxis());
     setShininess(other.getShininess());
     setProjectionMatrix(other.getProjectionMatrix());
     setTranslationMatrix(other.getTranslationMatrix());
@@ -48,4 +49,12 @@ void Shape::setScale(const float scale_factor) {
     setModelMatrix(glm::scale(getModelMatrix(), glm::vec3{1 / this->scale_factor}));
     this->scale_factor = scale_factor;
     setModelMatrix(glm::scale(getModelMatrix(), glm::vec3{this->scale_factor}));
+}
+
+void Shape::setRotate(const float degrees, Axis axis) {
+    auto radians = glm::radians(degrees);
+    setModelMatrix(glm::rotate(getModelMatrix(), -rotation_degree, axises.at(rotation_axis)));
+    rotation_degree = radians;
+    rotation_axis = axis;
+    setModelMatrix(glm::rotate(getModelMatrix(), rotation_degree, axises.at(rotation_axis)));
 }
