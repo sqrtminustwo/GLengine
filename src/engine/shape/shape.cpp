@@ -4,8 +4,10 @@
 #include <shape.h>
 #include <shader.h>
 
-Shape::Shape() {
-    setProjectionMatrix(glm::perspective(glm::radians(30.0f), (float)5 / 4, 0.1f, 100.0f));
+Shape::Shape(const unsigned int width, const unsigned int height) {
+    setProjectionMatrix(
+        glm::perspective(glm::radians(30.0f), (float)width / (float)height, 0.1f, 100.0f)
+    );
 }
 // WARNING: cube can be copied when passing to function
 // Keep that in mind when removing things that should be copied (or always pass by reference)
@@ -40,9 +42,11 @@ glm::mat4 Shape::getModelNoTranslationMatrix() const {
 }
 
 void Shape::setPos(const float x, const float y, const float z) {
+    undoRotation();
     modelMatrix = glm::translate(modelMatrix, glm::vec3{-pos.x, -pos.y, -pos.z});
     pos = glm::vec3(x, y, z);
     modelMatrix = glm::translate(modelMatrix, glm::vec3{pos.x, pos.y, pos.z});
+    doRotation();
 }
 
 void Shape::setScale(const float scale_factor) {
@@ -51,10 +55,16 @@ void Shape::setScale(const float scale_factor) {
     setModelMatrix(glm::scale(getModelMatrix(), glm::vec3{this->scale_factor}));
 }
 
+void Shape::doRotation() {
+    setModelMatrix(glm::rotate(getModelMatrix(), rotation_degree, axises.at(rotation_axis)));
+}
+void Shape::undoRotation() {
+    setModelMatrix(glm::rotate(getModelMatrix(), -rotation_degree, axises.at(rotation_axis)));
+}
 void Shape::setRotate(const float degrees, Axis axis) {
     auto radians = glm::radians(degrees);
-    setModelMatrix(glm::rotate(getModelMatrix(), -rotation_degree, axises.at(rotation_axis)));
+    undoRotation();
     rotation_degree = radians;
     rotation_axis = axis;
-    setModelMatrix(glm::rotate(getModelMatrix(), rotation_degree, axises.at(rotation_axis)));
+    doRotation();
 }

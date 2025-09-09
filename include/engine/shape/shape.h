@@ -11,7 +11,7 @@ class Shape {
   public:
     enum Axis { X, Y, Z };
 
-    Shape();
+    Shape(const unsigned int width = 1920, const unsigned int height = 1080);
     Shape(const Shape &);
 
     void applyBaseShape(Shader &);
@@ -39,6 +39,8 @@ class Shape {
     void setModelMatrix(const glm::mat4 matrix) { modelMatrix = matrix; }
     void setProjectionMatrix(const glm::mat4 matrix) { projectionMatrix = matrix; }
     void setTranslationMatrix(const glm::mat4 matrix) { translationMatrix = matrix; }
+    void doRotation();
+    void undoRotation();
 
     void setVAO(const unsigned int VAO) { this->VAO = VAO; }
     void setVBO(const unsigned int VBO) { this->VBO = VBO; }

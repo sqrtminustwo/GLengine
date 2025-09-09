@@ -14,13 +14,15 @@
 using triplet = std::tuple<float, float, float>;
 using cube_type = CubeTextured;
 using cube_ptr = std::unique_ptr<cube_type>;
+using square_type = Square;
+using square_ptr = std::unique_ptr<square_type>;
 
 void genAndAddCubes(
     const cube_type &cube_template, std::vector<cube_ptr> &cubes,
     const std::vector<triplet> &&coords, const triplet &left_bottom_corner
 ) {
     for (auto coord : coords) {
-        std::unique_ptr<cube_type> cube(new cube_type{cube_template});
+        cube_ptr cube(new cube_type{cube_template});
         auto [base_x, base_y, base_z] = left_bottom_corner;
         auto [x, y, z] = coord;
         cube->setPos(base_x + x, base_y + y, base_z + z);
@@ -28,8 +30,49 @@ void genAndAddCubes(
     }
 }
 
+void generateSquareLine(
+    float start, float end, const square_type &square_template, std::vector<square_ptr> &squares,
+    std::function<void(const float, square_ptr &)> pos_setter
+) {
+    for (auto iter = start; iter <= end; iter++) {
+        square_ptr square(new square_type{square_template});
+        pos_setter(iter, square);
+        squares.push_back(std::move(square));
+    }
+}
+void genAndAddSquares(
+    const square_type &square_template, std::vector<square_ptr> &squares, const unsigned int radius,
+    const triplet &middle
+) {
+    auto [base_x, base_y, base_z] = middle;
+
+    // Upper line
+    static auto upper_setter = [&](float iter, square_ptr &square) {
+        square->setPos(iter, base_y, base_z - radius);
+    };
+    generateSquareLine(base_x - radius, base_x + radius, square_template, squares, upper_setter);
+
+    // Right line
+    static auto left_setter = [&](float iter, square_ptr &square) {
+        square->setPos(base_x + radius, base_y, iter);
+    };
+    generateSquareLine(base_z - radius, base_z + radius, square_template, squares, left_setter);
+
+    // Bottom line
+    static auto bottom_line = [&](float iter, square_ptr &square) {
+        square->setPos(iter, base_y, base_z + radius);
+    };
+    generateSquareLine(base_x - radius, base_x + radius, square_template, squares, bottom_line);
+
+    // Left line
+    static auto left_line = [&](float iter, square_ptr &square) {
+        square->setPos(base_x - radius, base_y, iter);
+    };
+    generateSquareLine(base_z - radius, base_z + radius, square_template, squares, left_line);
+}
+
 int main() {
-    Window window{1280, 1000, std::tuple(0, 0, 0, 0.7)};
+    Window window{1920, 1080, std::tuple(0, 0, 0, 0.7)};
     Camera camera{glm::vec3(0.0f, 0.0f, 3.0f)};
     Input input(&camera, &window);
 
@@ -67,24 +110,11 @@ int main() {
     cube_template.setSpecular(PROJECT_DIR "/resources/textures/container_specular.png");
     // cube_template.setEmission(PROJECT_DIR "/resources/textures/container_emission.jpg");
     cube_template.setShininess(1.0f);
+
     std::vector<cube_ptr> cubes;
-
-    Light light_source{};
-    light_source.setAmbient(0.2f, 0.2f, 0.2f);
-    light_source.setDiffuse(0.5f, 0.5f, 0.5f);
-    light_source.setSpecular(1.0f, 1.0f, 1.0f);
-
-    Square square;
-    square.setScale(scaleFactor);
-    square.setRotate(90.0f, Shape::X);
-    square.setDiffuse(PROJECT_DIR "/resources/textures/grass.jpg");
-
-    Square square2{square};
-    square2.setPos(0.0f, -1.0f, 0.0f);
-
     constexpr auto size = 10;
     constexpr auto middle = size / 2;
-    triplet left_bottom_corner{middle, middle, middle};
+    triplet left_bottom_corner{middle + 20, middle, middle};
     constexpr auto radius = 10;
 
     for (float i = 0; i <= size; i++) {
@@ -110,6 +140,20 @@ int main() {
         );
     }
 
+    Light light_source{};
+    light_source.setAmbient(0.2f, 0.2f, 0.2f);
+    light_source.setDiffuse(0.5f, 0.5f, 0.5f);
+    light_source.setSpecular(1.0f, 1.0f, 1.0f);
+
+    Square square;
+    square.setScale(5.0f);
+    square.setRotate(90.0f, Shape::X);
+    square.setDiffuse(PROJECT_DIR "/resources/textures/space.jpg");
+
+    std::vector<square_ptr> squares;
+    for (int radius = 0; radius <= 20; radius++)
+        genAndAddSquares(square, squares, radius, {0.0f, -2.0f, 0.0f});
+
     // Stats stats{};
     // stats.start(); // End is defined in class destructor
 
@@ -129,34 +173,32 @@ int main() {
         sphere_light.applyShape(sphere_light_shader);
         sphere_light.drawShape();
 
-        // cube_shader.setVec3(Shader::LIGHT_POS, sphere_light.getPos());
-        // cube_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
-        // cube_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
-        //
-        // light_source.applyLight(cube_shader);
-        // for (auto &&cube : cubes) {
-        //     cube->applyShape(cube_shader);
-        //     cube->drawShape();
-        // }
-        //
-        // sphere_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
-        // sphere_shader.setVec3(Shader::LIGHT_POS, sphere_light.getPos());
-        // sphere_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
-        // sphere_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
-        // light_source.applyLight(sphere_shader);
-        // sphere_middle.applyShape(sphere_shader);
-        // sphere_middle.drawShape();
+        cube_shader.setVec3(Shader::LIGHT_POS, sphere_light.getPos());
+        cube_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        cube_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
+        light_source.applyLight(cube_shader);
+        for (auto &&cube : cubes) {
+            cube->applyShape(cube_shader);
+            cube->drawShape();
+        }
+
+        sphere_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        sphere_shader.setVec3(Shader::LIGHT_POS, sphere_light.getPos());
+        sphere_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
+        sphere_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
+        light_source.applyLight(sphere_shader);
+        sphere_middle.applyShape(sphere_shader);
+        sphere_middle.drawShape();
 
         square_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
         square_shader.setVec3(Shader::LIGHT_POS, sphere_light.getPos());
         square_shader.setMat4(Shader::VIEW_MAT, camera.getViewMatrix());
         square_shader.setVec3(Shader::VIEW_POS, camera.getPosition());
         light_source.applyLight(square_shader);
-        square.applyShape(square_shader);
-        square.drawShape();
-
-        square2.applyShape(square_shader);
-        square2.drawShape();
+        for (auto &&square : squares) {
+            square->applyShape(square_shader);
+            square->drawShape();
+        }
 
         glfwSwapBuffers(window.getWindow());
         glfwPollEvents();
